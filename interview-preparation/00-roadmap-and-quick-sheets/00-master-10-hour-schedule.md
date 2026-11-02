@@ -3,7 +3,7 @@
 > **Candidate:** Simin Shoeibi  
 > **Interview Date:** Friday, November 6, 2026 (`12:45 CET` arrival $\rightarrow$ `13:00–16:00 CET` interviews @ Lanzadera, Valencia)  
 > **Interviewer:** Luis Grau (CEO) & Ruit Engineering Team  
-> **Primary Source of Truth:** Luis Grau's literal evaluation cheat sheet from `resources/first emails.md`
+> **Primary Source of Truth:** Luis Grau's literal evaluation cheat sheet from [`docs/resources/first emails.md`](../../docs/resources/first%20emails.md)
 
 ---
 

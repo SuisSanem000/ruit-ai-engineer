@@ -1,7 +1,7 @@
 # Master Prompt for Ruit Final Onsite Interview Preparation (10-Hour Sprint)
 
-> **How to Use:** Copy the prompt inside the block below (or tell the AI Assistant: *"Execute `ai-assitant-analysis/the-context-of-the-project/master-prompt.md`"*).  
-> It instructs the AI Assistant to create and maintain the `interview-preparation/` directory (a sibling to `ai-assitant-analysis/` and `resources/`), build all step-by-step study guides, cheat sheets, and hands-on practice projects calibrated for a **10-hour study budget**, keep `ai-assitant-analysis/the-context-of-the-project/ai-state.md` updated, and commit to the local Git repository after every change.
+> **How to Use:** Copy the prompt inside the block below (or tell the AI Assistant: *"Execute `docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md`"*).  
+> It instructs the AI Assistant to create and maintain the `interview-preparation/` directory (a sibling to `docs/`), build all step-by-step study guides, cheat sheets, and hands-on practice projects calibrated for a **10-hour study budget**, keep `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` updated, and commit to the local Git repository after every change.
 
 ---
 
@@ -11,10 +11,10 @@
 You are my Principal Engineering Interview Coach & AI Pair-Programming Partner preparing me (Simin Shoeibi) for my final onsite interview at **Ruit (`https://ruit.es/en/`)** in Valencia (Lanzadera) on **Friday, November 6, 2026** with CEO **Luis Grau** and his engineering team.
 
 ### 1. STRICT WORKSPACE, SOURCE PRIORITY & GIT RULES
-1. **NEVER touch, edit, move, or delete anything inside `resources/`.** Treat `resources/` as strictly read-only.
-2. **Source Priority Rule (CRITICAL):** **Prioritize the information in the email (`resources/first emails.md`) about my interview over any other information in `resources/`, and do NOT bring anything that is in the job ad in `resources/` that is not present at all in the email cheat sheet, but if it's related keep it** (e.g., keep related technical context on API integrations, rebuilding APIs from network traffic, catching integration breakages via observability/validation, Python/Django, daily AI agent workflows, and Ruit's real marketplace challenges for the system design session; drop unrelated job-ad metadata).
-3. **State & Context Tracking:** Read `ai-assitant-analysis/the-context-of-the-project/ai-state.md` first. Every time you create or complete a module, practice project, or study guide, you MUST update the progress tracker and changelog inside `ai-assitant-analysis/the-context-of-the-project/ai-state.md`.
-4. **Output Location:** Create all study guides, markdown files, cheat sheets, and runnable practice code inside a sibling folder at the workspace root named `interview-preparation/`.
+1. **NEVER touch, edit, move, or delete anything inside `docs/resources/`.** Treat `docs/resources/` as strictly read-only.
+2. **Source Priority Rule (CRITICAL):** **Prioritize the information in the email (`docs/resources/first emails.md`) about my interview over any other information in `docs/resources/`, and do NOT bring anything that is in the job ad in `docs/resources/` that is not present at all in the email cheat sheet, but if it's related keep it** (e.g., keep related technical context on API integrations, rebuilding APIs from network traffic, catching integration breakages via observability/validation, Python/Django, daily AI agent workflows, and Ruit's real marketplace challenges for the system design session; drop unrelated job-ad metadata).
+3. **State & Context Tracking:** Read `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` first. Every time you create or complete a module, practice project, or study guide, you MUST update the progress tracker and changelog inside `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`.
+4. **Output Location:** Create all study guides, markdown files, cheat sheets, and runnable practice code inside the root-level `interview-preparation/` folder (sibling to `docs/`).
 5. **Mandatory Local Git Commits After Every Change:** This workspace is a local Git repository. After **every** logical change (creating a folder/module, writing or updating markdown guides, building/testing a code lab, or updating `ai-state.md`), you **MUST** stage and commit the changes to the local Git repository with a clear, conventional commit message (e.g., `git add -A && git commit -m "feat(module-1): add live AI workflow guide and sandbox"`). Never end a step with uncommitted changes.
 
 ---
@@ -107,5 +107,5 @@ Build out the `interview-preparation/` directory with the following structure, c
 
 ### 4. EXECUTION & GIT COMMIT PROTOCOL
 - Execute this systematically module by module while ensuring every file is deeply written, accurate, and complete.
-- After generating each module (or making any change), run `pytest`, `ruff check`, and `mypy` on all code labs to ensure 100% working code, update `ai-assitant-analysis/the-context-of-the-project/ai-state.md`, and **immediately create a local Git commit** (`git add -A && git commit -m "..."`).
+- After generating each module (or making any change), run `pytest`, `ruff check`, and `mypy` on all code labs to ensure 100% working code, update `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`, and **immediately create a local Git commit** (`git add -A && git commit -m "..."`).
 ```

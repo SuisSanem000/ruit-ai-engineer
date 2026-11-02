@@ -86,16 +86,17 @@
 
 ```text
 ruit-ai-engineer/
-├── resources/                                  # [READ-ONLY — NEVER MODIFY]
-│   ├── about the company.md
-│   ├── cv-simin-shoeibi-fullstack-web-developer.pdf
-│   ├── first emails.md
-│   ├── job ad on bebee - Senior Backend Engineer, Integrations (Python) _ ruit _ LinkedIn.pdf
-│   └── job ad on linkedin - Senior Backend Engineer, Integrations (Python) _ ruit _ LinkedIn.pdf
-├── ai-assitant-analysis/                       # [META & CONTROL PLANE]
-│   └── the-context-of-the-project/
-│       ├── ai-state.md                         # This file: Live state, tracker & context
-│       └── master-prompt.md                    # Master prompt driving the 10-hour prep curriculum
+├── docs/
+│   ├── resources/                              # [READ-ONLY — NEVER MODIFY]
+│   │   ├── about the company.md
+│   │   ├── cv-simin-shoeibi-fullstack-web-developer.pdf
+│   │   ├── first emails.md
+│   │   ├── job ad on bebee - Senior Backend Engineer, Integrations (Python) _ ruit _ LinkedIn.pdf
+│   │   └── job ad on linkedin - Senior Backend Engineer, Integrations (Python) _ ruit _ LinkedIn.pdf
+│   └── ai-assitant-analysis/                   # [META & CONTROL PLANE]
+│       └── the-context-of-the-project/
+│           ├── ai-state.md                     # This file: Live state, tracker & context
+│           └── master-prompt.md                # Master prompt driving the 10-hour prep curriculum
 └── interview-preparation/                      # [COMPLETE 10-HOUR STUDY & PRACTICE KIT]
     ├── README.md                               # Master navigation index
     ├── 00-roadmap-and-quick-sheets/            # 10-hour schedule, TS->Python bridge, Euromed train sheet
@@ -111,9 +112,9 @@ ruit-ai-engineer/
 
 ## 5. Mandatory AI Operational Rules (Source Priority, State & Git Discipline)
 
-1. **Read-Only `resources/`:** Never modify, rename, or delete any file inside `resources/`.
-2. **Source Priority Rule (Email Cheat Sheet First):** Prioritize the information in `resources/first emails.md` about the interview over any other information in `resources/`. Do NOT bring anything from the job ads in `resources/` that is not present at all in the email cheat sheet—only include job-ad details when they are directly related to the email cheat sheet topics (e.g., API integrations & reverse-engineering from network traffic, observability/catching breakage before sellers notice, Python/Django, AI agent workflows, and Ruit's upcoming marketplace challenges).
-3. **State Synchronization:** Update this file (`ai-state.md`) after every completed step, module, or code lab.
+1. **Read-Only `docs/resources/`:** Never modify, rename, or delete any file inside `docs/resources/`.
+2. **Source Priority Rule (Email Cheat Sheet First):** Prioritize the information in `docs/resources/first emails.md` about the interview over any other information in `docs/resources/`. Do NOT bring anything from the job ads in `docs/resources/` that is not present at all in the email cheat sheet—only include job-ad details when they are directly related to the email cheat sheet topics (e.g., API integrations & reverse-engineering from network traffic, observability/catching breakage before sellers notice, Python/Django, AI agent workflows, and Ruit's upcoming marketplace challenges).
+3. **State Synchronization:** Update this file (`docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`) after every completed step, module, or code lab.
 4. **Atomic Local Git Commits After Every Change:**
    - This workspace is tracked in a local Git repository (`.git`).
    - **After every single logical change** (updating context/state files, generating a study guide, creating or testing a code lab), the AI Assistant **MUST** immediately stage the changes and create a clean, descriptive local commit (`git add -A && git commit -m "..."`).
@@ -143,3 +144,5 @@ ruit-ai-engineer/
 - **2026-11-02 (Session 11 — Comprehensive Review & Polish):**
   - Audited all files from scratch to remove any job-ad details not directly tied to Luis's email cheat sheet.
   - Added runnable `fundamentals-labs/test_concurrency_locks_and_errors.py` in Module 3 and verified 100% pass across `pytest`, `ruff check`, and `mypy`.
+- **2026-11-02 (Session 12 — Directory Structure & Path Sync):**
+  - Updated all folder diagrams and file paths across `docs/ai-assitant-analysis/` and `interview-preparation/` after moving `resources/` and `ai-assitant-analysis/` into `docs/`.

@@ -2,7 +2,8 @@
 
 > **Candidate:** Simin Shoeibi  
 > **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival $\rightarrow$ `13:00h–16:00h` @ Lanzadera, Valencia)  
-> **Primary Source:** Built strictly around CEO **Luis Grau's literal evaluation cheat sheet** (`resources/first emails.md`).
+> **Primary Source:** Built strictly around CEO **Luis Grau's literal evaluation cheat sheet** ([`docs/resources/first emails.md`](../docs/resources/first%20emails.md)).  
+> **Project Context & AI State:** [`docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`](../docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) | [`master-prompt.md`](../docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md)
 
 ---
 
