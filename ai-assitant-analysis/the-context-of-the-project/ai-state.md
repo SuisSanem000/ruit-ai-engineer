@@ -61,7 +61,6 @@
 ### 2.2 The Key Technical Bridge to Master (TS/Node.js $\rightarrow$ Python/Django + Rust Mindset)
 - **Bridging Node.js/TypeScript to Python/Django:** Map Simin's deep expertise in Event Loop concurrency, AJV/Zod, Prisma/TypeORM, and BullMQ/RabbitMQ directly to **CPython's GIL + `asyncio`**, **Pydantic v2 + Python Type Hints (`Protocol`, `TypedDict`)**, **Django ORM (sync vs async ASGI)**, and **Celery + Redis**.
 - **Connecting with Alonso's Rust & Cybersecurity Mindset:** Emphasize strict boundary validation (Pydantic v2), explicit error taxonomies (`Result<T, E>` philosophy in Python), defensive network engineering (TLS/JA3 fingerprinting, mitmproxy, mobile API traffic reconstruction), and proactive canary monitoring.
-- **Fun Detail from the Job Ad:** Note the Python 3 Easter egg in Ruit's job ad (`import hashlib; k = hashlib.sha256(b"segunda mano").digest()...` with `enumerate(..., 1)` off-by-one bug that decodes to their `tally.so` link when fixed to `0`).
 
 ---
 
@@ -135,11 +134,12 @@ ruit-ai-engineer/
 
 ---
 
-## 5. Mandatory AI Operational Rules (State & Git Discipline)
+## 5. Mandatory AI Operational Rules (Source Priority, State & Git Discipline)
 
 1. **Read-Only `resources/`:** Never modify, rename, or delete any file inside `resources/`.
-2. **State Synchronization:** Update this file (`ai-state.md`) after every completed step, module, or code lab.
-3. **Atomic Local Git Commits After Every Change:**
+2. **Source Priority Rule (Email Cheat Sheet First):** Prioritize the information in `resources/first emails.md` about the interview over any other information in `resources/`. Do NOT bring anything from the job ads in `resources/` that is not present at all in the email cheat sheet—only include job-ad details when they are directly related to the email cheat sheet topics (e.g., API integrations & reverse-engineering from network traffic, observability/catching breakage before sellers notice, Python/Django, AI agent workflows, and Ruit's upcoming marketplace challenges).
+3. **State Synchronization:** Update this file (`ai-state.md`) after every completed step, module, or code lab.
+4. **Atomic Local Git Commits After Every Change:**
    - This workspace is tracked in a local Git repository (`.git`).
    - **After every single logical change** (updating context/state files, generating a study guide, creating or testing a code lab), the AI Assistant **MUST** immediately stage the changes and create a clean, descriptive local commit (e.g., `git add -A && git commit -m "feat(prep): ..."`).
    - Never leave uncommitted changes dangling at the end of a turn or module.
