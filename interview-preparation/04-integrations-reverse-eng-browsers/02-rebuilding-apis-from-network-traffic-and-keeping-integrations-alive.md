@@ -19,7 +19,7 @@ Not all marketplaces give you a clean developer portal. In the recommerce world,
 
 ## 2. Step-by-Step: How to Rebuild an API from an App's Network Traffic
 
-When Luis or Alonso asks: *"Walk us through how you reverse-engineer and rebuild an undocumented marketplace API from traffic,"* present this exact 5-step methodology:
+When Luis or the team asks: *"Walk us through how you reverse-engineer and rebuild an undocumented marketplace API from traffic,"* present this exact 5-step methodology:
 
 ### Step 1: Traffic Capture & Interception (Web vs Mobile App)
 - **Web App (SPA):**
@@ -81,3 +81,4 @@ flowchart TD
    - Trip a **Redis Circuit Breaker (`circuit:vinted:publish = OPEN`)**, pause the `vinted_publish` Celery queue, and page on-call immediately.
 4. **Sanitized Payload Snapshots for Instant Reproduction:**
    - Whenever an `UpstreamContractBreakageError` occurs, store the sanitized HTTP status, headers, and raw response JSON in an error-replay store so an engineer (and an AI agent) can immediately generate a failing `pytest` fixture and patch the Pydantic model in minutes.
+

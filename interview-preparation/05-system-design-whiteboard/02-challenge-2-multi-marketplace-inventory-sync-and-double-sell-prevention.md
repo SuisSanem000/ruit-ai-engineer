@@ -107,3 +107,4 @@ If you have 2,000 sellers on Vinted/Wallapop and no public webhooks, polling eve
    - **Warm Sellers:** Every **3–5 minutes**.
    - **Cold / Offline Sellers:** Every **15–30 minutes**.
 3. **Email / Push Notification Ingestion Bridge (Bonus Trick!):** Marketplaces send an instant email (`"¡Has vendido un producto en Wallapop!"` / `"New sale on Vinted"`) within 2 seconds of a sale. Giving sellers an optional auto-forwarding address (`seller-xyz@inbound.ruit.es` via AWS SES / Postmark inbound webhook) gives Ruit **2-second push webhooks** for marketplaces that don't have an API!
+

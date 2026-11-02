@@ -61,3 +61,4 @@ Commit the working, tested code cleanly:
 git add -A && git commit -m "feat(task): implement resilient async connector with Pydantic validation and retry tests"
 ```
 Then summarize in 30 seconds how this would plug into Ruit's production stack (e.g., *"In production at Ruit, this client would be invoked by a dedicated Celery queue per marketplace with Redis rate-limiting, emitting Prometheus metrics on schema drift and 429 rates"*).
+

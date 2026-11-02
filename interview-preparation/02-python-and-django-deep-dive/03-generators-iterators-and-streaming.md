@@ -127,3 +127,4 @@ async def paginate_marketplace_listings(
             break
 ```
 > **Why This Impresses Senior Interviewers:** Notice how an `AsyncGenerator` provides **automatic backpressure**! The next HTTP page is *only* fetched when the caller's `async for item in paginate_marketplace_listings(...):` finishes processing the current page's items.
+

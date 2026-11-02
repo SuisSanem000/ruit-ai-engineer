@@ -118,3 +118,4 @@ stale_items = Item.objects.filter(
 - **`QuerySet` Caching Gotcha:** `for item in Item.objects.all():` loads and caches **every row into a Python list in RAM**! For 100,000 rows, this crashes the worker with `MemoryError` (OOM).
 - **The Fix:** Use `.iterator(chunk_size=2000)` so PostgreSQL streams rows in chunks without caching them in the `QuerySet`.
 - Always pass `update_fields=["status", "updated_at"]` to `item.save(...)` so Django doesn't overwrite columns modified concurrently by another worker!
+

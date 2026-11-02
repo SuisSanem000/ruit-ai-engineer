@@ -4,7 +4,7 @@
 > *"you built a VS Code extension that hundreds of thousands of developers use, which says a lot about shipping things people rely on."*  
 > *"The Dadroit JSON Generator extension you built in three days, and the crawler behind your news app for over 150 sites, are close to the integration work we do."*
 
-Keep these three stories crisp (90 seconds each for the summary, with deep technical layers ready when Luis or Alonso asks follow-up questions).
+Keep these three stories crisp (90 seconds each for the summary, with deep technical layers ready when Luis or the team asks follow-up questions).
 
 ---
 
@@ -44,3 +44,4 @@ Keep these three stories crisp (90 seconds each for the summary, with deep techn
   > 3. *Backend telemetry and side-by-side reviewer tooling that detected brittle logic and edge-case failures in real time so we could reproduce and fix them immediately.*
   >
   > *That architecture is identical to how I think about Ruit's marketplace integrations and AI catalog mapping: never trust an external boundary—validate every payload with Pydantic v2, log schema drift proactively, and build replayable telemetry so we catch breakages before sellers do."*
+

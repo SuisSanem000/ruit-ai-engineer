@@ -63,3 +63,4 @@ flowchart LR
    - The extension silently captures the seller's fresh session cookies / bearer token from `chrome.cookies` when the seller opens their browser and syncs them securely to Ruit's backend, so Ruit's cloud Celery workers can run 24/7 background inventory syncs even when the seller's laptop is closed.
 2. **Mode B — Client-Side Task Delegation (Browser-Executed Sync):**
    - For marketplaces with extreme anti-bot protection or zero public API (like Facebook Marketplace), Ruit's backend sends a `PublishJob` command over WebSocket to the extension's Service Worker, which executes the `fetch()` or background tab automation directly inside the seller's browser and reports the `external_listing_id` back to Ruit!
+

@@ -65,3 +65,4 @@ Just like you did at QueryLaw with dynamic context + AJV schemas:
 ### 3.4 Human-in-the-Loop Feedback Flywheel
 - Each attribute gets a confidence score. If confidence is `< 0.80` on a mandatory field, highlight just that 1 dropdown in the Ruit UI for the seller.
 - Whenever a seller manually corrects a category mapping (`Canonical X` $\rightarrow$ `Vinted Category Y`), record that correction as a weighted vote in PostgreSQL—turning seller edits into a **self-improving deterministic lookup table**!
+

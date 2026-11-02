@@ -62,3 +62,4 @@
 1. **Dadroit JSON Generator (VS Code Extension — 630K+ installs, built in 3 days):** Shows product instinct, developer/user empathy, fast execution, and deep understanding of JSON schemas & browser/editor extension ecosystems.
 2. **150+ Site News Crawler & Semantic Pipeline (Parsaiane — 60K+ DAU):** Directly mirrors Ruit's integration challenge—keeping 150 heterogeneous sources alive despite constant DOM/API changes, rate limits, and dirty data.
 3. **QueryLaw Antifragile AI Engine (95%+ accuracy, Multi-Layer Validation & Brittle-Logic Telemetry):** Proves you know how to make non-deterministic LLMs and brittle external pipelines reliable in production using strict schema validation and real-time failure telemetry.
+

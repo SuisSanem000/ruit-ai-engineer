@@ -1,7 +1,7 @@
 # Error Handling Philosophy: Python vs Go vs Rust (And How to Engineer Resilient Integrations)
 
 > **Luis's Cheat Sheet Topic:** *"error handling and the philosophy behind them (python vs go vs rust for example)"*  
-> **Team Context:** Founding Engineer **Alonso Veliz Garcia** specializes in **Python, Django, and Rust**. Having a crisp, deep comparison of Python vs Go vs Rust error handling—and showing how you bring Rust's explicitness into Python integrations—will strongly resonate with both Luis and Alonso.
+> **Why This Topic Is on the Cheat Sheet:** Having a crisp, deep comparison of Python vs Go vs Rust error handling—and showing how you bring Rust/Go explicitness into Python integrations—demonstrates senior systems maturity across languages.
 
 ---
 
@@ -115,3 +115,4 @@ def handle_sync_result(res: Result[str, MarketplaceError]) -> str:
             assert_never(unreachable)  # Mypy fails at compile time if a case is missed!
 ```
 > **Note Python 3.11+ `ExceptionGroup` and `except*`:** Also mention that when using `asyncio.TaskGroup()` in Python 3.11+, if multiple concurrent tasks fail simultaneously, Python wraps them in an **`ExceptionGroup`**, which can be caught selectively by type using the **`except* TransientRetryableError as eg:`** syntax!
+

@@ -81,3 +81,4 @@ Explain how Ruit can leverage its AI-agent culture to cut integration repair tim
    - The current `DepopListingResponse` Pydantic model file.
    - The sanitized failing JSON payload from `integration_breakage_incidents`.
 4. **Agent Fix + Verification Loop:** The agent writes a new `pytest` test case with the captured payload, updates the Pydantic `@field_validator` / alias to support the new structure, runs `pytest` + `ruff` + `mypy`, and posts a **1-click Draft PR + Slack alert** to the engineering channel!
+

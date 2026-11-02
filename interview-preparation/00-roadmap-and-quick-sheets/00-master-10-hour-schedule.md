@@ -2,7 +2,7 @@
 
 > **Candidate:** Simin Shoeibi  
 > **Interview Date:** Friday, November 6, 2026 (`12:45 CET` arrival $\rightarrow$ `13:00–16:00 CET` interviews @ Lanzadera, Valencia)  
-> **Interviewer:** Luis Grau (CEO) & Engineering Team (including Founding Engineer Alonso Veliz Garcia)  
+> **Interviewer:** Luis Grau (CEO) & Ruit Engineering Team  
 > **Primary Source of Truth:** Luis Grau's literal evaluation cheat sheet from `resources/first emails.md`
 
 ---
@@ -109,6 +109,7 @@
 **Folder:** [`06-culture-lunch-and-storytelling/`](../06-culture-lunch-and-storytelling/)
 
 - **9:30 – 9:50 (20m) | Your 3 Signature Engineering Stories & Team Lunch Questions:**
-  - Read [`01-my-3-signature-stories-for-ruit.md`](../06-culture-lunch-and-storytelling/01-my-3-signature-stories-for-ruit.md) and [`02-team-lunch-and-questions-for-luis-and-alonso.md`](../06-culture-lunch-and-storytelling/02-team-lunch-and-questions-for-luis-and-alonso.md).
+  - Read [`01-my-3-signature-stories-for-ruit.md`](../06-culture-lunch-and-storytelling/01-my-3-signature-stories-for-ruit.md) and [`02-team-lunch-and-questions-for-luis-and-team.md`](../06-culture-lunch-and-storytelling/02-team-lunch-and-questions-for-luis-and-team.md).
 - **9:50 – 10:00 (10m) | Final Rapid Review (Save for the Euromed Train to Valencia):**
   - Skim [`02-euromed-train-rapid-cheatsheet.md`](./02-euromed-train-rapid-cheatsheet.md).
+

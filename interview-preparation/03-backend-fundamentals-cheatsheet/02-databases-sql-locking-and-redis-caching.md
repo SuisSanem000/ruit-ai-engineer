@@ -89,3 +89,4 @@ if rows_updated == 0:
    - **Stampede (1 hot key expires and 500 concurrent requests all miss and hammer Postgres):** Use a short Redis mutex lock (`SET lock:recompute:key 1 NX EX 5`) so only 1 worker queries Postgres while others wait briefly or serve slightly stale data (stale-while-revalidate).
 3. **Redis Distributed Rate Limiting (Token Bucket / Sliding Window):**
    - When Ruit must cap calls to Vinted's API at e.g. `60 requests/minute per seller IP/proxy`, use an **atomic Redis Lua script** (or `INCR` + `EXPIRE` / Sorted Set `ZREMRANGEBYSCORE` + `ZCARD` + `ZADD`) so all Celery workers share a single global rate-limit counter with zero race conditions.
+

@@ -20,7 +20,7 @@ When Luis and the team present their ~5 upcoming challenges, **choose the one th
 
 ## 2. The 60-Minute Collaborative Pacing Blueprint ("This is Teamwork!")
 
-Because Luis explicitly emphasized **"We will design it together and see how it compares to our existing approach. This is teamwork!"**, **do NOT monologue at the whiteboard for 40 minutes**. Treat Luis and Alonso as your co-founders/co-architects in a real Lanzadera design session:
+Because Luis explicitly emphasized **"We will design it together and see how it compares to our existing approach. This is teamwork!"**, **do NOT monologue at the whiteboard for 40 minutes**. Treat Luis and the team as your co-architects in a real Lanzadera design session:
 
 ### Phase 1: Clarify Scope, Invariants & Failure Modes (Minutes 0 – 10)
 Before drawing boxes, write **3 small lists** in the corner of the whiteboard and ask the team to validate them:
@@ -52,3 +52,4 @@ Proactively walk through the **"What Goes Wrong at 3 AM"** scenarios (this is wh
 Ask open, curious questions to compare designs:
 - *"How does this compare to your current implementation in production? Where did you hit unexpected bottlenecks with Wallapop or Vinted?"*
 - *"If we were shipping a pragmatic v1 of this next Monday in 3 days vs hardening v2 for 15 marketplaces, here is what I'd build first and what I'd defer..."* (Shows startup pragmatism!).
+

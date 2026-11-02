@@ -68,3 +68,4 @@ In an integration platform like Ruit, generic CPU/RAM graphs aren't enough—you
 4. **Scaling & Backpressure:**
    - Scale stateless ASGI web workers and Celery workers horizontally behind a load balancer.
    - Protect PostgreSQL with **PgBouncer** connection pooling, read replicas for heavy analytics queries, and **table partitioning** on high-volume append-only tables (like `marketplace_sync_logs` partitioned monthly by `created_at`).
+

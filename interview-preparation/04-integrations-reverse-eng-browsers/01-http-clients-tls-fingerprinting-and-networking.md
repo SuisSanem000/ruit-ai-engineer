@@ -72,4 +72,5 @@ async def fetch_protected_marketplace_page(url: str, proxy_url: str) -> dict:
         resp.raise_for_status()
         return resp.json()
 ```
-> **Drop this insight during Interview 1:** Explaining **JA3/JA4 TLS fingerprinting + HTTP/2 `SETTINGS` pseudo-header order + `curl_cffi` (`curl-impersonate`)** instantly signals to Luis and Alonso that you deeply understand real-world marketplace reverse engineering.
+> **Drop this insight during Interview 1:** Explaining **JA3/JA4 TLS fingerprinting + HTTP/2 `SETTINGS` pseudo-header order + `curl_cffi` (`curl-impersonate`)** instantly signals to Luis and the team that you deeply understand real-world marketplace reverse engineering.
+

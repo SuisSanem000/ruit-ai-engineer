@@ -98,3 +98,4 @@ description: Build or repair a resilient Python marketplace integration from raw
 4. **Verification Gate:**
    - Run `pytest`, `ruff check`, and `mypy` before committing.
 ```
+

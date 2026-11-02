@@ -38,6 +38,7 @@
 - [01-celery-redis-and-background-queues.md](./03-backend-fundamentals-cheatsheet/01-celery-redis-and-background-queues.md) — Celery + Redis vs RabbitMQ, `visibility_timeout`, `acks_late=True`, `transaction.on_commit()`, idempotency, backoff+jitter, queue isolation, and DLQs.
 - [02-databases-sql-locking-and-redis-caching.md](./03-backend-fundamentals-cheatsheet/02-databases-sql-locking-and-redis-caching.md) — Postgres MVCC & HOT updates, B-Tree/Partial/GIN indexes, `SELECT ... FOR UPDATE` vs optimistic locking, PgBouncer, and Redis caching + distributed locks.
 - [03-error-handling-python-vs-go-vs-rust.md](./03-backend-fundamentals-cheatsheet/03-error-handling-python-vs-go-vs-rust.md) — Python EAFP exceptions vs Go explicit `err != nil` vs Rust `Result<T, E>` / `?` operator + action-oriented integration error hierarchies.
+- **Runnable Code Lab:** [test_concurrency_locks_and_errors.py](./03-backend-fundamentals-cheatsheet/fundamentals-labs/test_concurrency_locks_and_errors.py).
 
 ---
 
@@ -61,12 +62,13 @@
 
 ### 6. Hours 9.5 – 10.0: Storytelling & Team Lunch (`06-culture-lunch-and-storytelling/`)
 - [01-my-3-signature-stories-for-ruit.md](./06-culture-lunch-and-storytelling/01-my-3-signature-stories-for-ruit.md) — Your 90-second pitches + technical follow-ups for (1) 150+ Site News Crawler, (2) 630K-Install Dadroit JSON Generator, and (3) QueryLaw Antifragile AI Engine.
-- [02-team-lunch-and-questions-for-luis-and-alonso.md](./06-culture-lunch-and-storytelling/02-team-lunch-and-questions-for-luis-and-alonso.md) — Winning the team lunch + tailored questions for Luis Grau and Alonso Veliz Garcia.
+- [02-team-lunch-and-questions-for-luis-and-team.md](./06-culture-lunch-and-storytelling/02-team-lunch-and-questions-for-luis-and-team.md) — Winning the team lunch + tailored questions for Luis Grau and the engineering team.
 
 ---
 
 ## Verification Command
-To run all code lab tests and static checks offline using the pre-configured `.venv`:
+To run all code lab tests, linter checks, and static type checks offline using the pre-configured `.venv`:
 ```bash
-.venv/bin/pytest interview-preparation/ -v && .venv/bin/ruff check interview-preparation/
+.venv/bin/pytest interview-preparation/ -v && .venv/bin/ruff check interview-preparation/ && .venv/bin/mypy interview-preparation/
 ```
+

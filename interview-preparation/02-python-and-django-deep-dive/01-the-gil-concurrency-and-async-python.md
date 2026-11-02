@@ -43,7 +43,7 @@ If you run 4 threads doing pure Python CPU work (e.g., parsing large DOM trees i
 2. **Use `multiprocessing` (`concurrent.futures.ProcessPoolExecutor`) or Multiple Celery Worker Processes:**
    - Spawns separate OS processes, each with its own Python interpreter, its own memory space, and **its own independent GIL**—achieving true multi-core parallelism across all CPU cores.
 3. **Python 3.13 / 3.14 Free-Threaded Mode (PEP 703 — `--disable-gil`):**
-   - *Senior bonus point to mention to Luis & Alonso:* Starting in Python 3.13 (experimental `python3.13t`) and maturing in 3.14, CPython introduced optional **free-threaded builds** without the GIL!
+   - *Senior bonus point to mention to Luis & the team:* Starting in Python 3.13 (experimental `python3.13t`) and maturing in 3.14, CPython introduced optional **free-threaded builds** without the GIL!
    - It replaces naive reference counting with **biased reference counting** (fast non-atomic refcounts for the owning thread, atomic refcounts for shared objects), **immortal objects** (for `None`, `True`, small ints, interned strings so they never change refcounts), and fine-grained per-object locks.
 
 ---
@@ -90,3 +90,4 @@ Never run `await asyncio.gather(*(fetch(url) for url in ten_thousand_urls))` dir
   - **A:** *"While both threads and `asyncio` release the GIL during socket I/O, OS threads carry ~8MB stack overhead and OS kernel context-switching costs, plus preemptive scheduling makes shared state prone to race conditions at any bytecode instruction. With `asyncio`, each coroutine costs only a few kilobytes, context switching happens explicitly at `await` points in user space, and we can easily hold 5,000+ concurrent HTTP/2 or WebSocket connections in a single process—exactly like Node.js's event loop."*
 - **Q: "Can you still have a race condition in single-threaded `asyncio`?"**
   - **A:** *"Yes! Single-threaded does not mean atomic across `await` boundaries. In a read-modify-write sequence like `balance = await get_balance(); await set_balance(balance - 10)`, another coroutine can run during the `await` yield point and modify the state. You still need `asyncio.Lock()` for in-process state, and Postgres `SELECT ... FOR UPDATE` or Redis locks across multiple processes/workers."*
+

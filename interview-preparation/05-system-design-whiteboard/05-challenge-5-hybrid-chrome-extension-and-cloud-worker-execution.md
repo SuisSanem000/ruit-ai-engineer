@@ -66,3 +66,4 @@ Use a **Pull-Based Lease Protocol with Lease Expiration**:
 ### 3.3 Subsystem 3: Smart Fallback Routing (Cloud First $\rightarrow$ Extension Fallback)
 For marketplaces that *usually* work from the cloud via `curl_cffi` + residential proxy, the **Smart Execution Router** tries the **Cloud Worker first** (instant, works 24/7).  
 If the Cloud Worker encounters a sudden Cloudflare Turnstile / DataDome `403` challenge that requires a real browser, instead of failing the seller's task, it **seamlessly re-routes the task to the seller's Chrome Extension queue** next time their browser is online!
+

@@ -76,7 +76,7 @@ At QueryLaw, you achieved 95%+ AI accuracy using multi-layer JSON Schema (AJV) v
 
 ## 5. Classic Python Footguns Static Analysis Catches
 
-Be ready if Luis or Alonso asks about subtle Python language quirks:
+Be ready if Luis or the team asks about subtle Python language quirks:
 
 1. **Mutable Default Arguments:**
    ```python
@@ -98,3 +98,4 @@ Be ready if Luis or Alonso asks about subtle Python language quirks:
    # GOOD: Bind current value as a default argument `m=mp` (or use `functools.partial`)
    handlers = [lambda m=mp: sync(m) for mp in ["wallapop", "vinted", "ebay"]]
    ```
+

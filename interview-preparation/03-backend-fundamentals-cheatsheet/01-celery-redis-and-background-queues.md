@@ -94,3 +94,4 @@ Never put all tasks in the single default `celery` queue! If a seller imports 50
 
 ### Rule 7: Hard & Soft Timeouts (`soft_time_limit` & `time_limit`)
 Always set `soft_time_limit=30` and `time_limit=45` on tasks. When `soft_time_limit` fires, Celery raises `SoftTimeLimitExceeded` inside the task so your code can catch it, clean up locks/sessions, mark the sync attempt as `timed_out`, and exit cleanly before `SIGKILL` (`time_limit`) terminates the process.
+

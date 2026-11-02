@@ -88,3 +88,4 @@ To make building a new marketplace connector (say, **Grailed** or **Poshmark**) 
 2. **Contract-Driven Replay Harness (VCR / HAR Cassette Testing):**
    - Engineers record 1 real session (`login`, `upload_media`, `publish`, `delist`) into sanitized JSON cassettes.
    - CI runs `pytest` against those cassettes in 100ms, and a scheduled nightly canary runs the exact same adapter methods against a live Ruit test account.
+

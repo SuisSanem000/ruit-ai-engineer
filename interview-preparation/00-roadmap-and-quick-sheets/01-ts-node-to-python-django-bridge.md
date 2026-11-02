@@ -112,3 +112,4 @@ def mark_item_sold_and_enqueue_delist(item_id: int, sold_on_marketplace: str) ->
         return True
 ```
 > **Pro Tip to Mention to Luis:** Using `transaction.on_commit(...)` before calling `.delay()` on a Celery task prevents a classic Django race condition where the fast Redis/Celery worker picks up the task *before* the PostgreSQL transaction commits, reading stale database state!
+
