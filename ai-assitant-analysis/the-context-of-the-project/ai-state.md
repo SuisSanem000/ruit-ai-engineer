@@ -175,4 +175,6 @@ ruit-ai-engineer/
     4. Ruit's €1M funding (Angels Capital, Decelera, Abac Capital, Successful Fund), €1M ARR by end of 2027 target, and **~€2,000/month per engineer AI agent budget**.
 - **2026-11-02 (Session 3 — Local Git Repository & Atomic Commit Protocol):**
   - Initialized local Git repository in the workspace root (`git init`) with OS/Python build artifacts excluded via `.git/info/exclude`.
-  - Updated `ai-state.md` and `master-prompt.md` to mandate atomic local Git commits after every single file/module change from now on.
+  - Updated `ai-state.md` and `master-prompt.md` to mandate atomic local Git commits after every single file/module change and prioritize the email cheat sheet over unrelated job-ad details.
+- **2026-11-02 (Session 4 — Module 0 Completed):**
+  - Created `interview-preparation/00-roadmap-and-quick-sheets/` with `00-master-10-hour-schedule.md`, `01-ts-node-to-python-django-bridge.md`, and `02-euromed-train-rapid-cheatsheet.md`.
