@@ -1,6 +1,11 @@
-"""Pytest suite for Ruit Live AI Task Sandbox."""
+"""
+Basic Pytest Unit Tests for `marketplace_connector.py`
 
-from __future__ import annotations
+How these tests work:
+- We use `httpx.MockTransport` to fake the marketplace HTTP responses in memory,
+  so tests run in milliseconds without needing the internet.
+- Run with: `.venv/bin/pytest interview-preparation/01-ai-workflow-and-live-task/live-task-sandbox/ -v`
+"""
 
 import asyncio
 from decimal import Decimal
@@ -8,39 +13,48 @@ from decimal import Decimal
 import httpx
 import pytest
 from marketplace_connector import (
-    MarketplaceName,
-    NormalizedListing,
-    ResilientMarketplaceClient,
-    SellerAuthExpiredError,
-    UpstreamSchemaBreakageError,
+    AuthExpiredError,
+    ListingItem,
+    SchemaBreakageError,
     delist_across_marketplaces,
+    fetch_marketplace_listing,
 )
 
 
-def test_normalized_listing_coerces_messy_prices_and_detects_drift() -> None:
-    raw_vinted_payload = {
+def test_listing_item_cleans_messy_price_and_finds_extra_fields() -> None:
+    """Test 1: Check that Pydantic converts integer IDs, cleans '45,50 €',
+    and detects new undocumented fields sent by a marketplace.
+    """
+    raw_vinted_json = {
         "external_id": 987654,
         "title": "  Vintage Leather Jacket  ",
         "price_eur": {"amount": "45,50 €"},
         "currency": "EUR",
         "is_active": True,
-        "new_undocumented_vinted_badge": "promoted_v2",
+        "new_vinted_field": "promoted_v2",
     }
-    listing = NormalizedListing.model_validate(raw_vinted_payload)
-    assert listing.external_id == "987654"
-    assert listing.title == "Vintage Leather Jacket"
-    assert listing.price_eur == Decimal("45.50")
-    assert listing.detect_schema_drift() == {"new_undocumented_vinted_badge"}
+
+    item = ListingItem.model_validate(raw_vinted_json)
+
+    assert item.external_id == "987654"
+    assert item.title == "Vintage Leather Jacket"
+    assert item.price_eur == Decimal("45.50")
+    assert item.get_unexpected_fields() == {"new_vinted_field"}
 
 
-def test_fetch_listing_retries_on_429_and_succeeds() -> None:
-    attempts = 0
+def test_fetch_listing_retries_on_429_rate_limit_and_succeeds() -> None:
+    """Test 2: Simulate a marketplace returning HTTP 429 (Too Many Requests) on the 1st try,
+    and HTTP 200 OK on the 2nd try. Our client should wait and succeed automatically.
+    """
+    call_count = 0
 
-    def handler(request: httpx.Request) -> httpx.Response:
-        nonlocal attempts
-        attempts += 1
-        if attempts == 1:
+    def fake_server(request: httpx.Request) -> httpx.Response:
+        nonlocal call_count
+        call_count += 1
+        # First call returns 429 with a tiny Retry-After header
+        if call_count == 1:
             return httpx.Response(429, headers={"Retry-After": "0.01"})
+        # Second call succeeds with 200 OK
         return httpx.Response(
             200,
             json={
@@ -50,98 +64,109 @@ def test_fetch_listing_retries_on_429_and_succeeds() -> None:
             },
         )
 
-    async def _run() -> None:
-        transport = httpx.MockTransport(handler)
+    async def run_test() -> None:
+        transport = httpx.MockTransport(fake_server)
         async with httpx.AsyncClient(
             transport=transport, base_url="https://api.wallapop.example"
-        ) as http_client:
-            client = ResilientMarketplaceClient(
-                MarketplaceName.WALLAPOP, http_client, max_retries=2
-            )
-            listing = await client.fetch_listing("wp-123")
-            assert listing.external_id == "wp-123"
-            assert listing.price_eur == Decimal("120.00")
-            assert attempts == 2
+        ) as client:
+            item = await fetch_marketplace_listing(client, "wallapop", "wp-123")
+            assert item.external_id == "wp-123"
+            assert item.price_eur == Decimal("120.00")
+            assert call_count == 2
 
-    asyncio.run(_run())
+    asyncio.run(run_test())
 
 
-def test_fetch_listing_raises_auth_expired_immediately_without_retries() -> None:
-    attempts = 0
+def test_fetch_listing_stops_immediately_on_401_unauthorized() -> None:
+    """Test 3: If the seller's token is expired (HTTP 401), do NOT waste time retrying.
+    Raise `AuthExpiredError` on the first attempt.
+    """
+    call_count = 0
 
-    def handler(request: httpx.Request) -> httpx.Response:
-        nonlocal attempts
-        attempts += 1
+    def fake_server(request: httpx.Request) -> httpx.Response:
+        nonlocal call_count
+        call_count += 1
         return httpx.Response(401, json={"error": "token_expired"})
 
-    async def _run() -> None:
-        transport = httpx.MockTransport(handler)
+    async def run_test() -> None:
+        transport = httpx.MockTransport(fake_server)
         async with httpx.AsyncClient(
             transport=transport, base_url="https://api.vinted.example"
-        ) as http_client:
-            client = ResilientMarketplaceClient(
-                MarketplaceName.VINTED, http_client, max_retries=3
-            )
-            with pytest.raises(SellerAuthExpiredError):
-                await client.fetch_listing("v-1")
-            assert attempts == 1  # Must not waste retries on 401!
+        ) as client:
+            with pytest.raises(AuthExpiredError):
+                await fetch_marketplace_listing(client, "vinted", "v-1", max_retries=3)
+            # Must only call the server 1 time (zero retries on 401)
+            assert call_count == 1
 
-    asyncio.run(_run())
+    asyncio.run(run_test())
 
 
-def test_fetch_listing_raises_upstream_schema_breakage_on_corrupt_payload() -> None:
-    def handler(request: httpx.Request) -> httpx.Response:
-        # Marketplace renamed 'price_eur' to 'cost' breaking required field contract
+def test_fetch_listing_raises_schema_breakage_when_required_field_missing() -> None:
+    """Test 4: If the marketplace renames or removes `price_eur`, Pydantic validation fails
+    and we raise `SchemaBreakageError` so engineers get alerted.
+    """
+
+    def fake_server(request: httpx.Request) -> httpx.Response:
+        # Missing required `price_eur` field!
         return httpx.Response(200, json={"external_id": "v-1", "title": "Shoes"})
 
-    async def _run() -> None:
-        transport = httpx.MockTransport(handler)
+    async def run_test() -> None:
+        transport = httpx.MockTransport(fake_server)
         async with httpx.AsyncClient(
             transport=transport, base_url="https://api.vinted.example"
-        ) as http_client:
-            client = ResilientMarketplaceClient(
-                MarketplaceName.VINTED, http_client, max_retries=1
-            )
-            with pytest.raises(UpstreamSchemaBreakageError):
-                await client.fetch_listing("v-1")
+        ) as client:
+            with pytest.raises(SchemaBreakageError):
+                await fetch_marketplace_listing(client, "vinted", "v-1")
 
-    asyncio.run(_run())
+    asyncio.run(run_test())
 
 
-def test_delist_across_marketplaces_isolates_partial_failures() -> None:
-    def ok_handler(request: httpx.Request) -> httpx.Response:
-        assert request.headers.get("Idempotency-Key") == "sold-tx-999"
+def test_delist_across_marketplaces_handles_partial_failure() -> None:
+    """Test 5: When delisting a sold item on Vinted and eBay at the same time,
+    if Vinted returns 204 (success) and eBay returns 503 (server down),
+    Vinted still succeeds and eBay is marked with `retryable=True`.
+    """
+
+    def vinted_ok_server(request: httpx.Request) -> httpx.Response:
+        assert request.headers.get("Idempotency-Key") == "sale-999"
         return httpx.Response(204)
 
-    def failing_503_handler(request: httpx.Request) -> httpx.Response:
+    def ebay_failing_server(request: httpx.Request) -> httpx.Response:
         return httpx.Response(503)
 
-    async def _run() -> None:
-        vinted_transport = httpx.MockTransport(ok_handler)
-        ebay_transport = httpx.MockTransport(failing_503_handler)
+    async def run_test() -> None:
+        vinted_transport = httpx.MockTransport(vinted_ok_server)
+        ebay_transport = httpx.MockTransport(ebay_failing_server)
+
         async with httpx.AsyncClient(
             transport=vinted_transport, base_url="https://vinted.example"
-        ) as vinted_http, httpx.AsyncClient(
+        ) as vinted_client, httpx.AsyncClient(
             transport=ebay_transport, base_url="https://ebay.example"
-        ) as ebay_http:
-            vinted_client = ResilientMarketplaceClient(
-                MarketplaceName.VINTED, vinted_http, max_retries=1, base_backoff_sec=0.005
-            )
-            ebay_client = ResilientMarketplaceClient(
-                MarketplaceName.EBAY, ebay_http, max_retries=1, base_backoff_sec=0.005
-            )
+        ) as ebay_client:
+            targets = [
+                {
+                    "client": vinted_client,
+                    "marketplace": "vinted",
+                    "external_id": "v-100",
+                },
+                {
+                    "client": ebay_client,
+                    "marketplace": "ebay",
+                    "external_id": "eb-200",
+                },
+            ]
 
             outcomes = await delist_across_marketplaces(
-                targets=[(vinted_client, "v-100"), (ebay_client, "eb-200")],
-                idempotency_key="sold-tx-999",
+                targets=targets, idempotency_key="sale-999"
             )
 
             assert len(outcomes) == 2
-            assert outcomes[0].marketplace == MarketplaceName.VINTED
-            assert outcomes[0].success is True
+            # Vinted succeeded
+            assert outcomes[0]["marketplace"] == "vinted"
+            assert outcomes[0]["success"] is True
+            # eBay failed temporarily and is marked as retryable
+            assert outcomes[1]["marketplace"] == "ebay"
+            assert outcomes[1]["success"] is False
+            assert outcomes[1]["retryable"] is True
 
-            assert outcomes[1].marketplace == MarketplaceName.EBAY
-            assert outcomes[1].success is False
-            assert outcomes[1].retryable is True
-
-    asyncio.run(_run())
+    asyncio.run(run_test())

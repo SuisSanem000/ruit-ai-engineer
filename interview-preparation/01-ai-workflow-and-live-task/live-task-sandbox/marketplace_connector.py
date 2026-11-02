@@ -1,276 +1,318 @@
-"""Reference implementation for Ruit Live AI Task Sandbox.
-
-Demonstrates:
-1. Structural typing via `typing.Protocol`
-2. Pydantic v2 validation + proactive schema-drift detection
-3. Explicit error hierarchy (Retryable vs Auth vs Upstream Breakage)
-4. Async HTTPX client with connection pooling, Retry-After, exponential backoff + jitter
-5. Bounded concurrency (`asyncio.Semaphore`) & partial-failure isolation for cross-marketplace delisting
 """
+Basic Marketplace Connector Example (Written in Simple, Readable Python)
 
-from __future__ import annotations
+What this file does:
+1. Defines simple custom error classes so we know WHY an API call failed
+   (Should we retry? Did the seller's login expire? Did the marketplace change its JSON?).
+2. Uses a basic Pydantic model (`ListingItem`) to validate JSON from a marketplace
+   and clean up messy prices like "45,50 €".
+3. Defines simple async functions using `httpx.AsyncClient` to fetch an item (with retries)
+   and delist a sold item across multiple marketplaces.
+"""
 
 import asyncio
 import logging
 import random
-from dataclasses import dataclass
 from decimal import Decimal
-from enum import Enum
-from typing import Any, Protocol
+from typing import Any, Dict, List, Optional, Set
 
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
+# Set up a standard Python logger so we can log warnings if a marketplace changes its JSON
 logger = logging.getLogger(__name__)
 
 
-# ============================================================================
-# 1. Explicit Error Hierarchy (Python + Rust Result Mindset)
-# ============================================================================
+# =====================================================================
+# 1. BASIC CUSTOM ERROR CLASSES
+# In Python, we create custom errors by inheriting from `Exception`.
+# This helps Celery or our caller know how to handle each failure.
+# =====================================================================
 
 
-class MarketplaceIntegrationError(Exception):
-    """Base exception for all marketplace connector errors."""
+class MarketplaceError(Exception):
+    """Base error class for any marketplace problem."""
 
     def __init__(self, marketplace: str, message: str) -> None:
+        # Call the parent Exception class with a clear message
         super().__init__(f"[{marketplace}] {message}")
         self.marketplace = marketplace
 
 
-class RetryableMarketplaceError(MarketplaceIntegrationError):
-    """Transient network, timeout, 429 rate-limit, or 5xx error (safe to retry)."""
+class RetryableError(MarketplaceError):
+    """Error for temporary network issues, 429 rate limits, or 500 server errors.
+    When Celery sees this error, it knows it is safe to retry later.
+    """
 
     def __init__(
-        self, marketplace: str, message: str, retry_after_seconds: float | None = None
+        self,
+        marketplace: str,
+        message: str,
+        retry_after_seconds: Optional[float] = None,
     ) -> None:
         super().__init__(marketplace, message)
         self.retry_after_seconds = retry_after_seconds
 
 
-class SellerAuthExpiredError(MarketplaceIntegrationError):
-    """401/403 error indicating the seller's session/OAuth token must be refreshed."""
+class AuthExpiredError(MarketplaceError):
+    """Error for HTTP 401 or 403.
+    Do NOT retry this automatically—we need to refresh the seller's login token first.
+    """
 
 
-class UpstreamSchemaBreakageError(MarketplaceIntegrationError):
-    """Marketplace changed its API contract in a breaking way; alert engineering immediately."""
+class SchemaBreakageError(MarketplaceError):
+    """Error when the marketplace changed its JSON structure or returned bad data.
+    We must alert engineers right away because the integration broke.
+    """
 
 
-# ============================================================================
-# 2. Pydantic v2 Boundary Validation & Proactive Schema Drift Detection
-# ============================================================================
+# =====================================================================
+# 2. PYDANTIC DATA VALIDATION MODEL
+# Pydantic works like Zod or AJV in TypeScript/JavaScript.
+# It checks that incoming JSON has the right fields and types at runtime.
+# =====================================================================
 
 
-class MarketplaceName(str, Enum):
-    WALLAPOP = "wallapop"
-    VINTED = "vinted"
-    EBAY = "ebay"
-    DEPOP = "depop"
+class ListingItem(BaseModel):
+    """Represents a second-hand item fetched from a marketplace API."""
 
-
-class NormalizedListing(BaseModel):
-    """Normalized Ruit listing parsed from heterogeneous marketplace payloads."""
-
-    # Allow extra fields so we can inspect `__pydantic_extra__` for silent schema drift
+    # `extra="allow"` tells Pydantic: do not crash if the marketplace sends extra unknown fields.
+    # Instead, keep them in `self.__pydantic_extra__` so we can check if their API changed!
     model_config = ConfigDict(extra="allow", str_strip_whitespace=True)
 
+    # Required fields with basic validation rules
     external_id: str = Field(min_length=1)
     title: str = Field(min_length=1)
     price_eur: Decimal = Field(gt=Decimal(0))
-    currency: str = Field(default="EUR", pattern=r"^[A-Z]{3}$")
+    currency: str = "EUR"
     is_active: bool = True
 
+    # `@field_validator(..., mode="before")` runs BEFORE Pydantic checks the type.
+    # Here, if the marketplace sends an integer ID like `987654`, we convert it to `"987654"`.
     @field_validator("external_id", mode="before")
     @classmethod
-    def coerce_int_id(cls, v: Any) -> str:
-        if isinstance(v, int):
-            return str(v)
-        return v
+    def convert_int_id_to_string(cls, value: Any) -> Any:
+        if isinstance(value, int):
+            return str(value)
+        return value
 
+    # Marketplaces send messy prices: `"45,50 €"`, `"120.00"`, or `{"amount": "45,50 €"}`.
+    # This function cleans the value before converting it to a `Decimal` number.
     @field_validator("price_eur", mode="before")
     @classmethod
-    def normalize_messy_price(cls, v: Any) -> Decimal:
-        """Handles strings like '19,99 €', dicts like {'amount': '19.99'}, or numbers."""
-        if isinstance(v, dict) and "amount" in v:
-            v = v["amount"]
-        if isinstance(v, str):
-            cleaned = v.replace("€", "").replace("EUR", "").replace(",", ".").strip()
-            return Decimal(cleaned)
-        return Decimal(str(v))
+    def clean_messy_price(cls, value: Any) -> Decimal:
+        # If the price is inside a dictionary like {"amount": "45,50 €"}, grab "amount"
+        if isinstance(value, dict) and "amount" in value:
+            value = value["amount"]
 
-    def detect_schema_drift(self, known_optional_fields: set[str] | None = None) -> set[str]:
-        """Returns any unexpected extra keys sent by the marketplace API."""
-        extra_keys = set((self.__pydantic_extra__ or {}).keys())
-        if known_optional_fields:
-            return extra_keys - known_optional_fields
-        return extra_keys
+        # If it is a string, remove the Euro sign, change comma to dot, and trim spaces
+        if isinstance(value, str):
+            clean_text = (
+                value.replace("€", "").replace("EUR", "").replace(",", ".").strip()
+            )
+            return Decimal(clean_text)
 
+        # Otherwise convert numbers (int/float) to string first, then to Decimal
+        return Decimal(str(value))
 
-# ============================================================================
-# 3. Structural Interface (`typing.Protocol`) & Resilient Async Client
-# ============================================================================
-
-
-class MarketplaceClientProtocol(Protocol):
-    marketplace: MarketplaceName
-
-    async def fetch_listing(self, external_id: str) -> NormalizedListing: ...
-    async def delist_item(self, external_id: str, idempotency_key: str) -> bool: ...
+    def get_unexpected_fields(self) -> Set[str]:
+        """Returns a set of any new/unknown JSON keys sent by the marketplace."""
+        if not self.__pydantic_extra__:
+            return set()
+        return set(self.__pydantic_extra__.keys())
 
 
-class ResilientMarketplaceClient:
-    """Async HTTPX connector with retries, backoff+jitter, and drift telemetry."""
+# =====================================================================
+# 3. ASYNC HTTP CLIENT WITH RETRIES & BACKOFF
+# Uses `httpx.AsyncClient` (similar to axios/fetch in Node.js).
+# =====================================================================
 
-    def __init__(
-        self,
-        marketplace: MarketplaceName,
-        client: httpx.AsyncClient,
-        max_retries: int = 3,
-        base_backoff_sec: float = 0.05,
-        known_extra_fields: set[str] | None = None,
-    ) -> None:
-        self.marketplace = marketplace
-        self._client = client
-        self._max_retries = max_retries
-        self._base_backoff_sec = base_backoff_sec
-        self._known_extra_fields = known_extra_fields or set()
 
-    async def _request_with_retry(
-        self, method: str, url: str, **kwargs: Any
-    ) -> httpx.Response:
-        last_exc: Exception | None = None
+async def request_with_retry(
+    client: httpx.AsyncClient,
+    marketplace: str,
+    method: str,
+    url: str,
+    headers: Optional[Dict[str, str]] = None,
+    max_retries: int = 2,
+) -> httpx.Response:
+    """Sends an HTTP request and retries on temporary errors (timeouts, 429, 5xx)."""
+    last_error: Optional[Exception] = None
 
-        for attempt in range(self._max_retries + 1):
-            try:
-                response = await self._client.request(method, url, **kwargs)
-            except (httpx.TimeoutException, httpx.NetworkError) as exc:
-                last_exc = RetryableMarketplaceError(
-                    self.marketplace, f"Network/timeout error on {url}: {exc}"
+    # Loop from attempt 0 up to max_retries
+    for attempt in range(max_retries + 1):
+        try:
+            response = await client.request(method, url, headers=headers)
+        except (httpx.TimeoutException, httpx.NetworkError) as exc:
+            # Network or timeout error -> safe to retry
+            last_error = RetryableError(marketplace, f"Network timeout: {exc}")
+        else:
+            # 1. Success status codes (200 OK, 201 Created, 204 No Content)
+            if response.status_code in (200, 201, 204):
+                return response
+
+            # 2. Auth error (401 Unauthorized or 403 Forbidden) -> Stop immediately!
+            if response.status_code in (401, 403):
+                raise AuthExpiredError(
+                    marketplace, f"Login expired (HTTP {response.status_code})"
+                )
+
+            # 3. Rate limit (429) or Server error (500, 502, 503, 504) -> Safe to retry
+            if response.status_code == 429 or response.status_code >= 500:
+                retry_header = response.headers.get("Retry-After")
+                retry_seconds: Optional[float] = None
+                if retry_header is not None:
+                    try:
+                        retry_seconds = float(retry_header)
+                    except ValueError:
+                        retry_seconds = None
+
+                last_error = RetryableError(
+                    marketplace,
+                    f"Temporary HTTP {response.status_code}",
+                    retry_after_seconds=retry_seconds,
                 )
             else:
-                if response.status_code in (200, 201, 204):
-                    return response
+                # 4. Other 4xx errors (like 400 Bad Request) -> API contract probably changed
+                raise SchemaBreakageError(
+                    marketplace, f"Unexpected HTTP {response.status_code}"
+                )
 
-                if response.status_code in (401, 403):
-                    raise SellerAuthExpiredError(
-                        self.marketplace,
-                        f"Auth failed with HTTP {response.status_code} on {url}",
-                    )
+        # If we have retries left, wait before trying again
+        if attempt < max_retries:
+            if (
+                isinstance(last_error, RetryableError)
+                and last_error.retry_after_seconds is not None
+            ):
+                wait_time = last_error.retry_after_seconds
+            else:
+                # Exponential backoff with random jitter so all workers don't retry at the exact same millisecond
+                max_wait = 0.05 * (2**attempt)
+                wait_time = random.uniform(0.01, max_wait)
 
-                if response.status_code == 429 or response.status_code >= 500:
-                    retry_after_raw = response.headers.get("Retry-After")
-                    retry_after = (
-                        float(retry_after_raw)
-                        if retry_after_raw and retry_after_raw.replace(".", "").isdigit()
-                        else None
-                    )
-                    last_exc = RetryableMarketplaceError(
-                        self.marketplace,
-                        f"Transient HTTP {response.status_code} on {url}",
-                        retry_after_seconds=retry_after,
-                    )
-                else:
-                    raise UpstreamSchemaBreakageError(
-                        self.marketplace,
-                        f"Unexpected non-retryable HTTP {response.status_code}: {response.text[:200]}",
-                    )
+            # IMPORTANT: Always use `await asyncio.sleep()` in async Python, NEVER `time.sleep()`!
+            await asyncio.sleep(wait_time)
 
-            if attempt < self._max_retries:
-                # Respect Retry-After if present; otherwise exponential backoff + full jitter
-                if (
-                    isinstance(last_exc, RetryableMarketplaceError)
-                    and last_exc.retry_after_seconds is not None
-                ):
-                    sleep_sec = last_exc.retry_after_seconds
-                else:
-                    cap = self._base_backoff_sec * (2**attempt)
-                    sleep_sec = random.uniform(0, cap)
-                await asyncio.sleep(sleep_sec)
+    # If all retries failed, raise the last error we saw
+    assert last_error is not None
+    raise last_error
 
-        assert last_exc is not None
-        raise last_exc
 
-    async def fetch_listing(self, external_id: str) -> NormalizedListing:
-        response = await self._request_with_retry("GET", f"/listings/{external_id}")
-        try:
-            raw_data = response.json()
-            listing = NormalizedListing.model_validate(raw_data)
-        except (ValueError, ValidationError) as exc:
-            raise UpstreamSchemaBreakageError(
-                self.marketplace,
-                f"Contract breakage validating listing {external_id}: {exc}",
-            ) from exc
+async def fetch_marketplace_listing(
+    client: httpx.AsyncClient,
+    marketplace: str,
+    external_id: str,
+    max_retries: int = 2,
+) -> ListingItem:
+    """Fetches one listing from a marketplace API and validates its JSON with Pydantic."""
+    response = await request_with_retry(
+        client=client,
+        marketplace=marketplace,
+        method="GET",
+        url=f"/listings/{external_id}",
+        max_retries=max_retries,
+    )
 
-        drifted_fields = listing.detect_schema_drift(self._known_extra_fields)
-        if drifted_fields:
-            logger.warning(
-                "schema_drift_detected marketplace=%s external_id=%s unexpected_fields=%s",
-                self.marketplace,
-                external_id,
-                sorted(drifted_fields),
-            )
-        return listing
+    # Try to parse the JSON and validate it with our Pydantic `ListingItem` model
+    try:
+        raw_json = response.json()
+        item = ListingItem.model_validate(raw_json)
+    except (ValueError, ValidationError) as exc:
+        # If required fields are missing or invalid, raise SchemaBreakageError to alert engineers
+        raise SchemaBreakageError(
+            marketplace, f"JSON validation failed for {external_id}: {exc}"
+        ) from exc
 
-    async def delist_item(self, external_id: str, idempotency_key: str) -> bool:
-        await self._request_with_retry(
-            "POST",
-            f"/listings/{external_id}/delist",
-            headers={"Idempotency-Key": idempotency_key},
+    # Check if the marketplace silently added new fields to their JSON response
+    unexpected = item.get_unexpected_fields()
+    if unexpected:
+        logger.warning(
+            "Marketplace %s sent new unexpected JSON fields: %s",
+            marketplace,
+            unexpected,
         )
-        return True
+
+    return item
 
 
-# ============================================================================
-# 4. Concurrent Cross-Marketplace Delist Coordinator (Double-Sell Prevention)
-# ============================================================================
+# =====================================================================
+# 4. DELISTING AN ITEM ACROSS MULTIPLE MARKETPLACES CONCURRENTLY
+# When an item sells on one marketplace, we must delist it from the others.
+# =====================================================================
 
 
-@dataclass(frozen=True)
-class DelistOutcome:
-    marketplace: MarketplaceName
-    external_id: str
-    success: bool
-    retryable: bool = False
-    error_message: str | None = None
+async def delist_single_marketplace(
+    client: httpx.AsyncClient,
+    marketplace: str,
+    external_id: str,
+    idempotency_key: str,
+    semaphore: asyncio.Semaphore,
+) -> Dict[str, Any]:
+    """Delists one item on one marketplace and returns a simple status dictionary.
+    We catch errors inside this function so one failing marketplace does not crash the others.
+    """
+    # `async with semaphore:` limits how many requests run at the same time (like p-limit in JS)
+    async with semaphore:
+        try:
+            await request_with_retry(
+                client=client,
+                marketplace=marketplace,
+                method="POST",
+                url=f"/listings/{external_id}/delist",
+                headers={"Idempotency-Key": idempotency_key},
+                max_retries=1,
+            )
+            return {
+                "marketplace": marketplace,
+                "external_id": external_id,
+                "success": True,
+                "retryable": False,
+                "error": None,
+            }
+        except RetryableError as exc:
+            # Failed due to temporary 503/timeout -> tell caller to retry this marketplace later
+            return {
+                "marketplace": marketplace,
+                "external_id": external_id,
+                "success": False,
+                "retryable": True,
+                "error": str(exc),
+            }
+        except MarketplaceError as exc:
+            # Failed due to permanent error (like 401 auth expired)
+            return {
+                "marketplace": marketplace,
+                "external_id": external_id,
+                "success": False,
+                "retryable": False,
+                "error": str(exc),
+            }
 
 
 async def delist_across_marketplaces(
-    targets: list[tuple[MarketplaceClientProtocol, str]],
+    targets: List[Dict[str, Any]],
     idempotency_key: str,
     max_concurrency: int = 5,
-) -> list[DelistOutcome]:
-    """Concurrently delists an item across connected marketplaces with failure isolation."""
+) -> List[Dict[str, Any]]:
+    """Runs delist requests concurrently across a list of marketplaces.
+
+    Each item in `targets` is a dict:
+        {"client": httpx_client, "marketplace": "vinted", "external_id": "v-100"}
+    """
     semaphore = asyncio.Semaphore(max_concurrency)
 
-    async def _delist_one(
-        connector: MarketplaceClientProtocol, external_id: str
-    ) -> DelistOutcome:
-        async with semaphore:
-            try:
-                await connector.delist_item(external_id, idempotency_key=idempotency_key)
-                return DelistOutcome(
-                    marketplace=connector.marketplace,
-                    external_id=external_id,
-                    success=True,
-                )
-            except RetryableMarketplaceError as exc:
-                return DelistOutcome(
-                    marketplace=connector.marketplace,
-                    external_id=external_id,
-                    success=False,
-                    retryable=True,
-                    error_message=str(exc),
-                )
-            except MarketplaceIntegrationError as exc:
-                return DelistOutcome(
-                    marketplace=connector.marketplace,
-                    external_id=external_id,
-                    success=False,
-                    retryable=False,
-                    error_message=str(exc),
-                )
-
-    return list(
-        await asyncio.gather(
-            *(_delist_one(conn, ext_id) for conn, ext_id in targets)
+    # Create a list of async tasks (like an array of Promises in JavaScript)
+    tasks = []
+    for target in targets:
+        task = delist_single_marketplace(
+            client=target["client"],
+            marketplace=target["marketplace"],
+            external_id=target["external_id"],
+            idempotency_key=idempotency_key,
+            semaphore=semaphore,
         )
-    )
+        tasks.append(task)
+
+    # `asyncio.gather(*tasks)` works just like `await Promise.all(tasks)` in JavaScript
+    results = await asyncio.gather(*tasks)
+    return list(results)
