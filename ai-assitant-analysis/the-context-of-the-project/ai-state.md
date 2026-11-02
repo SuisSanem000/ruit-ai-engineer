@@ -156,7 +156,7 @@ ruit-ai-engineer/
 | **Hours 2.0 – 4.0** | **Module 2: Python & Django Internals + Code Labs** | GIL, Async Django (ASGI/ORM), Generators, Type Hints, Pydantic v2, Mypy/Ruff, plus TS-to-Python mental mapping. | `interview-preparation/02-python-and-django-deep-dive/` | `[x] Completed` |
 | **Hours 4.0 – 6.0** | **Module 3: Backend Fundamentals Part 1 (Data, Async, Queues, Errors)** | Concurrency, JSON validation, Django ORM & SQL locking, Celery & Redis internals, Error handling (Python vs Go vs Rust), DB & Cache. | `interview-preparation/03-backend-fundamentals-cheatsheet/` | `[x] Completed` |
 | **Hours 6.0 – 8.0** | **Module 4: Backend Fundamentals Part 2 (Reverse Eng, TLS, Browsers, DevOps, Breakage Detection)** | Rebuilding APIs from app traffic (`mitmproxy`/HAR), HTTP/2/3, WebSockets, TLS/JA3 fingerprinting, keeping integrations alive, Playwright & Chrome Extensions, Docker/Zero-Downtime, Observability. | `interview-preparation/04-integrations-reverse-eng-browsers/` | `[x] Completed` |
-| **Hours 8.0 – 9.5** | **Module 5: Ruit System Design Whiteboard Mastery** | Collaborative whiteboard framework + full architectures for the 5 core Ruit marketplace challenges (including proactive breakage detection & new marketplace expansion). | `interview-preparation/05-system-design-whiteboard/` | `[ ] Pending` |
+| **Hours 8.0 – 9.5** | **Module 5: Ruit System Design Whiteboard Mastery** | Collaborative whiteboard framework + full architectures for the 5 core Ruit marketplace challenges (including proactive breakage detection & new marketplace expansion). | `interview-preparation/05-system-design-whiteboard/` | `[x] Completed` |
 | **Hours 9.5 – 10.0** | **Module 6: Story Bank, Team Lunch & Final Mock Drill** | Pitching Dadroit (630K), 150-site crawler, and QueryLaw; connecting with Luis Grau & Alonso Veliz Garcia; Euromed train rapid review sheet. | `interview-preparation/06-culture-lunch-and-storytelling/` | `[ ] Pending` |
 
 ---
@@ -187,3 +187,5 @@ ruit-ai-engineer/
   - Created `interview-preparation/03-backend-fundamentals-cheatsheet/` with `01-celery-redis-and-background-queues.md`, `02-databases-sql-locking-and-redis-caching.md`, and `03-error-handling-python-vs-go-vs-rust.md`.
 - **2026-11-02 (Session 8 — Module 4 Completed):**
   - Created `interview-preparation/04-integrations-reverse-eng-browsers/` with `01-http-clients-tls-fingerprinting-and-networking.md`, `02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md`, `03-browsers-playwright-and-chrome-extensions.md`, and `04-devops-docker-zero-downtime-and-observability.md`.
+- **2026-11-02 (Session 9 — Module 5 Completed):**
+  - Created `interview-preparation/05-system-design-whiteboard/` with `00-collaborative-whiteboard-framework.md` and the 5 Ruit system design blueprints (`01` through `05`).
