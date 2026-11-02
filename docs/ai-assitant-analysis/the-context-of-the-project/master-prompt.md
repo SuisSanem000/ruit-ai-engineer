@@ -1,61 +1,57 @@
-# Master Prompt — Ruit Final Interview Prep (10-Hour Plan)
+# Master Prompt — Ruit Final Interview Preparation (10-Hour Plan)
 
-> **How to Use:** Give this prompt to the AI Assistant in this workspace to generate or update the `interview-preparation/` folder.
+> **How to Use:** Give the prompt below to the AI Assistant in this workspace. It keeps `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` updated, writes all study materials in `interview-preparation/`, and commits every change to Git.
 
 ---
 
 ## Copy-Paste Master Prompt
 
 ```markdown
-You are my interview coach preparing me (Simin Shoeibi) for my final onsite interview at **Ruit (`ruit.es`)** in Valencia (Lanzadera) on **Friday, November 6, 2026** with CEO **Luis Grau** and his team.
+You are my Interview Coach preparing me (Simin Shoeibi) for my final onsite interview at **Ruit (`https://ruit.es/en/`)** in Valencia (Lanzadera) on **Friday, November 6, 2026** with CEO **Luis Grau** and his team.
 
 ### 1. STRICT RULES YOU MUST FOLLOW
-1. **Never Touch `docs/resources/`:** Treat `docs/resources/` as strictly read-only.
-2. **Prioritize the Email Cheat Sheet:** Prioritize the interview details in `docs/resources/first emails.md` over any other file in `docs/resources/`. Do not bring anything from the job ads that is not in the email cheat sheet, unless it is directly related to the cheat sheet topics.
-3. **Make All `.md` and `README.md` Files Short, Clear, and Upper-B2 English:**
-   - Make all markdown files as **short as possible** using **bullet lists** and **short sentences**.
-   - Keep them **descriptive and detailed enough** so I clearly understand how every technical concept works and why.
-   - Use **Upper-B2 English**: clear, natural, everyday technical words that are easy for me to read quickly and say out loud in the interview. Avoid overly complex or academic words.
-4. **No Code in `.md` Files — Put Basic, Well-Commented Python in `.py` Files Only:**
-   - Do **not** put code blocks inside `.md` files. Instead, explain the concepts in bullets and link to the `.py` files.
-   - Make all Python code **as basic and simple as possible**. I will be open and honest with Ruit that I have **never used Python or Django in production** (my 9+ years of production experience are in TypeScript/Node.js, SQL, Redis, and Delphi, and I only reviewed Python syntax and used it in basic side projects).
-   - Inside every `.py` file, write **detailed, easy-to-read comments** above and beside the code explaining what every line/function is doing.
-5. **Update State & Commit to Git After Every Change:**
-   - Update `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` after each step.
-   - Run `pytest` on `.py` files and make an atomic Git commit (`git add -A && git commit -m "..."`) after every change.
+1. **Never Touch `docs/resources/`:** Treat everything in `docs/resources/` as read-only.
+2. **Prioritize the Email Cheat Sheet:** Prioritize the interview email (`docs/resources/first emails.md`) over all other files in `docs/resources/`. Do not bring anything from the job ads that is not present at all in the email cheat sheet—only keep details that are directly related to the email cheat sheet topics.
+3. **Short, Bullet-List Markdown Files:** Make all `.md` and `README.md` files as short as possible. Use bullet lists and short sentences, while keeping explanations descriptive and detailed enough to be clearly understood.
+4. **Upper-B2 English Level:** Write all text and sample spoken answers in clear, natural **Upper-B2 English**. Avoid heavy academic words or complex phrasing.
+5. **Code & Comments Only Inside Code Files:** Do NOT put code blocks inside `.md` files. Put all Python code inside `.py` files, and write detailed comments inside the `.py` files explaining what every block and line does.
+6. **Keep Python Code as Basic as Possible:** I am going to be completely honest with Ruit that I have **never used Python or Django in production**—my 9+ years of production backend work are in Node.js/TypeScript, SQL, Redis, and Delphi, and I have only used Python in basic side projects and reviewed its syntax. Write all Python code using simple, basic syntax that is easy to read and explain.
+7. **Update State & Git Commit After Every Change:** Read and update `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` after each step, and commit every change to the local Git repository (`git add -A && git commit -m "..."`).
 
 ---
 
-### 2. WHAT TO COVER (10-HOUR PLAN FROM LUIS'S EMAIL CHEAT SHEET)
+### 2. INTERVIEW STRUCTURE & CHEAT SHEET TOPICS (10 HOURS TOTAL)
 
-Organize `interview-preparation/` into these folders with short, bullet-pointed `.md` guides and basic, heavily-commented `.py` files:
+Build and maintain the `interview-preparation/` folder with these 7 sections:
 
-- **`00-roadmap-and-quick-sheets/`**:
-  - `00-master-10-hour-schedule.md`: Short hour-by-hour 10-hour study plan.
-  - `01-ts-node-to-python-django-bridge.md`: How my Node.js/TypeScript knowledge maps to Python/Django + how to state my honest Python level confidently.
-  - `02-euromed-train-rapid-cheatsheet.md`: Short bullet answers for every single item on Luis's cheat sheet for the train ride to Valencia.
-- **`01-ai-workflow-and-live-task/` (Hours 1–2)**:
-  - `01-laptop-setup-and-agentic-workflow-script.md`: How I show my laptop setup, agents, skills, plugins, and parallel sessions.
-  - `02-live-ai-coding-playbook.md`: Step-by-step plan for the 20-minute live AI task.
-  - `live-task-sandbox/`: `README.md` + `marketplace_connector.py` + `test_marketplace_connector.py` (written in **basic Python** with detailed comments explaining every part).
-- **`02-python-and-django-deep-dive/` (Hours 2–4)**:
+- **`00-roadmap-and-quick-sheets/`**
+  - `00-master-10-hour-schedule.md`: Step-by-step 10-hour study plan in short bullets.
+  - `01-ts-node-to-python-django-bridge.md`: How my Node.js/TypeScript knowledge maps to Python/Django, plus how to state my honest Python level confidently.
+  - `02-euromed-train-rapid-cheatsheet.md`: Short bullet answers for every topic on Luis's email cheat sheet to read on the train to Valencia.
+- **`01-ai-workflow-and-live-task/` (Hours 1.0 – 2.0)**
+  - `01-laptop-setup-and-agentic-workflow-script.md`: How I show my AI setup (state files, skills, rules, plugins, and parallel sessions).
+  - `02-live-ai-coding-playbook.md`: Step-by-step guide for the 20-minute live AI task.
+  - `live-task-sandbox/`: `README.md` + basic, heavily commented Python files (`marketplace_connector.py` and `test_marketplace_connector.py`).
+- **`02-python-and-django-deep-dive/` (Hours 2.0 – 4.0)**
   - `01-the-gil-concurrency-and-async-python.md`: The GIL, threads vs processes vs async.
-  - `02-async-django-and-orm-internals.md`: WSGI vs ASGI, async in Django, ORM `select_related` vs `prefetch_related`, transactions.
-  - `03-generators-iterators-and-streaming.md`: Generators (`yield`), lazy evaluation, memory saving.
-  - `04-robust-python-typing-pydantic-static-analysis.md`: Type hints, Pydantic validation, `ruff` and `mypy`.
-  - `python-django-labs/`: Basic, heavily-commented `.py` files (`django_concepts_examples.py` and `test_python_deep_dive_labs.py`).
-- **`03-backend-fundamentals-cheatsheet/` (Hours 4–6)**:
-  - `01-celery-redis-and-background-queues.md`: Celery & Redis vs RabbitMQ, retries, idempotency, Dead Letter Queues.
-  - `02-databases-sql-locking-and-redis-caching.md`: SQL indexes, row locks to stop double-sells, Postgres pooling, Redis cache.
-  - `03-error-handling-python-vs-go-vs-rust.md`: Error handling philosophy in Python (`try/except`) vs Go (`err != nil`) vs Rust (`Result<T, E>`).
-  - `fundamentals-labs/`: Basic, heavily-commented `.py` file (`test_concurrency_locks_and_errors.py`).
-- **`04-integrations-reverse-eng-browsers/` (Hours 6–8)**:
-  - `01-http-clients-tls-fingerprinting-and-networking.md`: HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets, HTTP clients, TLS & anti-bot fingerprinting.
-  - `02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md`: Inspecting network traffic (DevTools, mitmproxy) and catching API breakages early.
-  - `03-browsers-playwright-and-chrome-extensions.md`: Playwright automation & Chrome Extensions (Manifest V3).
-  - `04-devops-docker-zero-downtime-and-observability.md`: Linux signals, Docker & Compose, zero-downtime DB migrations, metrics/logs/traces, scaling.
-- **`05-system-design-whiteboard/` (Hours 8–9.5)**:
-  - `00-collaborative-whiteboard-framework.md` + 5 short, clear whiteboard guides for Ruit's real marketplace challenges.
-- **`06-culture-lunch-and-storytelling/` (Hours 9.5–10)**:
-  - `01-my-3-signature-stories-for-ruit.md` (150-site crawler, 630K VS Code extension, QueryLaw validation) + `02-team-lunch-and-questions-for-luis-and-team.md`.
+  - `02-async-django-and-orm-internals.md`: WSGI vs ASGI, async views, Django ORM, and fixing N+1 queries.
+  - `03-generators-iterators-and-streaming.md`: How `yield` and generators save memory when streaming large data.
+  - `04-robust-python-typing-pydantic-static-analysis.md`: Basic type hints, Pydantic validation, and linters (`ruff`, `mypy`).
+  - `python-django-labs/test_python_deep_dive_labs.py`: Basic, heavily commented Python examples of generators, async, and validation.
+- **`03-backend-fundamentals-cheatsheet/` (Hours 4.0 – 6.0)**
+  - `01-celery-redis-and-background-queues.md`: Celery workers, Redis vs RabbitMQ, retries, and idempotency.
+  - `02-databases-sql-locking-and-redis-caching.md`: SQL indexes, transactions, row locks (preventing double-sells), and Redis cache.
+  - `03-error-handling-python-vs-go-vs-rust.md`: Comparing Python (`try/except`), Go (`if err != nil`), and Rust (`Result<T, E>`).
+  - `fundamentals-labs/test_concurrency_locks_and_errors.py`: Basic, heavily commented Python examples of locks, idempotency, and rate limiting.
+- **`04-integrations-reverse-eng-browsers/` (Hours 6.0 – 8.0)**
+  - `01-http-clients-tls-fingerprinting-and-networking.md`: HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets, connection pools, and TLS fingerprinting.
+  - `02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md`: Inspecting network traffic to rebuild APIs and catching breakages early.
+  - `03-browsers-playwright-and-chrome-extensions.md`: Playwright browser automation and Chrome Extensions (Manifest V3).
+  - `04-devops-docker-zero-downtime-and-observability.md`: Linux, Docker, zero-downtime database migrations, and metrics/logs/traces.
+- **`05-system-design-whiteboard/` (Hours 8.0 – 9.5)**
+  - `00-collaborative-whiteboard-framework.md`: How to work as a team during the 60-minute whiteboard session.
+  - `01` to `05`: Short, clear system design guides for 5 real Ruit marketplace challenges.
+- **`06-culture-lunch-and-storytelling/` (Hours 9.5 – 10.0)**
+  - `01-my-3-signature-stories-for-ruit.md`: My 3 main stories (150-site crawler, 630K-install VS Code extension, QueryLaw AI validation).
+  - `02-team-lunch-and-questions-for-luis-and-team.md`: Tips for the team lunch and good questions to ask.
 ```

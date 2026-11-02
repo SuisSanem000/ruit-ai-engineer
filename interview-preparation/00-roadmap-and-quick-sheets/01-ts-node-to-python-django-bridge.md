@@ -1,44 +1,39 @@
-# TypeScript / Node.js to Python / Django Bridge
+# Node.js / TypeScript to Python / Django Bridge
 
-## 1. How to Be Open & Honest About Your Python Level
+## 1. How to Be Open & Confident About Your Python Level
 
-- **What to tell Luis and the team:**
-  - *"I want to be completely open with you: I have never used Python or Django in production."*
-  - *"My 9+ years of production experience are in TypeScript/Node.js, PostgreSQL, Redis, RabbitMQ, and Delphi. With Python, I have used it in basic side projects and I reviewed the core syntax and Django concepts before coming here."*
-  - *"Because the hard problems in integrations—like async concurrency, database locks, background queues, API reverse engineering, and JSON validation—are the same across languages, and because I work with AI agents every day, I can understand, verify, and ship Python code quickly."*
-- **Why this works:**
-  - Luis already read your CV and knows your stack is Node.js/TypeScript.
-  - Being honest builds huge trust.
-  - When you explain **how** Python and Django work under the hood (GIL, async, generators, ORM queries) and map them to Node.js, you prove you are a strong senior engineer who learns fast.
+- **What to say honestly to Luis and the team:**
+  - *"I want to be completely open with you: I have never used Python or Django in production. My 9+ years of production backend work are in Node.js, TypeScript, SQL, Redis, and Delphi. I have only used Python in basic side projects and reviewed the syntax and Django concepts for this interview."*
+  - *"However, the hardest problems in marketplace integrations—like database locks, background queues, retries, rate limits, web scraping, JSON validation, and system design—are the exact same problems I have solved for years. With AI agents and automated tests, writing the Python syntax is the easiest part."*
 
 ---
 
-## 2. Quick Tool Mapping: Your Stack vs Ruit's Stack
+## 2. Tool & Concept Comparison (Your Stack vs Ruit's Stack)
 
 - **Runtime & Async:**
-  - **Node.js:** Single-threaded Event Loop (`async/await`, `Promise.all`).
-  - **Python:** CPython with the **GIL** + `asyncio` Event Loop (`async/await`, `asyncio.gather`).
-- **Web Frameworks:**
-  - **Node.js:** NestJS / Express / Fastify.
-  - **Python:** **Django** (full framework with ORM, migrations, admin) or **FastAPI / Django Ninja** (fast modern APIs).
-- **Web Server Protocol:**
-  - **Node.js:** Built-in HTTP server + Socket.IO.
-  - **Python:** **WSGI** (`Gunicorn` for normal sync requests) vs **ASGI** (`Uvicorn` for async requests and WebSockets).
+  - **Node.js:** Single-threaded Event Loop (`async/await` by default).
+  - **Python:** Synchronous by default, uses the **GIL** (one thread runs Python code at a time), and uses **`asyncio`** for async network calls or **multiple processes** for heavy CPU work.
+- **Web Framework:**
+  - **NestJS / Express:** Handles HTTP routes, middleware, and controllers.
+  - **Django:** Full web framework with built-in database models (ORM), migrations, auth, and an admin panel.
+- **Server Mode:**
+  - **Node HTTP Server:** Handles async requests and WebSockets natively.
+  - **WSGI vs ASGI in Django:** **WSGI** (`Gunicorn`) is for normal synchronous requests; **ASGI** (`Uvicorn`) is for `async` requests and WebSockets.
 - **JSON Validation:**
-  - **Node.js:** **AJV** (JSON Schema) or **Zod** (which you used at QueryLaw).
-  - **Python:** **Pydantic** (validates JSON data at runtime using Python type hints).
+  - **AJV / Zod (what you used at QueryLaw):** Checks that JSON matches a strict schema.
+  - **Pydantic:** The standard Python library that checks and cleans JSON data using Python type hints.
 - **Type Checking & Linting:**
-  - **Node.js:** TypeScript (`tsc`) + ESLint / Prettier.
-  - **Python:** Type Hints (`typing`) + **`mypy` / `pyright`** (type checkers) + **`ruff`** (fast linter and formatter).
-- **ORM (Database Layer):**
-  - **Node.js:** Prisma / TypeORM / Sequelize.
-  - **Python:** **Django ORM** (`Model.objects.filter(...)`).
-  - **Important difference:** In Prisma, every DB query needs `await`. In classic Django ORM, queries are **synchronous and lazy**—Django can secretly run an extra SQL query when you access a property like `item.seller.name` if you did not pre-load it!
+  - **TypeScript (`tsc`) + ESLint/Prettier:** Checks types and code style.
+  - **Python Type Hints + `mypy` / `pyright` + `ruff`:** Checks types and formats Python code fast.
+- **Database ORM:**
+  - **Prisma / TypeORM:** Explicit `await` on every query.
+  - **Django ORM:** Builds SQL queries lazily. Needs `select_related` (SQL JOIN) and `prefetch_related` (second query) to avoid the N+1 query problem.
 - **Background Queues:**
-  - **Node.js:** BullMQ (Redis) / RabbitMQ.
-  - **Python:** **Celery** (worker processes) using **Redis** or **RabbitMQ** as the message broker.
+  - **BullMQ / RabbitMQ in Node:** Runs background jobs outside the HTTP request.
+  - **Celery + Redis / RabbitMQ:** Python worker processes that pick up background tasks (like publishing or deleting a listing) from Redis or RabbitMQ.
 - **HTTP Client:**
-  - **Node.js:** `fetch` / `axios`.
-  - **Python:** **`requests`** (sync), **`httpx`** (sync and async), or **`curl_cffi`** (impersonates real Chrome TLS fingerprints to avoid bot blocks).
-- **Code Examples:**
-  - See [django_concepts_examples.py](../02-python-and-django-deep-dive/python-django-labs/django_concepts_examples.py) for basic, commented Python and Django examples.
+  - **`axios` / `fetch`:** Makes HTTP requests.
+  - **`requests` (sync) / `httpx` (sync & async) / `curl_cffi`:** Python HTTP libraries. Always reuse a client session so it reuses TCP connections.
+- **WebSockets:**
+  - **Socket.IO + Redis (your 60K+ user setup):** Real-time updates across servers.
+  - **Django Channels + Redis Pub/Sub:** The exact same architecture in Django.

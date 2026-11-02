@@ -5,7 +5,7 @@ Note: This file shows what basic Django ORM and Python patterns look like
 so you can read and recognize them easily during your interview.
 """
 
-from typing import List, Optional
+from __future__ import annotations
 
 # =====================================================================
 # 1. CLASSIC PYTHON GOTCHA: MUTABLE DEFAULT ARGUMENTS
@@ -21,9 +21,9 @@ from typing import List, Optional
 
 
 # GOOD WAY: Use `None` as the default, and create a new list inside the function.
-def add_tag_safe(tag: str, tags: Optional[List[str]] = None) -> List[str]:
+def add_tag_safe(tag: str, tags: list[str] | None = None) -> list[str]:
     if tags is None:
-        result_list: List[str] = []
+        result_list: list[str] = []
     else:
         # Copy the list so we do not mutate the caller's original list
         result_list = list(tags)

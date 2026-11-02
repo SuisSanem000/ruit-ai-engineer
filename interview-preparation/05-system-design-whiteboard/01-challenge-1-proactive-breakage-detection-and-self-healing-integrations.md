@@ -1,84 +1,42 @@
-# Whiteboard Challenge 1: Proactive Breakage Detection & Self-Healing Integrations
+# 01 — Whiteboard Challenge 1: Proactive Breakage Detection & Fast Recovery
 
-> **Why This Challenge Is #1:** Ruit's roadmap is expanding from Wallapop, Vinted, and eBay to 10+ new marketplaces (Facebook Marketplace, Etsy, Poshmark, Mercari, Whatnot, Grailed, Depop, Vestiaire Collective, Amazon, TikTok Shop) where many connectors rely on reverse-engineered APIs. Their core engineering promise is:  
-> ***"Catch each breakage before a seller does... every integration will warn us it broke before a seller notices."***
-
----
-
-## 1. Clarifying Requirements & Failure Taxonomy (First 5 Minutes)
-
-How does a marketplace integration actually "break" in the real world? Classify breakages into **4 distinct signals**:
-1. **Schema / Contract Drift:** Marketplace renames/removes a JSON key, changes a field from `int` to `str`, or changes a GraphQL `persistedQuery` hash.
-2. **Auth / Session Flow Change:** Marketplace changes token expiration, adds a new required header (`X-Client-Signature`), or invalidates refresh tokens faster.
-3. **Anti-Bot / WAF Escalation:** Cloudflare/DataDome updates its TLS/JA4 rules or blocks a residential proxy subnet (spike in `403 Forbidden`, CAPTCHA HTML pages instead of JSON).
-4. **Silent Business Logic Failure:** HTTP returns `200 OK`, but the listing is silently shadow-banned, stuck in "draft", or missing photos.
+> **Why This Problem:** Unofficial marketplace APIs (Vinted, Wallapop, eBay, Vestiaire) change without warning. Ruit must detect breakages before sellers complain.
 
 ---
 
-## 2. Whiteboard Architecture Diagram
-
-```mermaid
-flowchart TD
-    subgraph Probes["1. Dual Signal Ingestion"]
-        Live["Live Seller Tasks<br/>(Passive Telemetry on 100% of Calls)"]
-        Canary["Synthetic Canary Runner (Celery Beat)<br/>Runs every 15m per Marketplace using<br/>Ruit Test Accounts (Draft -> Edit -> Delete)"]
-    end
-
-    subgraph Validation["2. Boundary Validation & Anomaly Engine"]
-        Interceptor["Connector Response Interceptor<br/>Captures Status, Latency, Content-Type, Headers"]
-        PydanticGate["Two-Tier Pydantic v2 Validator<br/>- Strict Required Fields<br/>- Extra/Missing Optional Field Diffing"]
-        SlidingWindow["Redis Sliding-Window Health Aggregator<br/>Tracks 5m Error Rate by (Marketplace, Endpoint, ErrorClass)"]
-    end
-
-    subgraph Action["3. Automated Protection & Self-Healing"]
-        CB["Redis Circuit Breaker<br/>OPEN = Pause Marketplace Queue<br/>(Protects Seller Accounts from Bans!)"]
-        Snapshot["Encrypted Payload Vault (S3/Postgres)<br/>Stores Sanitized Request + Broken Response + HAR"]
-        AgentDiag["AI Diagnostic Agent Worker<br/>Diffs Broken Payload vs Pydantic Model,<br/>Generates Failing Pytest + Draft PR Fix!"]
-    end
-
-    Live & Canary --> Interceptor --> PydanticGate --> SlidingWindow
-    SlidingWindow -->|"Error Rate > 20% across >= 3 Sellers"| CB
-    PydanticGate -->|"ValidationError or Drift"| Snapshot --> AgentDiag
-```
+## 1. Clarifying Questions to Ask First
+- *"Do we want to detect breakages only on real seller jobs, or also run scheduled test checks (synthetic canaries)?"*
+- *"When one marketplace breaks, should we pause only the broken action (for example, publishing) while keeping other actions (like reading messages) running?"*
+- *"How fast do we want to alert the engineering team on Slack when a schema changes?"*
 
 ---
 
-## 3. Core Database & Redis State Design
-
-### 3.1 Redis Sliding-Window Health & Circuit Breaker Keys
-Why is checking *"Did >= 3 distinct sellers fail with the same error in 5 minutes?"* critical?
-- If **1 single seller** gets a `401`/`403`, that seller's password/cookie expired (Pause *only* that seller).
-- If **5 different sellers** across different proxies get `403` or `ValidationError` on `POST /items` within 3 minutes, **the marketplace changed or blocked our connector globally!**
-  - Key 1: `cb:state:{marketplace}:{operation}` $\rightarrow$ `CLOSED` | `OPEN` | `HALF_OPEN`
-  - Key 2: `health:errors:{marketplace}:{operation}:{5m_bucket}` $\rightarrow$ Redis Hash / HyperLogLog counting total calls, failures, and **distinct affected `seller_id`s**.
-
-### 3.2 PostgreSQL Schema for Breakage Incidents
-```sql
-CREATE TABLE integration_breakage_incidents (
-    id BIGSERIAL PRIMARY KEY,
-    marketplace VARCHAR(32) NOT NULL,
-    operation VARCHAR(64) NOT NULL,           -- e.g. 'publish_listing', 'delist_item'
-    severity VARCHAR(16) NOT NULL,            -- 'SOFT_DRIFT' | 'HARD_BREAKAGE' | 'WAF_BLOCK'
-    signature_hash VARCHAR(64) NOT NULL,      -- Deduplicates identical Pydantic/HTTP errors
-    affected_sellers_count INT DEFAULT 1,
-    sample_request_Meta JSONB NOT NULL,       -- Method, URL, sanitized header keys
-    sample_response_body JSONB,               -- Sanitized raw payload that failed validation
-    pydantic_error_details JSONB,             -- Exact field paths & expected vs actual types
-    status VARCHAR(24) DEFAULT 'OPEN',        -- 'OPEN' | 'AUTO_PR_CREATED' | 'RESOLVED'
-    created_at TIMESTAMPTZ DEFAULT NOW(),
-    UNIQUE (marketplace, operation, signature_hash, status)
-);
-```
+## 2. High-Level Architecture (Boxes to Draw)
+- **Marketplace Connector Layer:**
+  - Sends HTTP requests and validates every JSON response through a strict **Pydantic** model.
+- **Health Event Stream (Redis Counters):**
+  - Tracks success rate, status codes (`403`, `429`, `5xx`), and Pydantic validation errors per `(marketplace, action)` over a 5-minute window.
+- **Circuit Breaker (Redis Flag):**
+  - If validation errors or `403` blocks pass a threshold (for example, >20% in 5 minutes), it flips the state for `(vinted, publish_item)` to `OPEN` (paused).
+- **Synthetic Canary Runner (Celery Beat):**
+  - Runs a lightweight test account check every 15 minutes during quiet hours to catch marketplace changes early.
+- **Alert & Diff Service:**
+  - Saves a scrubbed sample of the raw JSON that failed validation, compares it with the expected Pydantic fields, and sends a Slack alert showing the exact changed field.
 
 ---
 
-## 4. Deep Dive: How AI-Assisted Self-Healing Works (Your Secret Weapon)
+## 3. How We Recover Fast Without Losing Seller Jobs
+- **Hold Jobs Safely:**
+  - When the circuit breaker is `OPEN`, user jobs are not dropped; they stay in a `PAUSED_INTEGRATION` state in PostgreSQL.
+- **Hot-Fix Config or Versioned Adapter:**
+  - Store simple field mappings or API version headers in the database/Redis so minor field renames can be fixed without a full code deploy.
+- **Gradual Resume (`HALF_OPEN`):**
+  - Once fixed, test 1 job first. If it passes, slowly drain the paused queue with rate limits so we don't flood the marketplace.
 
-Explain how Ruit can leverage its AI-agent culture to cut integration repair time from hours to **5 minutes**:
-1. **Detection:** Canary probe or live call hits an `UpstreamContractBreakageError` (e.g., Depop changed `price_amount: "15.00"` to `pricing: {"total": 1500, "currency": "EUR"}`).
-2. **Circuit Breaker Trips:** The `depop_publish` Celery queue pauses automatically so queued seller tasks wait safely instead of failing.
-3. **Automated Reproduction:** A background diagnostic agent receives:
-   - The current `DepopListingResponse` Pydantic model file.
-   - The sanitized failing JSON payload from `integration_breakage_incidents`.
-4. **Agent Fix + Verification Loop:** The agent writes a new `pytest` test case with the captured payload, updates the Pydantic `@field_validator` / alias to support the new structure, runs `pytest` + `ruff` + `mypy`, and posts a **1-click Draft PR + Slack alert** to the engineering channel!
+---
 
+## 4. Key Trade-Offs to Mention
+- **Strict Validation vs. Lenient Parsing:**
+  - Using `extra="ignore"` in Pydantic ignores harmless new fields that marketplaces add, while strict checks on required fields (`id`, `price`, `status`) catch real breakages immediately.
+- **Per-Action Circuit Breaker vs. Global Marketplace Breaker:**
+  - Pausing `(vinted, publish)` instead of all of Vinted keeps stock delisting alive even if item creation is broken.

@@ -1,38 +1,47 @@
-# 20-Minute Live AI Coding Playbook
+# 20-Minute Live AI Task Playbook
 
-> **Your Honest Advantage:**  
-> Tell Luis openly at the start: *"Since my production background is Node.js/TypeScript and I only used Python in basic side projects, I ask the AI to write clean, basic Python without clever tricks, so I can read and verify every single line myself."*
+> Follow these 5 simple steps when Luis gives you the short live task on your laptop.
 
 ---
 
-## The 5 Steps to Follow During the Live Task
+## Step 1: Ask 2 Quick Questions First (Minutes 0–3)
 
-### Step 1: Ask 2 Quick Questions Before Prompting (Minutes 0 – 2)
-- Do not copy-paste the task into the AI immediately.
-- Ask Luis 2 simple engineering questions first:
-  - *"What should happen if the marketplace API returns an error—should we retry on `429` / `500` and stop immediately on `401` unauthorized?"*
-  - *"What fields in the JSON response are required, and how should we handle dirty data like prices written as strings?"*
+- Do not type a prompt immediately—ask Luis 2 short questions to show how you think:
+  - *"What errors should we expect here—should we retry on network timeouts and `429` rate limits, and stop immediately on `401` auth errors or bad JSON?"*
+  - *"Do we need to run one request at a time, or many requests at once with a concurrency limit?"*
 
-### Step 2: Prompt the AI for Data Validation & Basic Error Classes First (Minutes 2 – 5)
-- Ask the AI to create the **Pydantic model** (to validate the JSON) and **basic custom error classes** first.
-- Why: Once the data shape is clear, the rest of the code is much easier to write and test.
+---
 
-### Step 3: Run Coding & Test Generation in Parallel (Minutes 5 – 12)
-- **In your main agent session:** Ask the AI to write the function using basic, readable Python with comments, explicit HTTP timeouts, and retry logic.
-- **In a parallel subagent / second session:** Ask it to write `pytest` unit tests covering:
-  1. A normal valid JSON response.
-  2. A messy JSON response (like `"45,50 €"` or extra unknown fields).
-  3. A `429` rate-limit response that succeeds on retry.
-  4. A `401` auth error that fails right away without retrying.
+## Step 2: Define the Data Model & Error Types First (Minutes 3–6)
 
-### Step 4: Run Tests & Check the AI's Code Yourself (Minutes 12 – 17)
-- Run `.venv/bin/pytest -v` in the terminal.
-- Read the Python code on screen and tell Luis what you always check in AI code:
-  - **Timeouts:** Did the AI include a timeout on the HTTP client so it never hangs forever?
-  - **Connection Reuse:** Did the AI reuse the HTTP client (`AsyncClient` or `Session`) instead of opening a new connection inside a loop?
+- Ask the AI to create the data validation model (`Pydantic BaseModel`) and simple custom error classes first.
+- Review the fields with Luis to confirm the inputs and outputs match what he wants.
+
+---
+
+## Step 3: Generate Code & Tests in Parallel (Minutes 6–12)
+
+- **Agent Task A (Implementation):** Ask the AI to write a simple, well-commented Python function/class that calls the API, validates the JSON, and retries on temporary errors.
+- **Agent Task B (Tests):** Ask a parallel subagent (or second step) to write `pytest` tests covering:
+  - Normal valid response.
+  - Messy data (like price sent as `"19,50 €"` instead of a number) and unexpected extra fields.
+  - Temporary `429` rate-limit error that succeeds on retry.
+  - Permanent `401` login error that fails right away without retrying.
+
+---
+
+## Step 4: Check the AI's Code & Run Tests (Minutes 12–17)
+
+- Run `.venv/bin/pytest` and `.venv/bin/ruff check` in the terminal.
+- Tell Luis what you always check in AI-generated code:
+  - **Connection Reuse:** Did the AI pass a shared `httpx.AsyncClient` instead of opening a new client inside a loop?
+  - **Timeouts:** Did the AI set a clear request timeout so a slow marketplace never hangs the worker forever?
   - **No Silent Errors:** Did the AI catch specific errors instead of hiding bugs with a bare `except Exception: pass`?
-  - **Async Sleep:** Inside an `async def` function, did it use `await asyncio.sleep()` instead of blocking `time.sleep()`?
+  - **Async Sleep:** Inside `async def`, did the AI use `await asyncio.sleep()` instead of blocking `time.sleep()`?
 
-### Step 5: Commit to Git (Minutes 17 – 20)
-- Once tests pass, make a clean Git commit (`git add -A && git commit -m "..."`).
-- See [marketplace_connector.py](./live-task-sandbox/marketplace_connector.py) and [test_marketplace_connector.py](./live-task-sandbox/test_marketplace_connector.py) for the complete, basic Python example.
+---
+
+## Step 5: Commit to Git & Explain Next Steps (Minutes 17–20)
+
+- Commit the tested code to Git (`git add -A && git commit -m "..."`).
+- Briefly mention how this code would run in production at Ruit (inside a Celery background worker with Redis rate limits and error alerts).

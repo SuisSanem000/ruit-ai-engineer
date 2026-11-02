@@ -1,48 +1,44 @@
-# Team Lunch Playbook & High-Signal Questions for Luis & the Team (14:00 – 15:00)
+# 02 — Team Lunch & Questions for Luis & the Team
 
-> **What Luis Wrote in the Email:**  
-> *"2. Lunch with the team: This is the most important part. It's on the house."*
-
----
-
-## 1. Why Lunch Is "The Most Important Part" at Ruit
-
-Ruit is a tight-knit, early-stage startup at **Lanzadera** in Valencia. Every engineer sits together, works across the product, and talks directly to professional second-hand sellers. When Luis says lunch is the most important part, he and the team are asking themselves one question:
-
-> ***"Do we genuinely enjoy working and collaborating with Simin at Lanzadera—is she curious, collaborative, low-ego, pragmatic, and excited about our mission?"***
-
-### The 5 Cultural Signals That Win the Lunch
-1. **Pragmatic Builder Over Ivory-Tower Purist:**
-   - Emphasize that you love shipping something working in **3 days** (like your Dadroit extension), getting it into real sellers' hands, and hardening it with observability—rather than spending 4 weeks bikeshedding abstract patterns.
-2. **Genuine Empathy for Professional Second-Hand Sellers:**
-   - Remember who Ruit's customers are: vintage clothing shop owners, charity/thrift stores, electronics refurbishers, and professional resellers whose livelihood depends on fast cross-listing and never getting their Vinted/Wallapop accounts banned or double-selling an item.
-3. **Intellectual Honesty & Low Ego:**
-   - In both the technical session and lunch, if you haven't used a specific niche tool in production, never bluff—say *"I haven't used library X in production yet; in Node/Postgres I solved that problem using Y, and here is how it maps to X."* Founders trust engineers who are 100% transparent.
-4. **High AI Curiosity:**
-   - Share specific, practical discoveries from your daily AI workflows (what works well with parallel agents vs where agents still need human guardrails).
-5. **Warmth & Appreciation for Valencia / Lanzadera:**
-   - You already mentioned in your first email how dreamy their workspace looks—ask them about life at Lanzadera and Valencia!
+> **Email Cheat Sheet Priority:** *"Around 14:00 — Lunch with the team (on us!). Relax, be yourself, and use the chance to get to know the people you'd be working with."*
 
 ---
 
-## 2. Tailored Questions to Ask Luis Grau (CEO)
-
-Pick 2–3 of these naturally during lunch or at the end of the interview:
-
-1. **On Seller Pain Points & Product Intuition:**
-   > *"What has been the most surprising workflow bottleneck or pain point you've discovered from watching professional second-hand sellers use Ruit day-to-day?"*
-2. **On the Next Wave of Marketplace Integrations:**
-   > *"Looking at the upcoming challenges for the next few months, which marketplace integrations or product capabilities would move the needle most for your sellers right now, and what makes them the trickiest?"*
-3. **On What Success Looks Like in the First 30–90 Days:**
-   > *"If I join, what would a home-run first 30 days and 90 days look like in your eyes so I can take maximum ownership off your plate immediately?"*
+## 1. My Honest & Confident Pitch on Python/Django vs. My 9+ Years of Backend Experience
+- **When to use this:** Right at the start of the technical discussion or whenever Python/Django comes up.
+- **What to say (Upper-B2):**
+  > *"I want to be completely open with you from the start: my 9+ years of production backend experience are in Node.js, TypeScript, SQL, Redis, and Delphi. I haven't used Python or Django in production before—only in basic side projects and while reviewing the syntax for this interview. However, the core backend challenges you solve at Ruit—async queues, database locking, Redis caching, HTTP integrations, and system design—are things I have built and scaled for years. And with AI coding assistants plus strict tests and Pydantic validation, I can write and verify clean Python very quickly."*
 
 ---
 
-## 3. Tailored Questions to Ask the Engineering Team
+## 2. High-Signal Technical Questions for the Engineering Team
+- **On Marketplace Integrations:**
+  - *"Which marketplace gives you the biggest headache right now when it comes to anti-bot changes or schema updates?"*
+  - *"How do you currently split work between the Chrome Extension and backend Celery workers?"*
+- **On AI in the Product:**
+  - *"For your single-photo AI listing flow, what was the hardest part to get right—category mapping, brand detection, or price estimation?"*
+- **On Engineering Workflow:**
+  - *"What does your daily AI-assisted coding setup look like across the team? Do you share `CLAUDE.md` or Cursor rules in the repo?"*
+  - *"If I join, what would a great first 30 days look like? What is the first problem you would want me to own?"*
 
-1. **On Their Existing Integration & Anti-Bot Architecture:**
-   > *"When a marketplace like Wallapop or Vinted silently changes a payload or tightens its anti-bot rules today, what does your current detection and firefighting loop look like—and what part of that pipeline are you most excited to automate next?"*
-2. **On Their Parallel AI Agent Workflows:**
-   > *"What is the coolest way you've wired AI agents, skills, or parallel sessions into your daily Django and integration workflow so far—for example, turning captured network traffic into connectors or tests?"*
-3. **On Python/Django Architecture Tradeoffs:**
-   > *"Where have you found the sweet spot between Django's speed of development and bringing in stricter type safety or async workers (like Pydantic, ASGI, or Celery queues) in Ruit's stack?"*
+---
+
+## 3. Strategic & Culture Questions for Luis (CEO) & Team Lunch
+- **Product Vision & Lanzadera:**
+  - *"How has your experience inside Lanzadera been so far, and what is the biggest milestone for Ruit over the next 6 months?"*
+- **Customer Profile:**
+  - *"Are most of your power users professional vintage/second-hand stores, or high-volume individual resellers?"*
+- **New Marketplaces:**
+  - *"Beyond Vinted, Wallapop, eBay, and Vestiaire, which new marketplaces or European countries are next on your roadmap?"*
+
+---
+
+## 4. Lunch & Onsite Etiquette Reminders
+- **Energy & Attitude:**
+  - Be warm, curious, and collaborative. Treat the whiteboard and live task like a normal workday with future teammates.
+- **Team Lunch (14:00):**
+  - Lunch is part of the culture check—ask teammates what they enjoy about living in Valencia, how they ended up at Ruit, and what they like building together.
+- **Logistics Check:**
+  - **Train:** Euromed **06091** on Friday, Nov 6, 2026 (`09:15` Barcelona-Sants → `12:12` Valencia Joaquín Sorolla).
+  - **Venue:** **Lanzadera**, Marina de València (`Carrer del Moll de la Duana, s/n, 46024 València`) — ~15–20 min taxi from the station.
+  - **Return Train:** Euromed **06172** (`17:42` Valencia Joaquín Sorolla → `20:47` Barcelona-Sants).

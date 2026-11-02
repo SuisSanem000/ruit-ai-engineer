@@ -1,81 +1,83 @@
-# Euromed Train Rapid Cheat Sheet (15-Minute Review)
+# Train Ride Rapid Cheat Sheet (Barcelona to Valencia)
 
-> Read this on the train to Valencia on Friday morning. Every bullet below matches a topic from Luis's email cheat sheet.
+> Read this 15-minute summary on the Euromed train on Friday morning. Every bullet matches Luis's email cheat sheet.
 
 ---
 
-## 1. Python & Django Knowledge
+## 1. Python & Django Questions
 
 - **The GIL (Global Interpreter Lock):**
-  - A lock inside standard Python (CPython) that lets only **one thread run Python code at a time** per process.
+  - A lock in standard Python (CPython) that lets only **one thread run Python code at a time** per process.
   - It exists because Python manages memory by counting references to objects, and that counter is not thread-safe without a lock.
-  - **I/O tasks (network calls, DB queries):** Python **releases the GIL** while waiting for the network, so `asyncio` or threads work great for API integrations.
-  - **CPU tasks (heavy math, image resizing):** Keep holding the GIL, so threads do not speed them up. Use **multiple processes (`multiprocessing` or multiple Celery workers)** so each process gets its own GIL.
+  - **Network/disk I/O (`async` or threads):** Releases the GIL while waiting for the network, so Python handles thousands of API calls easily.
+  - **Heavy CPU work:** Holds the GIL, so threads do not speed it up. Use **multiple processes (`multiprocessing` or Celery workers)** so each process gets its own GIL and CPU core.
 - **Async in Django:**
-  - **WSGI (`Gunicorn`):** Classic synchronous Django (1 request blocks 1 thread).
-  - **ASGI (`Uvicorn`):** Async Django (1 worker handles many concurrent `async def` views and WebSockets).
-  - **Main rule:** Never run slow synchronous code (like `requests.get` or sync ORM) directly inside an `async def` view, or you will freeze the whole event loop.
-  - **Bridges:** Use `sync_to_async` to call sync code from async code, and `async_to_sync` to call async code from sync code.
-  - **ORM Caveats:** Django has async methods like `aget()`, **but** `transaction.atomic()` is still synchronous, and accessing an un-loaded `ForeignKey` inside an `async def` view crashes with `SynchronousOnlyOperation` unless you pre-load it with `select_related()`.
+  - **WSGI** runs synchronous views; **ASGI** runs `async def` views and WebSockets.
+  - **Main Rule:** Never call slow synchronous code (like `time.sleep`, `requests.get`, or normal Django ORM queries) directly inside an `async def` view, or it freezes the whole event loop.
+  - Use **`sync_to_async`** to run sync code in a background thread, or use Django's async ORM methods (`aget`, `aiterator`).
+  - **Gotcha:** Database transactions (`transaction.atomic()`) are still synchronous—put the transaction inside a normal sync function and call it with `sync_to_async`.
 - **Generators (`yield`):**
-  - A function with `yield` does not return a full list in memory at once.
-  - Instead, it pauses at `yield`, gives you **one item at a time**, and remembers where it stopped.
-  - **Why use it:** Processing 100,000 marketplace items or a huge JSON file uses almost zero RAM instead of crashing the server with Out-Of-Memory.
-- **Robust Python (Type Hints & Static Analysis):**
-  - Python is dynamically typed, so bugs can hide until runtime.
-  - We make it safe by adding **type hints** (`str`, `int`, `list[str]`), checking types before deploy with **`mypy`** and **`ruff`**, and validating external JSON at runtime with **Pydantic**.
+  - Functions that use `yield` instead of `return` to produce items **one by one on demand**, instead of building a giant list in RAM.
+  - When syncing 100,000 items or reading a huge JSON file, generators keep memory usage tiny and flat.
+  - In Django ORM, `.iterator(chunk_size=2000)` streams database rows in chunks instead of loading the whole table into memory.
+- **Robust Python (Types & Static Analysis):**
+  - Add **type hints** to function inputs and outputs so humans and AI agents know the exact data types.
+  - Use **`mypy` or `pyright`** to check types before deploying, **`ruff`** for fast linting, and **`Pydantic`** to validate untrusted JSON from marketplaces at runtime.
 
 ---
 
 ## 2. Backend & Integration Fundamentals
 
-- **Concurrency & Async:**
-  - **Concurrency:** Handling many network tasks at the same time on 1 CPU core by switching while waiting for I/O (`asyncio`).
-  - **Parallelism:** Running heavy CPU tasks at the exact same moment across multiple CPU cores (`multiprocessing`).
-  - Prevent race conditions across workers using **database row locks** or **Redis locks**.
+- **Concurrency vs Async:**
+  - **Concurrency:** Managing many tasks at the same time (like waiting on 50 API calls using an `async` event loop).
+  - **Parallelism:** Running computations at the exact same instant on multiple CPU cores (using multiple processes).
+  - Always limit how many async requests run at once using a **Semaphore** so you do not get rate-limited or run out of connections.
 - **JSON Validation:**
-  - Never trust JSON from external marketplaces because they change fields without warning.
-  - Validate every API response with **Pydantic** (like AJV/Zod in JS) and log unknown or missing fields so we know when a marketplace changed its API.
+  - Marketplace APIs often return messy data (like prices as strings `"15,50 €"`) or change fields without warning.
+  - Validate every external response with **Pydantic** (like you did with AJV at QueryLaw), clean the values, and log a warning if unexpected new fields appear.
 - **ORMs & SQL:**
-  - **N+1 Query Problem:** Fetching 50 items and then running 50 separate queries to get each item's seller.
-  - **Fix in Django:** Use **`select_related`** (uses a single SQL `JOIN` for single foreign keys) and **`prefetch_related`** (runs a 2nd query with `WHERE id IN (...)` and joins in Python for `Many-to-Many` or `1-to-Many` lists).
-  - **Preventing Double-Sells:** Lock the item row in Postgres using `SELECT ... FOR UPDATE` inside a transaction (or use an atomic `UPDATE ... WHERE status = 'active'`).
-- **Background Queues & Brokers (Celery & Redis):**
-  - **How it works:** Django puts a small job message (just the `item_id`) into **Redis** or **RabbitMQ**, and **Celery worker processes** pick it up in the background.
-  - **Best practices:**
-    - Queue jobs only **after** the DB transaction commits (`transaction.on_commit`).
-    - Use **separate queues** (`critical_delist` vs `slow_bulk_sync`) so slow jobs never block urgent delisting.
-    - Enable **`acks_late=True`** (only remove job from queue after it finishes), **idempotency keys** (so running a job twice does not create 2 listings), **exponential backoff with jitter**, and a **Dead Letter Queue (DLQ)**.
-- **HTTP Clients & TLS:**
-  - Always reuse a **connection pool (`Session` / `AsyncClient`)** so you do not repeat slow TCP + TLS handshakes on every request.
-  - Always set explicit **connect and read timeouts**.
-  - **TLS Fingerprinting (JA3/JA4):** Anti-bot systems like Cloudflare check the TLS `ClientHello` handshake and HTTP/2 settings. Standard Python `requests`/`httpx` has a Python OpenSSL fingerprint and gets blocked (`403`). Tools like **`curl_cffi`** copy Chrome's exact TLS fingerprint.
+  - **N+1 Problem:** Fetching 100 items and then running 100 extra queries in a loop to get each item's seller.
+  - **Fix:** Use `select_related` (uses a SQL `JOIN` for single foreign keys) and `prefetch_related` (runs 1 extra query with `WHERE id IN (...)` for many-to-many or reverse lists).
+  - **Preventing Double-Sells:** Lock the item row in PostgreSQL (`SELECT ... FOR UPDATE`) or use an atomic `UPDATE ... WHERE status = 'active' AND quantity >= 1` so two buyers cannot buy the same item at once.
+- **Background Queues (Celery & Redis):**
+  - Run slow marketplace calls in background Celery workers, never inside the user's HTTP request.
+  - Use **separate queues by priority**: a fast queue for urgent tasks (`delist sold item` in seconds) and slower queues for bulk catalog imports.
+  - Turn on **late acknowledgment (`acks_late=True`)** so tasks are not lost if a worker crashes, use **idempotency keys** so retrying a task never posts duplicate items, and use **exponential backoff + random jitter** on retries.
+- **HTTP Clients & TLS Fingerprinting:**
+  - Reuse a client session (`httpx.AsyncClient` or `requests.Session`) to keep TCP/TLS connections open (connection pooling) and always set timeouts.
+  - **Anti-Bot TLS Fingerprinting (JA3/JA4):** Cloudflare and DataDome look at the TLS handshake (`ClientHello` cipher list) and HTTP/2 settings. Normal Python `requests`/`httpx` uses OpenSSL, which looks different from Chrome's BoringSSL and gets blocked (`403`). Use **`curl_cffi`** to mimic Chrome's exact TLS fingerprint.
 - **Error Handling (Python vs Go vs Rust):**
-  - **Python:** Uses **exceptions (`try / except`)**. Clean to read, but you cannot see which errors a function might throw just by looking at its signature.
-  - **Go:** Returns **errors as values (`result, err`)**. Forces you to check `if err != nil` right away, but creates repetitive code.
-  - **Rust:** Uses **`Result<T, E>` and `Option<T>` types**. The compiler forces you to handle both success and error cases before code can compile.
-  - **In Python integrations:** Group errors clearly into **Retryable** (`429`, `503`, timeout), **Auth Expired** (`401`—refresh seller token), and **Broken Contract** (JSON schema changed—stop and alert engineers).
+  - **Python:** Uses `try / except` exceptions. Easy to read, but you cannot see which errors a function might throw just by looking at its name.
+  - **Go:** Returns errors as normal values (`val, err := fn()`). Very clear and local, but requires lots of `if err != nil` checks.
+  - **Rust:** Uses `Result<T, E>` and `Option<T>`. The compiler forces you to handle both success and error cases before the code can even compile.
+  - **Best Practice in Python Integrations:** Group errors clearly into **Retryable** (`429`, `503`, timeout), **Auth Expired** (`401` — refresh token or ask seller to log in), and **Broken Contract** (JSON validation failed — stop and alert engineers).
 - **Databases & Cache:**
-  - **PostgreSQL:** Uses MVCC (reads don't block writes) and needs **PgBouncer** to pool database connections when running many workers.
-  - **Redis:** Used for caching, rate limiting, and short locks. Add **random jitter to TTLs** so 1,000 cached items do not expire at the exact same second (cache stampede).
-- **Low-Level Networking & Protocols:**
+  - **Postgres:** Use indexes on columns used in `WHERE`, `JOIN`, and `ORDER BY` (and `GIN` indexes for `JSONB`). Use **PgBouncer** to pool database connections across many Celery workers.
+  - **Redis:** Use for caching, distributed locks, and rate limiting. Add random **jitter** to cache expiration times (TTL) so thousands of cached keys do not expire at the exact same second (cache stampede).
+- **Networking & Protocols (HTTP/1.1, HTTP/2, HTTP/3, WebSockets):**
   - **HTTP/1.1:** One request at a time per TCP connection.
-  - **HTTP/2:** Sends many requests at once (multiplexing) over 1 TCP connection, but if 1 TCP packet drops, all streams wait.
-  - **HTTP/3 (QUIC):** Runs over **UDP** with built-in TLS 1.3; if 1 packet drops, only that single stream waits.
-  - **WebSockets:** Upgrades an HTTP connection into a two-way real-time pipe. Needs **ping/pong heartbeats** to detect dead connections and **Redis Pub/Sub** to scale across multiple servers.
+  - **HTTP/2:** Sends many streams at once over a single TCP connection, but if 1 TCP packet drops, all streams wait (TCP head-of-line blocking).
+  - **HTTP/3 (QUIC):** Runs over **UDP** instead of TCP, so a dropped packet only affects one single stream.
+  - **WebSockets:** Upgrades an HTTP request into a two-way live connection. Scale across multiple servers using **Redis Pub/Sub** and use ping/pong heartbeats to close dead connections.
 - **API Integrations & Reverse Engineering:**
-  - Capture web traffic in **Chrome DevTools (`.har` files)** and mobile app traffic with **`mitmproxy` / Proxyman** (using Frida on a test device if the app uses SSL certificate pinning).
-  - Find the login/refresh token flow, required headers, and CSRF/signature rules.
-  - Catch breakages **before sellers notice** by running scheduled test jobs (canary probes) every 15 minutes and alerting on Pydantic validation errors.
+  - Capture web traffic with **Chrome DevTools (`.har` files)** and mobile app traffic with **`mitmproxy`** (mobile APIs break less often because old app versions must keep working).
+  - Lock token refreshes in **Redis** so 5 workers do not refresh the same token at the same time and invalidate the seller's login.
+  - Run automated test checks (canaries) every 15 minutes to catch marketplace changes before sellers notice.
 - **Browsers, Automations & Chrome Extensions:**
-  - **Playwright:** Controls Chrome via WebSocket (CDP). Block images/fonts to save proxy data, or use the browser just to get anti-bot cookies and run fast API calls.
-  - **Chrome Extensions (Manifest V3):** Has a **Background Service Worker** (wakes up on events/alarms, no DOM access) and **Content Scripts** (can read/click the webpage DOM). Great for Ruit because requests come from the seller's **real home IP and logged-in browser**.
+  - **Playwright:** Controls headless Chrome over WebSocket (CDP). Block images and fonts to save proxy bandwidth, and reuse browser contexts.
+  - **Chrome Extensions (Manifest V3):** Runs inside the seller's own Chrome browser (`Content Scripts` read the page DOM; `Background Service Worker` talks to Ruit's server and reads cookies). Great because it uses the seller's real home IP, real browser fingerprint, and active login session.
 - **DevOps & Zero-Downtime Deployments:**
-  - Handle Linux **`SIGTERM`** so Gunicorn and Celery finish their current task before shutting down.
-  - **Zero-Downtime DB Migrations (Expand & Contract):** Never rename or delete a DB column in one step while old containers are still running. First add the new nullable column, write to both, backfill old rows, switch reads, and delete the old column later.
+  - Handle Linux **`SIGTERM`** signals properly so Celery workers finish their current task before shutting down during a deploy.
+  - **Zero-Downtime DB Migrations (Expand and Contract):** Never rename or delete a database column in one step while old code is still running. First add the new column as nullable, deploy code that writes to both, copy old data in batches, and remove the old column in a later deploy.
 - **Observability & Scaling:**
-  - **Metrics (Prometheus/Grafana):** Request rate, error rate (especially `403`/`429`), latency, and Celery queue length.
-  - **Logs:** Structured JSON logs with a shared `correlation_id` and `seller_id`.
-  - **Traces (OpenTelemetry/Sentry):** Track a request from Django $\rightarrow$ Redis $\rightarrow$ Celery $\rightarrow$ Marketplace API.
-- **Working with AI:**
-  - Keep a state file (`ai-state.md`), use reusable **Skills** and **Rules**, run **parallel sessions** (one agent researching API payloads, one writing code, one writing `pytest` tests), and always verify with tests.
+  - **Metrics (Prometheus/Grafana):** Track request count, error rate (`401`, `403`, `429`, `5xx`), latency, and Celery queue length per marketplace.
+  - **Logs (`structlog`):** Structured JSON logs with `correlation_id`, `seller_id`, and `marketplace`.
+  - **Traces (OpenTelemetry) & Sentry:** Follow a request from the Django view into the Celery worker and external API call.
+
+---
+
+## 3. Working with AI (How You Work Daily)
+
+- **Context & State Files:** Keep an `ai-state.md` file in the repo so AI agents always know the project rules, folder structure, and current task status.
+- **Skills, Rules & Plugins:** Use rules for code style/tests and reusable skills (`SKILL.md`) for common workflows like turning sample API JSON into validated models and tests.
+- **Parallel Sessions:** Run separate agent sessions in parallel—for example, Session 1 inspects raw API traffic, Session 2 writes the connector code, and Session 3 writes edge-case tests—then verify everything with `pytest` and `ruff` before committing to Git.

@@ -1,10 +1,11 @@
-"""
-Basic Pytest Unit Tests for `marketplace_connector.py`
+"""Basic Pytest Tests for `marketplace_connector.py`.
 
-How these tests work:
-- We use `httpx.MockTransport` to fake the marketplace HTTP responses in memory,
-  so tests run in milliseconds without needing the internet.
-- Run with: `.venv/bin/pytest interview-preparation/01-ai-workflow-and-live-task/live-task-sandbox/ -v`
+WHAT THIS FILE DOES:
+Tests our marketplace connector completely offline using `httpx.MockTransport`
+(which fakes HTTP responses in memory so we do not need real internet calls).
+
+Run in terminal:
+    .venv/bin/pytest interview-preparation/01-ai-workflow-and-live-task/live-task-sandbox/ -v
 """
 
 import asyncio
@@ -13,17 +14,18 @@ from decimal import Decimal
 import httpx
 import pytest
 from marketplace_connector import (
-    AuthExpiredError,
-    ListingItem,
-    SchemaBreakageError,
+    MarketplaceName,
+    NormalizedListing,
+    ResilientMarketplaceClient,
+    SellerAuthExpiredError,
+    UpstreamSchemaBreakageError,
     delist_across_marketplaces,
-    fetch_marketplace_listing,
 )
 
 
-def test_listing_item_cleans_messy_price_and_finds_extra_fields() -> None:
-    """Test 1: Check that Pydantic converts integer IDs, cleans '45,50 €',
-    and detects new undocumented fields sent by a marketplace.
+def test_normalized_listing_cleans_prices_and_spots_new_fields() -> None:
+    """Test 1: Checks that messy prices like `'45,50 €'` are cleaned into `Decimal('45.50')`
+    and that unknown new fields from a marketplace are detected.
     """
     raw_vinted_json = {
         "external_id": 987654,
@@ -31,30 +33,28 @@ def test_listing_item_cleans_messy_price_and_finds_extra_fields() -> None:
         "price_eur": {"amount": "45,50 €"},
         "currency": "EUR",
         "is_active": True,
-        "new_vinted_field": "promoted_v2",
+        "new_undocumented_vinted_badge": "promoted_v2",
     }
 
-    item = ListingItem.model_validate(raw_vinted_json)
+    listing = NormalizedListing.model_validate(raw_vinted_json)
 
-    assert item.external_id == "987654"
-    assert item.title == "Vintage Leather Jacket"
-    assert item.price_eur == Decimal("45.50")
-    assert item.get_unexpected_fields() == {"new_vinted_field"}
+    assert listing.external_id == "987654"
+    assert listing.title == "Vintage Leather Jacket"
+    assert listing.price_eur == Decimal("45.50")
+    assert listing.detect_schema_drift() == {"new_undocumented_vinted_badge"}
 
 
 def test_fetch_listing_retries_on_429_rate_limit_and_succeeds() -> None:
-    """Test 2: Simulate a marketplace returning HTTP 429 (Too Many Requests) on the 1st try,
-    and HTTP 200 OK on the 2nd try. Our client should wait and succeed automatically.
+    """Test 2: Simulates Wallapop returning HTTP 429 (Too Many Requests) on the
+    first try, and HTTP 200 OK on the second try.
     """
     call_count = 0
 
     def fake_server(request: httpx.Request) -> httpx.Response:
         nonlocal call_count
         call_count += 1
-        # First call returns 429 with a tiny Retry-After header
         if call_count == 1:
             return httpx.Response(429, headers={"Retry-After": "0.01"})
-        # Second call succeeds with 200 OK
         return httpx.Response(
             200,
             json={
@@ -68,18 +68,22 @@ def test_fetch_listing_retries_on_429_rate_limit_and_succeeds() -> None:
         transport = httpx.MockTransport(fake_server)
         async with httpx.AsyncClient(
             transport=transport, base_url="https://api.wallapop.example"
-        ) as client:
-            item = await fetch_marketplace_listing(client, "wallapop", "wp-123")
-            assert item.external_id == "wp-123"
-            assert item.price_eur == Decimal("120.00")
+        ) as http_client:
+            client = ResilientMarketplaceClient(
+                MarketplaceName.WALLAPOP, http_client, max_retries=2
+            )
+            listing = await client.fetch_listing("wp-123")
+
+            assert listing.external_id == "wp-123"
+            assert listing.price_eur == Decimal("120.00")
             assert call_count == 2
 
     asyncio.run(run_test())
 
 
-def test_fetch_listing_stops_immediately_on_401_unauthorized() -> None:
-    """Test 3: If the seller's token is expired (HTTP 401), do NOT waste time retrying.
-    Raise `AuthExpiredError` on the first attempt.
+def test_fetch_listing_stops_immediately_on_401_login_error() -> None:
+    """Test 3: When a seller's login token expires (HTTP 401), the client must
+    raise `SellerAuthExpiredError` on the first call and NOT waste retries.
     """
     call_count = 0
 
@@ -92,43 +96,50 @@ def test_fetch_listing_stops_immediately_on_401_unauthorized() -> None:
         transport = httpx.MockTransport(fake_server)
         async with httpx.AsyncClient(
             transport=transport, base_url="https://api.vinted.example"
-        ) as client:
-            with pytest.raises(AuthExpiredError):
-                await fetch_marketplace_listing(client, "vinted", "v-1", max_retries=3)
-            # Must only call the server 1 time (zero retries on 401)
+        ) as http_client:
+            client = ResilientMarketplaceClient(
+                MarketplaceName.VINTED, http_client, max_retries=3
+            )
+            with pytest.raises(SellerAuthExpiredError):
+                await client.fetch_listing("v-1")
+
+            # Confirm it only called the server once (no retries on 401)
             assert call_count == 1
 
     asyncio.run(run_test())
 
 
-def test_fetch_listing_raises_schema_breakage_when_required_field_missing() -> None:
-    """Test 4: If the marketplace renames or removes `price_eur`, Pydantic validation fails
-    and we raise `SchemaBreakageError` so engineers get alerted.
+def test_fetch_listing_raises_breakage_error_when_required_field_is_missing() -> None:
+    """Test 4: If a marketplace removes a required field (`price_eur`),
+    raise `UpstreamSchemaBreakageError` so engineers get alerted.
     """
 
     def fake_server(request: httpx.Request) -> httpx.Response:
-        # Missing required `price_eur` field!
+        # Missing `price_eur` field
         return httpx.Response(200, json={"external_id": "v-1", "title": "Shoes"})
 
     async def run_test() -> None:
         transport = httpx.MockTransport(fake_server)
         async with httpx.AsyncClient(
             transport=transport, base_url="https://api.vinted.example"
-        ) as client:
-            with pytest.raises(SchemaBreakageError):
-                await fetch_marketplace_listing(client, "vinted", "v-1")
+        ) as http_client:
+            client = ResilientMarketplaceClient(
+                MarketplaceName.VINTED, http_client, max_retries=1
+            )
+            with pytest.raises(UpstreamSchemaBreakageError):
+                await client.fetch_listing("v-1")
 
     asyncio.run(run_test())
 
 
-def test_delist_across_marketplaces_handles_partial_failure() -> None:
-    """Test 5: When delisting a sold item on Vinted and eBay at the same time,
-    if Vinted returns 204 (success) and eBay returns 503 (server down),
-    Vinted still succeeds and eBay is marked with `retryable=True`.
+def test_delist_across_marketplaces_succeeds_on_vinted_even_if_ebay_fails() -> None:
+    """Test 5: When delisting an item across Vinted and eBay at the same time,
+    if eBay returns 503 Server Error, Vinted still succeeds and eBay is marked
+    as `retryable=True` for Celery to retry later.
     """
 
     def vinted_ok_server(request: httpx.Request) -> httpx.Response:
-        assert request.headers.get("Idempotency-Key") == "sale-999"
+        assert request.headers.get("Idempotency-Key") == "sold-tx-999"
         return httpx.Response(204)
 
     def ebay_failing_server(request: httpx.Request) -> httpx.Response:
@@ -140,33 +151,33 @@ def test_delist_across_marketplaces_handles_partial_failure() -> None:
 
         async with httpx.AsyncClient(
             transport=vinted_transport, base_url="https://vinted.example"
-        ) as vinted_client, httpx.AsyncClient(
+        ) as vinted_http, httpx.AsyncClient(
             transport=ebay_transport, base_url="https://ebay.example"
-        ) as ebay_client:
-            targets = [
-                {
-                    "client": vinted_client,
-                    "marketplace": "vinted",
-                    "external_id": "v-100",
-                },
-                {
-                    "client": ebay_client,
-                    "marketplace": "ebay",
-                    "external_id": "eb-200",
-                },
-            ]
+        ) as ebay_http:
+            vinted_client = ResilientMarketplaceClient(
+                MarketplaceName.VINTED,
+                vinted_http,
+                max_retries=1,
+                base_backoff_sec=0.005,
+            )
+            ebay_client = ResilientMarketplaceClient(
+                MarketplaceName.EBAY,
+                ebay_http,
+                max_retries=1,
+                base_backoff_sec=0.005,
+            )
 
             outcomes = await delist_across_marketplaces(
-                targets=targets, idempotency_key="sale-999"
+                targets=[(vinted_client, "v-100"), (ebay_client, "eb-200")],
+                idempotency_key="sold-tx-999",
             )
 
             assert len(outcomes) == 2
-            # Vinted succeeded
-            assert outcomes[0]["marketplace"] == "vinted"
-            assert outcomes[0]["success"] is True
-            # eBay failed temporarily and is marked as retryable
-            assert outcomes[1]["marketplace"] == "ebay"
-            assert outcomes[1]["success"] is False
-            assert outcomes[1]["retryable"] is True
+            assert outcomes[0].marketplace == MarketplaceName.VINTED
+            assert outcomes[0].success is True
+
+            assert outcomes[1].marketplace == MarketplaceName.EBAY
+            assert outcomes[1].success is False
+            assert outcomes[1].retryable is True
 
     asyncio.run(run_test())

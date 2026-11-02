@@ -1,51 +1,52 @@
-# Ruit Final Interview Prep Hub (10-Hour Plan)
+# Ruit Final Interview Preparation (10-Hour Guide)
 
 - **Candidate:** Simin Shoeibi
-- **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival, `13:00h–16:00h` @ Lanzadera, Valencia)
-- **Source of Truth:** Luis Grau's email cheat sheet ([`docs/resources/first emails.md`](../docs/resources/first%20emails.md))
-- **Context & Prompt:** [`ai-state.md`](../docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) | [`master-prompt.md`](../docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md)
+- **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival, `13:00h–16:00h` interviews @ Lanzadera, Valencia)
+- **Main Source:** Luis Grau's email cheat sheet ([`docs/resources/first emails.md`](../docs/resources/first%20emails.md))
+- **AI Project Files:** [`ai-state.md`](../docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) | [`master-prompt.md`](../docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md)
 
 ---
 
 ## Study Folders (10 Hours Total)
 
-- **0. Quick Sheets (`00-roadmap-and-quick-sheets/`):**
-  - [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) — Hour-by-hour 10-hour study plan.
-  - [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) — How your Node.js/TS background maps to Python/Django + how to state your honest Python level.
-  - [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) — Short bullet answers for every topic on Luis's cheat sheet (read on the train).
-- **1. Hours 1–2: Live AI Setup & Task (`01-ai-workflow-and-live-task/`):**
-  - [01-laptop-setup-and-agentic-workflow-script.md](./01-ai-workflow-and-live-task/01-laptop-setup-and-agentic-workflow-script.md) — How to show your laptop setup, agents, skills, plugins, and parallel sessions.
-  - [02-live-ai-coding-playbook.md](./01-ai-workflow-and-live-task/02-live-ai-coding-playbook.md) — 5 simple steps for the 20-minute live AI task.
-  - **Basic Python Code Sandbox (`live-task-sandbox/`):**
-    - [README.md](./01-ai-workflow-and-live-task/live-task-sandbox/README.md) — 3 practice task prompts.
-    - [marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/marketplace_connector.py) — Basic, well-commented Python code for calling a marketplace API and validating JSON.
-    - [test_marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/test_marketplace_connector.py) — Basic `pytest` tests with comments explaining each test.
-- **2. Hours 2–4: Python & Django Concepts (`02-python-and-django-deep-dive/`):**
-  - [01-the-gil-concurrency-and-async-python.md](./02-python-and-django-deep-dive/01-the-gil-concurrency-and-async-python.md) — The GIL, threads, processes, and async.
-  - [02-async-django-and-orm-internals.md](./02-python-and-django-deep-dive/02-async-django-and-orm-internals.md) — Async in Django, ORM queries (`select_related` vs `prefetch_related`), and transactions.
-  - [03-generators-iterators-and-streaming.md](./02-python-and-django-deep-dive/03-generators-iterators-and-streaming.md) — Generators (`yield`) and saving memory on big datasets.
-  - [04-robust-python-typing-pydantic-static-analysis.md](./02-python-and-django-deep-dive/04-robust-python-typing-pydantic-static-analysis.md) — Type hints, Pydantic validation, `ruff`, and `mypy`.
-  - **Basic Python Code Labs (`python-django-labs/`):**
-    - [django_concepts_examples.py](./02-python-and-django-deep-dive/python-django-labs/django_concepts_examples.py) — Commented examples showing basic Django ORM and async syntax.
-    - [test_python_deep_dive_labs.py](./02-python-and-django-deep-dive/python-django-labs/test_python_deep_dive_labs.py) — Basic runnable examples of generators, async, and Pydantic.
-- **3. Hours 4–6: Backend Fundamentals Part 1 (`03-backend-fundamentals-cheatsheet/`):**
-  - [01-celery-redis-and-background-queues.md](./03-backend-fundamentals-cheatsheet/01-celery-redis-and-background-queues.md) — Celery & Redis vs RabbitMQ, retries, and idempotency.
+- **0. Schedule & Quick Cheat Sheets (`00-roadmap-and-quick-sheets/`)**
+  - [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) — Step-by-step 10-hour study plan.
+  - [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) — How your Node.js/TypeScript knowledge maps to Python & Django, plus how to explain your honest Python level.
+  - [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) — Quick summary of every topic on Luis's email cheat sheet for the train ride.
+
+- **1. Hours 1–2: AI Setup & Live Task (`01-ai-workflow-and-live-task/`)**
+  - [01-laptop-setup-and-agentic-workflow-script.md](./01-ai-workflow-and-live-task/01-laptop-setup-and-agentic-workflow-script.md) — How to show your laptop, AI agents, skills, plugins, and parallel sessions.
+  - [02-live-ai-coding-playbook.md](./01-ai-workflow-and-live-task/02-live-ai-coding-playbook.md) — Simple 5-step plan for the 20-minute live AI task.
+  - [live-task-sandbox/README.md](./01-ai-workflow-and-live-task/live-task-sandbox/README.md) — 3 practice tasks.
+  - **Basic Python Code:** [marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/marketplace_connector.py) & [test_marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/test_marketplace_connector.py).
+
+- **2. Hours 2–4: Python & Django Basics (`02-python-and-django-deep-dive/`)**
+  - [01-the-gil-concurrency-and-async-python.md](./02-python-and-django-deep-dive/01-the-gil-concurrency-and-async-python.md) — The GIL, threads, processes, and `asyncio`.
+  - [02-async-django-and-orm-internals.md](./02-python-and-django-deep-dive/02-async-django-and-orm-internals.md) — Async in Django, ORM queries, and fixing the N+1 problem.
+  - [03-generators-iterators-and-streaming.md](./02-python-and-django-deep-dive/03-generators-iterators-and-streaming.md) — How `yield` and generators process large data without using much RAM.
+  - [04-robust-python-typing-pydantic-static-analysis.md](./02-python-and-django-deep-dive/04-robust-python-typing-pydantic-static-analysis.md) — Type hints, Pydantic validation, and code checkers (`ruff`, `mypy`).
+  - **Basic Python Code:** [django_concepts_examples.py](./02-python-and-django-deep-dive/python-django-labs/django_concepts_examples.py) & [test_python_deep_dive_labs.py](./02-python-and-django-deep-dive/python-django-labs/test_python_deep_dive_labs.py).
+
+- **3. Hours 4–6: Backend Fundamentals Part 1 (`03-backend-fundamentals-cheatsheet/`)**
+  - [01-celery-redis-and-background-queues.md](./03-backend-fundamentals-cheatsheet/01-celery-redis-and-background-queues.md) — Background jobs with Celery, Redis, and RabbitMQ.
   - [02-databases-sql-locking-and-redis-caching.md](./03-backend-fundamentals-cheatsheet/02-databases-sql-locking-and-redis-caching.md) — SQL indexes, database locks (stopping double-sells), and Redis cache.
   - [03-error-handling-python-vs-go-vs-rust.md](./03-backend-fundamentals-cheatsheet/03-error-handling-python-vs-go-vs-rust.md) — Error handling in Python vs Go vs Rust.
-  - **Basic Python Code Lab (`fundamentals-labs/`):**
-    - [test_concurrency_locks_and_errors.py](./03-backend-fundamentals-cheatsheet/fundamentals-labs/test_concurrency_locks_and_errors.py) — Basic commented code for locks, idempotency, rate limits, and error handling.
-- **4. Hours 6–8: Backend Fundamentals Part 2 (`04-integrations-reverse-eng-browsers/`):**
-  - [01-http-clients-tls-fingerprinting-and-networking.md](./04-integrations-reverse-eng-browsers/01-http-clients-tls-fingerprinting-and-networking.md) — HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets, TLS, and anti-bot fingerprinting.
-  - [02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md](./04-integrations-reverse-eng-browsers/02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md) — Rebuilding APIs from network traffic and catching breakages early.
-  - [03-browsers-playwright-and-chrome-extensions.md](./04-integrations-reverse-eng-browsers/03-browsers-playwright-and-chrome-extensions.md) — Browser automation (Playwright) and Chrome Extensions.
-  - [04-devops-docker-zero-downtime-and-observability.md](./04-integrations-reverse-eng-browsers/04-devops-docker-zero-downtime-and-observability.md) — Linux, Docker, zero-downtime deployments, metrics/logs/traces, and scaling.
-- **5. Hours 8–9.5: System Design Whiteboard (`05-system-design-whiteboard/`):**
-  - [00-collaborative-whiteboard-framework.md](./05-system-design-whiteboard/00-collaborative-whiteboard-framework.md) — How to work together on the whiteboard.
+  - **Basic Python Code:** [test_concurrency_locks_and_errors.py](./03-backend-fundamentals-cheatsheet/fundamentals-labs/test_concurrency_locks_and_errors.py).
+
+- **4. Hours 6–8: Backend Fundamentals Part 2 (`04-integrations-reverse-eng-browsers/`)**
+  - [01-http-clients-tls-fingerprinting-and-networking.md](./04-integrations-reverse-eng-browsers/01-http-clients-tls-fingerprinting-and-networking.md) — HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets, and TLS anti-bot checks.
+  - [02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md](./04-integrations-reverse-eng-browsers/02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md) — Rebuilding APIs from network traffic and catching broken integrations early.
+  - [03-browsers-playwright-and-chrome-extensions.md](./04-integrations-reverse-eng-browsers/03-browsers-playwright-and-chrome-extensions.md) — Playwright browser automation and Chrome Extensions.
+  - [04-devops-docker-zero-downtime-and-observability.md](./04-integrations-reverse-eng-browsers/04-devops-docker-zero-downtime-and-observability.md) — Linux, Docker, zero-downtime deployments, and monitoring (metrics, logs, traces).
+
+- **5. Hours 8–9.5: System Design Whiteboard (`05-system-design-whiteboard/`)**
+  - [00-collaborative-whiteboard-framework.md](./05-system-design-whiteboard/00-collaborative-whiteboard-framework.md) — How to design together with the team on the whiteboard.
   - [01-challenge-1-proactive-breakage-detection-and-self-healing-integrations.md](./05-system-design-whiteboard/01-challenge-1-proactive-breakage-detection-and-self-healing-integrations.md)
   - [02-challenge-2-multi-marketplace-inventory-sync-and-double-sell-prevention.md](./05-system-design-whiteboard/02-challenge-2-multi-marketplace-inventory-sync-and-double-sell-prevention.md)
   - [03-challenge-3-rapid-new-marketplace-connector-architecture.md](./05-system-design-whiteboard/03-challenge-3-rapid-new-marketplace-connector-architecture.md)
   - [04-challenge-4-ai-catalog-normalization-and-cross-marketplace-mapping.md](./05-system-design-whiteboard/04-challenge-4-ai-catalog-normalization-and-cross-marketplace-mapping.md)
   - [05-challenge-5-hybrid-chrome-extension-and-cloud-worker-execution.md](./05-system-design-whiteboard/05-challenge-5-hybrid-chrome-extension-and-cloud-worker-execution.md)
-- **6. Hours 9.5–10: Stories & Team Lunch (`06-culture-lunch-and-storytelling/`):**
+
+- **6. Hours 9.5–10: Stories & Team Lunch (`06-culture-lunch-and-storytelling/`)**
   - [01-my-3-signature-stories-for-ruit.md](./06-culture-lunch-and-storytelling/01-my-3-signature-stories-for-ruit.md) — Your 3 main project stories.
-  - [02-team-lunch-and-questions-for-luis-and-team.md](./06-culture-lunch-and-storytelling/02-team-lunch-and-questions-for-luis-and-team.md) — Lunch tips and questions to ask.
+  - [02-team-lunch-and-questions-for-luis-and-team.md](./06-culture-lunch-and-storytelling/02-team-lunch-and-questions-for-luis-and-team.md) — Team lunch tips and questions to ask.
