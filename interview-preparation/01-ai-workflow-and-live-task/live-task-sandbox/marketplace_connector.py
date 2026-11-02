@@ -75,7 +75,7 @@ class NormalizedListing(BaseModel):
 
     external_id: str = Field(min_length=1)
     title: str = Field(min_length=1)
-    price_eur: Decimal = Field(gt=Decimal("0"))
+    price_eur: Decimal = Field(gt=Decimal(0))
     currency: str = Field(default="EUR", pattern=r"^[A-Z]{3}$")
     is_active: bool = True
 

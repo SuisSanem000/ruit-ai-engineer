@@ -7,12 +7,10 @@ from decimal import Decimal
 
 import httpx
 import pytest
-
 from marketplace_connector import (
     MarketplaceName,
     NormalizedListing,
     ResilientMarketplaceClient,
-    RetryableMarketplaceError,
     SellerAuthExpiredError,
     UpstreamSchemaBreakageError,
     delist_across_marketplaces,

@@ -153,7 +153,7 @@ ruit-ai-engineer/
 | Hour Block | Module | Focus Area | Target Folder | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **Hours 1.0 – 2.0** | **Module 1: Live AI Setup & Power-Agent Workflow** | Configure laptop showcase, parallel agent sessions, custom skills/rules, and practice a 20-min live AI Python integration task (rebuilding/validating a marketplace API client). | `interview-preparation/01-ai-workflow-and-live-task/` | `[x] Completed` |
-| **Hours 2.0 – 4.0** | **Module 2: Python & Django Internals + Code Labs** | GIL, Async Django (ASGI/ORM), Generators, Type Hints, Pydantic v2, Mypy/Ruff, plus TS-to-Python mental mapping. | `interview-preparation/02-python-and-django-deep-dive/` | `[ ] Pending` |
+| **Hours 2.0 – 4.0** | **Module 2: Python & Django Internals + Code Labs** | GIL, Async Django (ASGI/ORM), Generators, Type Hints, Pydantic v2, Mypy/Ruff, plus TS-to-Python mental mapping. | `interview-preparation/02-python-and-django-deep-dive/` | `[x] Completed` |
 | **Hours 4.0 – 6.0** | **Module 3: Backend Fundamentals Part 1 (Data, Async, Queues, Errors)** | Concurrency, JSON validation, Django ORM & SQL locking, Celery & Redis internals, Error handling (Python vs Go vs Rust), DB & Cache. | `interview-preparation/03-backend-fundamentals-cheatsheet/` | `[ ] Pending` |
 | **Hours 6.0 – 8.0** | **Module 4: Backend Fundamentals Part 2 (Reverse Eng, TLS, Browsers, DevOps, Breakage Detection)** | Rebuilding APIs from app traffic (`mitmproxy`/HAR), HTTP/2/3, WebSockets, TLS/JA3 fingerprinting, keeping integrations alive, Playwright & Chrome Extensions, Docker/Zero-Downtime, Observability. | `interview-preparation/04-integrations-reverse-eng-browsers/` | `[ ] Pending` |
 | **Hours 8.0 – 9.5** | **Module 5: Ruit System Design Whiteboard Mastery** | Collaborative whiteboard framework + full architectures for the 5 core Ruit marketplace challenges (including proactive breakage detection & new marketplace expansion). | `interview-preparation/05-system-design-whiteboard/` | `[ ] Pending` |
@@ -181,3 +181,5 @@ ruit-ai-engineer/
 - **2026-11-02 (Session 5 — Module 1 Completed):**
   - Created `interview-preparation/01-ai-workflow-and-live-task/` with `01-laptop-setup-and-agentic-workflow-script.md`, `02-live-ai-coding-playbook.md`, and the runnable `live-task-sandbox/` (`marketplace_connector.py`, `test_marketplace_connector.py`, `README.md`).
   - Configured `.venv` with `pydantic`, `httpx`, `pytest`, `ruff`, and `mypy`, and verified 5/5 passing tests in `0.26s`.
+- **2026-11-02 (Session 6 — Module 2 Completed):**
+  - Created `interview-preparation/02-python-and-django-deep-dive/` with `01-the-gil-concurrency-and-async-python.md`, `02-async-django-and-orm-internals.md`, `03-generators-iterators-and-streaming.md`, `04-robust-python-typing-pydantic-static-analysis.md`, and `python-django-labs/test_python_deep_dive_labs.py` (9/9 total tests passing + clean `ruff check`).
