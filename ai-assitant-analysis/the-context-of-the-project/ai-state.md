@@ -152,7 +152,7 @@ ruit-ai-engineer/
 
 | Hour Block | Module | Focus Area | Target Folder | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **Hours 1.0 – 2.0** | **Module 1: Live AI Setup & Power-Agent Workflow** | Configure laptop showcase, parallel agent sessions, custom skills/rules, and practice a 20-min live AI Python integration task (rebuilding/validating a marketplace API client). | `interview-preparation/01-ai-workflow-and-live-task/` | `[ ] Pending` |
+| **Hours 1.0 – 2.0** | **Module 1: Live AI Setup & Power-Agent Workflow** | Configure laptop showcase, parallel agent sessions, custom skills/rules, and practice a 20-min live AI Python integration task (rebuilding/validating a marketplace API client). | `interview-preparation/01-ai-workflow-and-live-task/` | `[x] Completed` |
 | **Hours 2.0 – 4.0** | **Module 2: Python & Django Internals + Code Labs** | GIL, Async Django (ASGI/ORM), Generators, Type Hints, Pydantic v2, Mypy/Ruff, plus TS-to-Python mental mapping. | `interview-preparation/02-python-and-django-deep-dive/` | `[ ] Pending` |
 | **Hours 4.0 – 6.0** | **Module 3: Backend Fundamentals Part 1 (Data, Async, Queues, Errors)** | Concurrency, JSON validation, Django ORM & SQL locking, Celery & Redis internals, Error handling (Python vs Go vs Rust), DB & Cache. | `interview-preparation/03-backend-fundamentals-cheatsheet/` | `[ ] Pending` |
 | **Hours 6.0 – 8.0** | **Module 4: Backend Fundamentals Part 2 (Reverse Eng, TLS, Browsers, DevOps, Breakage Detection)** | Rebuilding APIs from app traffic (`mitmproxy`/HAR), HTTP/2/3, WebSockets, TLS/JA3 fingerprinting, keeping integrations alive, Playwright & Chrome Extensions, Docker/Zero-Downtime, Observability. | `interview-preparation/04-integrations-reverse-eng-browsers/` | `[ ] Pending` |
@@ -178,3 +178,6 @@ ruit-ai-engineer/
   - Updated `ai-state.md` and `master-prompt.md` to mandate atomic local Git commits after every single file/module change and prioritize the email cheat sheet over unrelated job-ad details.
 - **2026-11-02 (Session 4 — Module 0 Completed):**
   - Created `interview-preparation/00-roadmap-and-quick-sheets/` with `00-master-10-hour-schedule.md`, `01-ts-node-to-python-django-bridge.md`, and `02-euromed-train-rapid-cheatsheet.md`.
+- **2026-11-02 (Session 5 — Module 1 Completed):**
+  - Created `interview-preparation/01-ai-workflow-and-live-task/` with `01-laptop-setup-and-agentic-workflow-script.md`, `02-live-ai-coding-playbook.md`, and the runnable `live-task-sandbox/` (`marketplace_connector.py`, `test_marketplace_connector.py`, `README.md`).
+  - Configured `.venv` with `pydantic`, `httpx`, `pytest`, `ruff`, and `mypy`, and verified 5/5 passing tests in `0.26s`.
