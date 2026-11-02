@@ -1,65 +1,81 @@
-# Euromed Train 15-Minute Rapid Flash Sheet (Barcelona $\rightarrow$ Valencia)
+# Euromed Train Rapid Cheat Sheet (15-Minute Review)
 
-> **Purpose:** Read this on the Euromed train on Friday morning (Nov 6) before arriving at Lanzadera at `12:45h`.  
-> Every bullet below corresponds **1:1** to Luis Grau's literal evaluation cheat sheet from his email.
-
----
-
-## Part 1: Python & Django Deep Dive
-
-### 1. The GIL (Global Interpreter Lock)
-- **What it is:** A mutex in CPython that allows only **one native OS thread to execute Python bytecodes at a time** per process, because CPython's memory management (`PyObject` reference counting) is not thread-safe without locks.
-- **I/O-Bound vs CPU-Bound:**
-  - **I/O-bound** operations (network sockets, HTTP calls, DB queries, disk reads) **release the GIL** while waiting on the OS kernel. Thus, `asyncio` (single-threaded cooperative multitasking) or thread pools scale well for I/O.
-  - **CPU-bound** operations (heavy JSON/HTML parsing, image resizing, cryptography) hold the GIL. Threads will contend and run slower than 1 thread; use **`multiprocessing` (`ProcessPoolExecutor`)**, native C/Rust extensions (`pydantic-core`, `orjson`, `lxml`), or offload to Celery workers.
-- **Modern Update (PEP 703):** Python 3.13/3.14 introduced experimental **free-threaded CPython (`python3.13t`, `--disable-gil`)** using biased reference counting and per-object locks.
-
-### 2. Async in Django
-- **WSGI vs ASGI:** WSGI (`Gunicorn`) is synchronous (1 request = 1 thread/worker blocking). ASGI (`Uvicorn`/`Daphne`) is asynchronous, supporting `async def` views, long-lived WebSockets, and Server-Sent Events (SSE).
-- **The Golden Rule of Django Async:** Never call synchronous blocking code (sync ORM, `requests.get`, `time.sleep`) directly inside an `async def` view—it blocks the entire event loop thread for all concurrent users!
-- **Bridges (`asgiref.sync`):**
-  - `await sync_to_async(sync_fn, thread_sensitive=True)()` $\rightarrow$ runs blocking code in a thread pool.
-  - `async_to_sync(async_fn)()` $\rightarrow$ runs a coroutine from synchronous code (e.g., inside a sync Celery worker).
-- **Django ORM Async Caveats:** Django 4.1+/5.x added `aget()`, `acount()`, `aiterator()`, `acreate()` (mostly wrappers around `sync_to_async` under the hood), **but**:
-  1. **`transaction.atomic()` does NOT work with `async def` directly**—wrap the entire atomic transactional unit in a sync function and call it via `await sync_to_async(run_tx)()`.
-  2. Accessing an un-fetched `ForeignKey` attribute (`item.seller.name`) in an async context triggers a `SynchronousOnlyOperation` exception unless pre-loaded via `select_related('seller')`!
-
-### 3. Generators & Iterators
-- **How they work:** Any function with `yield` returns a **generator object** implementing the Iterator Protocol (`__iter__` and `__next__`). Execution pauses at `yield`, preserving local stack frame state in heap memory, and resumes on the next `next()` call until `StopIteration`.
-- **Why they matter for Ruit:**
-  - **Constant Memory ($O(1)$ RAM):** Streaming 500,000 marketplace listings or multi-GB JSON feeds one chunk at a time without loading everything into memory (`OutOfMemory` kill).
-  - **Django ORM `.iterator(chunk_size=2000)`:** Streams rows using server-side cursors in Postgres without caching all model instances in the `QuerySet` cache.
-  - **Sub-generators & Async Generators:** `yield from` delegates to sub-generators cleanly; `async def` + `yield` creates an `AsyncGenerator` consumed with `async for` (ideal for paginated async API scraping!).
-
-### 4. Robust Python (Type Hints, Pydantic v2, Static Analysis)
-- **Type Hints (`typing`):** `TypedDict` (typed dicts), `Protocol` (structural duck-typing / interfaces), `Generic[T]`, `Literal["vinted", "wallapop"]`, `Annotated[int, Field(gt=0)]`, `Union` (`X | Y`).
-- **Runtime Boundary Validation (`Pydantic v2`):** Type hints alone are ignored at runtime. At external boundaries (marketplace API responses, webhooks, LLM outputs), use **Pydantic v2** (powered by Rust `pydantic-core`) to parse, coerce, and validate data into typed `BaseModel` objects.
-- **Static Analysis Pipeline:** **`Ruff`** (Rust linter/formatter) + **`mypy --strict` / `pyright`** in CI/CD and pre-commit hooks.
+> Read this on the train to Valencia on Friday morning. Every bullet below matches a topic from Luis's email cheat sheet.
 
 ---
 
-## Part 2: Core Backend & Integration Fundamentals (Luis's Cheat Sheet)
+## 1. Python & Django Knowledge
 
-| Topic | The 30-Second Senior Answer for Luis |
-| :--- | :--- |
-| **Concurrency & Async** | Concurrency = dealing with many tasks at once (overlapping I/O wait times via `asyncio` event loop); Parallelism = executing many tasks simultaneously on multiple CPU cores (`multiprocessing`). Protect shared state across workers using **idempotency keys** and **distributed locks (Redis / Postgres row locks)**. |
-| **JSON Validation** | Third-party marketplace payloads are untrusted and change silently. Use **two-tier validation**: (1) strict **Pydantic v2** models for required business fields (`ConfigDict(extra='allow')` or `'ignore'`), plus (2) **schema-drift telemetry** that logs unexpected/missing optional fields to alert engineers before an integration breaks. |
-| **ORMs & SQL** | Fix **N+1** with `select_related` (SQL `JOIN` for FK/1:1) and `prefetch_related` (separate `WHERE id IN (...)` query for M2M/reverse FKs). Prevent double-sells with `SELECT ... FOR UPDATE NOWAIT` inside `transaction.atomic()` + `transaction.on_commit()` before firing Celery tasks. Index foreign keys, status filters (partial index `WHERE status = 'active'`), and JSONB (`GIN` index). |
-| **Background Queues (Celery & Redis)** | Separate queues by priority & latency: `high_priority_delist` (when an item sells—must run in seconds!) vs `bulk_catalog_sync` vs `browser_automation`. Always set `acks_late=True`, `reject_on_worker_lost=True`, **idempotency keys**, exponential backoff with **random jitter** (prevents thundering herd), and a **Dead Letter Queue (DLQ)** for poison messages. |
-| **HTTP Clients & TLS** | Reuse `httpx.AsyncClient` connection pools with explicit `connect`, `read`, and `pool` timeouts. Standard Python `httpx`/`requests` uses OpenSSL whose **TLS ClientHello (JA3/JA4 fingerprint)** and **HTTP/2 SETTINGS frame** scream "Python bot" to Cloudflare/DataDome. Use **`curl_cffi`** (impersonating Chrome's BoringSSL & HTTP/2 fingerprint) + residential proxies when calling protected marketplace endpoints. |
-| **Error Handling (Python vs Go vs Rust)** | **Python:** Exceptions (`try/except`, EAFP)—ergonomic happy path, but failure modes aren't visible in function signatures. **Go:** Explicit `val, err` return values—forces local handling, verbose boilerplate. **Rust:** Algebraic `Result<T, E>` & `Option<T>` with `?` operator—compile-time exhaustive safety. **In Python integrations:** Combine custom domain exception hierarchies (`RetryableError` vs `PermanentIntegrationError` vs `AuthExpiredError` vs `SchemaBreakageError`) or lightweight `Result` types at connector boundaries. |
-| **Databases & Cache** | **PostgreSQL:** MVCC (readers don't block writers), watch out for dead tuples (`autovacuum`), and always put **PgBouncer** in front of Postgres when scaling Celery/ASGI workers. **Redis:** Use for Cache-Aside, token-bucket rate limiting (Lua scripts / Sorted Sets), and distributed locks. Add **TTL jitter** and lock-based recomputation to prevent **cache stampedes**. |
-| **Low-Level Networking & Protocols** | **HTTP/1.1:** Head-of-line blocking per TCP connection. **HTTP/2:** Multiplexed streams over 1 TCP connection + HPACK binary headers (still has TCP-level head-of-line blocking on packet loss). **HTTP/3 (QUIC):** Runs over **UDP**, built-in TLS 1.3, independent stream recovery (zero head-of-line blocking). **WebSockets:** HTTP `101 Switching Protocols` upgrade $\rightarrow$ full-duplex TCP framing; scale horizontally with **Redis Pub/Sub** + heartbeat ping/pong. |
-| **API Integrations & Reverse Engineering** | Inspect mobile/web traffic with **Chrome DevTools (`Copy as cURL`/HAR)** and **`mitmproxy` / Proxyman** (with mobile cert + Frida for SSL unpinning when needed). Reconstruct auth lifecycle (access token, refresh token rotation, CSRF, HMAC request signing, device headers). **Catch breakage early** via scheduled synthetic canary checks and Pydantic schema-drift alerts. |
-| **Browsers & Chrome Extensions** | **Playwright (CDP):** Use persistent contexts, stealth patches, and block heavy fonts/media to save bandwidth. **Chrome Extensions (Manifest V3):** Content Scripts (DOM access) + Service Worker (background orchestration) + WebSocket/API link to Ruit cloud. **Superpower:** Executes requests using the seller's real browser TLS fingerprint, cookies, and residential IP! |
-| **DevOps & Zero-Downtime** | **Docker:** Multi-stage builds, non-root user, healthchecks. **Zero-Downtime Deploys:** Rolling/Blue-Green + graceful `SIGTERM` handling (drain in-flight requests/Celery tasks) + **Expand-and-Contract DB migrations** (1. add nullable col, 2. dual-write, 3. backfill in batches, 4. enforce constraint with `NOT VALID` $\rightarrow$ `VALIDATE CONSTRAINT` to avoid table locks). |
-| **Observability & Scaling** | **Metrics (Prometheus/Grafana):** Track per-marketplace RED metrics (Request rate, Error rate by HTTP status, Duration p95/p99) + Celery queue lag. **Logs (`structlog`):** JSON logs with `correlation_id`, `seller_id`, `marketplace`. **Traces (OpenTelemetry):** End-to-end spans across Django $\rightarrow$ Redis $\rightarrow$ Celery $\rightarrow$ Marketplace API. |
+- **The GIL (Global Interpreter Lock):**
+  - A lock inside standard Python (CPython) that lets only **one thread run Python code at a time** per process.
+  - It exists because Python manages memory by counting references to objects, and that counter is not thread-safe without a lock.
+  - **I/O tasks (network calls, DB queries):** Python **releases the GIL** while waiting for the network, so `asyncio` or threads work great for API integrations.
+  - **CPU tasks (heavy math, image resizing):** Keep holding the GIL, so threads do not speed them up. Use **multiple processes (`multiprocessing` or multiple Celery workers)** so each process gets its own GIL.
+- **Async in Django:**
+  - **WSGI (`Gunicorn`):** Classic synchronous Django (1 request blocks 1 thread).
+  - **ASGI (`Uvicorn`):** Async Django (1 worker handles many concurrent `async def` views and WebSockets).
+  - **Main rule:** Never run slow synchronous code (like `requests.get` or sync ORM) directly inside an `async def` view, or you will freeze the whole event loop.
+  - **Bridges:** Use `sync_to_async` to call sync code from async code, and `async_to_sync` to call async code from sync code.
+  - **ORM Caveats:** Django has async methods like `aget()`, **but** `transaction.atomic()` is still synchronous, and accessing an un-loaded `ForeignKey` inside an `async def` view crashes with `SynchronousOnlyOperation` unless you pre-load it with `select_related()`.
+- **Generators (`yield`):**
+  - A function with `yield` does not return a full list in memory at once.
+  - Instead, it pauses at `yield`, gives you **one item at a time**, and remembers where it stopped.
+  - **Why use it:** Processing 100,000 marketplace items or a huge JSON file uses almost zero RAM instead of crashing the server with Out-Of-Memory.
+- **Robust Python (Type Hints & Static Analysis):**
+  - Python is dynamically typed, so bugs can hide until runtime.
+  - We make it safe by adding **type hints** (`str`, `int`, `list[str]`), checking types before deploy with **`mypy`** and **`ruff`**, and validating external JSON at runtime with **Pydantic**.
 
 ---
 
-## Part 3: Your 3 Signature Stories to Weave In Naturally
+## 2. Backend & Integration Fundamentals
 
-1. **Dadroit JSON Generator (VS Code Extension — 630K+ installs, built in 3 days):** Shows product instinct, developer/user empathy, fast execution, and deep understanding of JSON schemas & browser/editor extension ecosystems.
-2. **150+ Site News Crawler & Semantic Pipeline (Parsaiane — 60K+ DAU):** Directly mirrors Ruit's integration challenge—keeping 150 heterogeneous sources alive despite constant DOM/API changes, rate limits, and dirty data.
-3. **QueryLaw Antifragile AI Engine (95%+ accuracy, Multi-Layer Validation & Brittle-Logic Telemetry):** Proves you know how to make non-deterministic LLMs and brittle external pipelines reliable in production using strict schema validation and real-time failure telemetry.
-
+- **Concurrency & Async:**
+  - **Concurrency:** Handling many network tasks at the same time on 1 CPU core by switching while waiting for I/O (`asyncio`).
+  - **Parallelism:** Running heavy CPU tasks at the exact same moment across multiple CPU cores (`multiprocessing`).
+  - Prevent race conditions across workers using **database row locks** or **Redis locks**.
+- **JSON Validation:**
+  - Never trust JSON from external marketplaces because they change fields without warning.
+  - Validate every API response with **Pydantic** (like AJV/Zod in JS) and log unknown or missing fields so we know when a marketplace changed its API.
+- **ORMs & SQL:**
+  - **N+1 Query Problem:** Fetching 50 items and then running 50 separate queries to get each item's seller.
+  - **Fix in Django:** Use **`select_related`** (uses a single SQL `JOIN` for single foreign keys) and **`prefetch_related`** (runs a 2nd query with `WHERE id IN (...)` and joins in Python for `Many-to-Many` or `1-to-Many` lists).
+  - **Preventing Double-Sells:** Lock the item row in Postgres using `SELECT ... FOR UPDATE` inside a transaction (or use an atomic `UPDATE ... WHERE status = 'active'`).
+- **Background Queues & Brokers (Celery & Redis):**
+  - **How it works:** Django puts a small job message (just the `item_id`) into **Redis** or **RabbitMQ**, and **Celery worker processes** pick it up in the background.
+  - **Best practices:**
+    - Queue jobs only **after** the DB transaction commits (`transaction.on_commit`).
+    - Use **separate queues** (`critical_delist` vs `slow_bulk_sync`) so slow jobs never block urgent delisting.
+    - Enable **`acks_late=True`** (only remove job from queue after it finishes), **idempotency keys** (so running a job twice does not create 2 listings), **exponential backoff with jitter**, and a **Dead Letter Queue (DLQ)**.
+- **HTTP Clients & TLS:**
+  - Always reuse a **connection pool (`Session` / `AsyncClient`)** so you do not repeat slow TCP + TLS handshakes on every request.
+  - Always set explicit **connect and read timeouts**.
+  - **TLS Fingerprinting (JA3/JA4):** Anti-bot systems like Cloudflare check the TLS `ClientHello` handshake and HTTP/2 settings. Standard Python `requests`/`httpx` has a Python OpenSSL fingerprint and gets blocked (`403`). Tools like **`curl_cffi`** copy Chrome's exact TLS fingerprint.
+- **Error Handling (Python vs Go vs Rust):**
+  - **Python:** Uses **exceptions (`try / except`)**. Clean to read, but you cannot see which errors a function might throw just by looking at its signature.
+  - **Go:** Returns **errors as values (`result, err`)**. Forces you to check `if err != nil` right away, but creates repetitive code.
+  - **Rust:** Uses **`Result<T, E>` and `Option<T>` types**. The compiler forces you to handle both success and error cases before code can compile.
+  - **In Python integrations:** Group errors clearly into **Retryable** (`429`, `503`, timeout), **Auth Expired** (`401`—refresh seller token), and **Broken Contract** (JSON schema changed—stop and alert engineers).
+- **Databases & Cache:**
+  - **PostgreSQL:** Uses MVCC (reads don't block writes) and needs **PgBouncer** to pool database connections when running many workers.
+  - **Redis:** Used for caching, rate limiting, and short locks. Add **random jitter to TTLs** so 1,000 cached items do not expire at the exact same second (cache stampede).
+- **Low-Level Networking & Protocols:**
+  - **HTTP/1.1:** One request at a time per TCP connection.
+  - **HTTP/2:** Sends many requests at once (multiplexing) over 1 TCP connection, but if 1 TCP packet drops, all streams wait.
+  - **HTTP/3 (QUIC):** Runs over **UDP** with built-in TLS 1.3; if 1 packet drops, only that single stream waits.
+  - **WebSockets:** Upgrades an HTTP connection into a two-way real-time pipe. Needs **ping/pong heartbeats** to detect dead connections and **Redis Pub/Sub** to scale across multiple servers.
+- **API Integrations & Reverse Engineering:**
+  - Capture web traffic in **Chrome DevTools (`.har` files)** and mobile app traffic with **`mitmproxy` / Proxyman** (using Frida on a test device if the app uses SSL certificate pinning).
+  - Find the login/refresh token flow, required headers, and CSRF/signature rules.
+  - Catch breakages **before sellers notice** by running scheduled test jobs (canary probes) every 15 minutes and alerting on Pydantic validation errors.
+- **Browsers, Automations & Chrome Extensions:**
+  - **Playwright:** Controls Chrome via WebSocket (CDP). Block images/fonts to save proxy data, or use the browser just to get anti-bot cookies and run fast API calls.
+  - **Chrome Extensions (Manifest V3):** Has a **Background Service Worker** (wakes up on events/alarms, no DOM access) and **Content Scripts** (can read/click the webpage DOM). Great for Ruit because requests come from the seller's **real home IP and logged-in browser**.
+- **DevOps & Zero-Downtime Deployments:**
+  - Handle Linux **`SIGTERM`** so Gunicorn and Celery finish their current task before shutting down.
+  - **Zero-Downtime DB Migrations (Expand & Contract):** Never rename or delete a DB column in one step while old containers are still running. First add the new nullable column, write to both, backfill old rows, switch reads, and delete the old column later.
+- **Observability & Scaling:**
+  - **Metrics (Prometheus/Grafana):** Request rate, error rate (especially `403`/`429`), latency, and Celery queue length.
+  - **Logs:** Structured JSON logs with a shared `correlation_id` and `seller_id`.
+  - **Traces (OpenTelemetry/Sentry):** Track a request from Django $\rightarrow$ Redis $\rightarrow$ Celery $\rightarrow$ Marketplace API.
+- **Working with AI:**
+  - Keep a state file (`ai-state.md`), use reusable **Skills** and **Rules**, run **parallel sessions** (one agent researching API payloads, one writing code, one writing `pytest` tests), and always verify with tests.
