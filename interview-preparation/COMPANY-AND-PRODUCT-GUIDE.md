@@ -104,3 +104,4 @@
 - **4. High-Concurrency Backend Systems (9+ Years Experience):**
   - You know how to stop double-sells using database transactions (`SELECT ... FOR UPDATE`), idempotency keys, and Redis locks.
   - While you are honest that your production experience is in Node.js/TypeScript, SQL, and Redis (not Python/Django), your backend architecture instincts are exactly what Ruit needs.
+

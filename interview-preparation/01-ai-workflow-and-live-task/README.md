@@ -34,3 +34,4 @@
 | **[06-live-ai-coding-playbook.md](./06-live-ai-coding-playbook.md)** | 5-step strategy for the 20-minute live AI coding task. |
 | **[07-interview-qa-script-how-i-work-with-ai.md](./07-interview-qa-script-how-i-work-with-ai.md)** | 8 word-for-word Upper-B2 spoken interview answers. |
 | **[live-task-sandbox/](./live-task-sandbox/)** | Basic Python sandbox (`pytest` passing) for marketplace integrations. |
+
