@@ -18,10 +18,10 @@
 | **0. Roadmap & Quick Sheets** | [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) | `[x] COMPLETED` |
 | | [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) | `[x] COMPLETED` |
 | | [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) | `[x] COMPLETED` |
-| **1. AI Workflow & Live Task** | Files `01` to `03` & `live-task-sandbox/` | `[⏳ READING NOW]` |
+| **1. AI Workflow & Live Task** | Files `01` to `03` & `live-task-sandbox/` | `[ ] Up Next / Revisit` |
 | **2. Python & Django Deep Dive** | Files `01` and `02` & `python-django-labs/` | `[ ] Pending` |
 | **3. Backend Fundamentals (Queues, Locks)** | Files `01` and `02` & `fundamentals-labs/` | `[ ] Pending` |
-| **4. Networking, Reverse Eng, DevOps** | Files `01` and `02` | `[ ] Pending` |
+| **4. Networking, Reverse Eng, DevOps** | Files `01` and `02` | `[⏳ READING NOW]` |
 | **5. System Design Whiteboard** | Files `01` and `02` (5 Ruit Challenges) | `[ ] Pending` |
 | **6. Stories & Team Lunch** | File `01` (STAR stories & questions) | `[ ] Pending` |
 

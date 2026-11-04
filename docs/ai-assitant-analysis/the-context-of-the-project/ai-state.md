@@ -79,10 +79,10 @@ ruit-ai-engineer/
 | :--- | :--- | :--- |
 | **Company & Role** | `COMPANY-AND-PRODUCT-GUIDE.md` | `[ ] Pending` |
 | **0. Roadmap & Quick Sheets** | `00-roadmap-and-quick-sheets/` (Files 00, 01, 02) | `[x] COMPLETED` |
-| **1. AI Workflow & Live Task** | `01-ai-workflow-and-live-task/` (Files 01, 02, 03) | `[⏳ READING NOW]` |
+| **1. AI Workflow & Live Task** | `01-ai-workflow-and-live-task/` (Files 01, 02, 03) | `[ ] Up Next / Revisit` |
 | **2. Python & Django Deep Dive** | `02-python-and-django-deep-dive/` (Files 01, 02) | `[ ] Pending` |
 | **3. Backend Fundamentals** | `03-backend-fundamentals-cheatsheet/` (Files 01, 02) | `[ ] Pending` |
-| **4. Networking & DevOps** | `04-integrations-reverse-eng-browsers/` (Files 01, 02) | `[ ] Pending` |
+| **4. Networking & DevOps** | `04-integrations-reverse-eng-browsers/` (Files 01, 02) | `[⏳ READING NOW]` |
 | **5. System Design Whiteboard** | `05-system-design-whiteboard/` (Files 01, 02) | `[ ] Pending` |
 | **6. Stories & Team Lunch** | `06-culture-lunch-and-storytelling/` (File 01) | `[ ] Pending` |
 
