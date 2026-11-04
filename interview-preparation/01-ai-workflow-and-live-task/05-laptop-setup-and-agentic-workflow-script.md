@@ -1,35 +1,41 @@
-# Laptop Setup & How You Work with AI
+# 05 — Laptop Setup & AI Workflow Walkthrough Script
 
-> **From Luis's Email:** *"We will ask you to fire up your laptop, show us your setup and complete a brief task with AI ... how do you use agents, skills, plugins... How do you use sessions in parallel, and so on."*  
-> **Study Context:** This guide walks you through the exact 3-minute screen-sharing walkthrough to present your AI setup to Luis. For deep dives on Harness Engineering and tools, see files `01` through `04` in this folder.
-
----
-
-## 1. Before You Enter the Office (5-Minute Checklist)
-
-- Charge your laptop to 100% and keep your phone hotspot ready as backup Wi-Fi.
-- Turn on **Do Not Disturb** so no personal messages pop up while sharing your screen.
-- Open this project in your editor with the terminal ready (`.venv` already has `pytest`, `pydantic`, `httpx`, `ruff`, and `mypy` installed so it works even without internet).
+> **From Luis's Email:** *"We will ask you to fire up your laptop, show us your setup and complete a brief task with AI ... how do you use agents, skills, plugins... How do you use sessions in parallel, and so on."*
 
 ---
 
-## 2. How to Show Your AI Setup (3-Minute Walkthrough)
+## 1. Laptop Layout & 5-Minute Checklist (Before Entering Lanzadera)
 
-- **Step 1 — Project Context & State File (`ai-state.md`):**
-  - Show [`ai-state.md`](../../docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md).
-  - Explain: *"Before I ask AI to write code, I create a state file that lists the project context, folder rules, and task checklist. Every AI session reads this file first and updates it after finishing a step, so the AI never loses track of what we are building."*
-- **Step 2 — Master Prompt & Rules (`master-prompt.md`):**
-  - Show [`master-prompt.md`](../../docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md).
-  - Explain: *"I set strict rules for the AI: keep code simple, write clear comments inside the code files, run automated tests after every change, and make a small Git commit after each step."*
-- **Step 3 — Skills (`SKILL.md`) & Plugins (MCPs):**
-  - **Skills:** Reusable instruction files (`SKILL.md`) for tasks you repeat often—like turning a raw marketplace JSON response into a validated Python model with retry logic and tests.
-  - **Plugins / MCPs:** Tools that let the AI read documentation, inspect browser pages (DevTools/Playwright), and run terminal tests directly.
-- **Step 4 — Running AI Sessions in Parallel:**
-  - Explain how you split work so multiple AI sessions do not overwrite each other's files:
-    - **First, agree on the data shape:** Spend 2 minutes defining the input/output fields.
-    - **Session 1 (Research / Traffic Analysis):** Reads raw API JSON or network logs and lists edge cases (like missing fields, price formats, or rate-limit headers).
-    - **Session 2 (Main Code):** Writes the API client and validation logic.
-    - **Session 3 (Testing):** Writes `pytest` tests for normal cases, broken JSON, `429` rate limits, and `401` login errors.
-    - **Git Worktrees for Bigger Features:** When working on two separate marketplace integrations at the same time, run each AI session in its own Git branch/folder (`git worktree`) so their files and tests stay completely separate.
-- **Step 5 — Always Verify & Review AI Code:**
-  - Explain: *"Because I am open that my production background is Node.js/TypeScript and my Python is from basic side projects, I use AI to write the Python syntax fast, and then I apply my senior backend checklist: I check timeouts, retry loops, error handling, and run `pytest` and `ruff` to prove the code works."*
+- **Power & Wi-Fi:** Charge laptop to 100% and have your phone hotspot tested and ready.
+- **Do Not Disturb:** Turn on macOS Do Not Disturb so no notification banners appear while sharing your screen.
+- **Window Layout to Have Open:**
+  - **Window 1 (Antigravity IDE):** Open to this `ruit-ai-engineer` project. Sidebar shows `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` and the terminal with `.venv` active.
+  - **Window 2 (VS Code with Claude Code via OpenRouter):** Open to a project folder with `CLAUDE.md`, showing the Claude Code panel and terminal connected via your OpenRouter API token.
+  - **Window 3 (Git Source Control tab):** Showing pre-commit diffs and the GitHub Copilot Code Review button.
+- **Offline Readiness:** The virtual environment (`.venv`) already has `pytest`, `pydantic`, `httpx`, `ruff`, and `mypy` installed so tests run instantly even if the office Wi-Fi is slow.
+
+---
+
+## 2. The 3-Minute Walkthrough: What to Show & What to Say
+
+When Luis says, *"Show us your setup and how you work with AI,"* follow this exact 3-minute script:
+
+### Step 1: Show the Context & State File (Minute 0:00 – 0:45)
+- **What to Show on Screen:** Open `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`.
+- **What to Say Out Loud (Upper-B2):**
+  > *"I don't just open a chat box and start typing code. Professional AI development requires what I call **Harness Engineering**. Before I write any code, I maintain a living state file like `ai-state.md`. It holds the project architecture, strict boundaries, and an active task checklist. Every AI session reads this first so the model never loses context or hallucinates existing files."*
+
+### Step 2: Show Antigravity IDE & Specialized Subagents (Minute 0:45 – 1:30)
+- **What to Show on Screen:** Show the Antigravity agent panel and point to skills and rules.
+- **What to Say Out Loud (Upper-B2):**
+  > *"Here in **Antigravity IDE**, I use specialized subagents instead of one giant chat. For example, if I need to analyze a 5,000-line marketplace JSON payload or browse docs, I launch a read-only **Research Subagent**. It returns a short 10-line summary so my main coding session stays clean, fast, and token-efficient. I also use **Skills (`SKILL.md`)** for multi-step playbooks like scaffolding a new marketplace connector, which loads on demand without cluttering the prompt."*
+
+### Step 3: Show Claude Code via OpenRouter Token in VS Code (Minute 1:30 – 2:15)
+- **What to Show on Screen:** Switch to VS Code and show the Claude Code terminal and `CLAUDE.md`.
+- **What to Say Out Loud (Upper-B2):**
+  > *"In addition to Antigravity, I recently set up **Claude Code** running through my **OpenRouter API token** in VS Code and in my terminal. I use this daily for headless tasks and terminal commands. I configure it with a `CLAUDE.md` file for project rules, use **Plan Mode (`Shift + Tab`)** to approve architecture before any edits, and use custom slash commands in `.claude/commands/` for reusable validation workflows."*
+
+### Step 4: Show the Pre-Commit Copilot Review & Verification Loop (Minute 2:15 – 3:00)
+- **What to Show on Screen:** Show the terminal running `.venv/bin/pytest` (all green) and the Git diff tab with GitHub Copilot Review.
+- **What to Say Out Loud (Upper-B2):**
+  > *"My rule is that the AI never writes code in a vacuum. After every edit, the agent runs `pytest`, `ruff`, and `mypy` in the terminal in an automated loop. And before I commit, I run **GitHub Copilot Code Review** on the Git diff as an independent second model to catch subtle bugs or missing timeouts. That way, what reaches Git is verified, well-commented, and production-ready."*

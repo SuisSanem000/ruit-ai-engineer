@@ -52,8 +52,9 @@
   - [ ] [03-antigravity-claude-code-and-copilot-flow.md](./01-ai-workflow-and-live-task/03-antigravity-claude-code-and-copilot-flow.md) — How you use **Antigravity IDE**, **Claude Code** (OpenRouter token in VS Code & CLI), and **GitHub Copilot Code Review**.
   - [ ] [04-multi-agents-parallel-sessions-skills-and-plugins.md](./01-ai-workflow-and-live-task/04-multi-agents-parallel-sessions-skills-and-plugins.md) — Agents, rules, skills, plugins, and 3 parallel session patterns without race conditions.
   - [ ] [05-laptop-setup-and-agentic-workflow-script.md](./01-ai-workflow-and-live-task/05-laptop-setup-and-agentic-workflow-script.md) — 5-minute pre-interview checklist and 3-minute screen-share presentation script for Luis.
-  - [ ] [06-live-ai-coding-playbook.md](./01-ai-workflow-and-live-task/06-live-ai-coding-playbook.md) — 5-step calm strategy for the 20-minute live AI coding task.
+  - [ ] [06-live-ai-coding-playbook.md](./01-ai-workflow-and-live-task/06-live-ai-coding-playbook.md) — 5-step calm strategy for the 20-minute live AI coding task (Amateur Chatter vs Elite Harness Engineer).
   - [ ] [07-interview-qa-script-how-i-work-with-ai.md](./01-ai-workflow-and-live-task/07-interview-qa-script-how-i-work-with-ai.md) — 8 word-for-word Upper-B2 spoken interview answers.
+  - [ ] [08-claude-code-openrouter-project-showcase.md](./01-ai-workflow-and-live-task/08-claude-code-openrouter-project-showcase.md) — Claude Code + OpenRouter setup, active project, and `CLAUDE.md`.
   - [ ] [live-task-sandbox/README.md](./01-ai-workflow-and-live-task/live-task-sandbox/README.md) — Hands-on basic Python integration sandbox (`pytest` passing).
   - **Basic Python Code:** [marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/marketplace_connector.py) & [test_marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/test_marketplace_connector.py).
 

@@ -104,3 +104,6 @@ ruit-ai-engineer/
   - Merged `ai-workflow/` directly into `interview-preparation/01-ai-workflow-and-live-task/` as a single unified 7-guide module with hands-on Python sandbox.
   - Created `interview-preparation/COMPANY-AND-PRODUCT-GUIDE.md` detailing Ruit's mission, funding (€1M from Angels Capital/Decelera/Abac/Successful), €1M ARR 2027 goal, team (Luis Grau, Alonso Veliz Garcia), product capabilities (1-photo listing, inventory anti-double-sell sync, Chrome Extension + Celery workers), and exact role breakdown (**Senior Backend Engineer, Integrations**).
   - Updated `interview-preparation/README.md` with role reminder and links.
+- **2026-11-04 (Session 16 — Elite Live AI Task Execution & Claude Code OpenRouter Showcase):**
+  - Upgraded `05-laptop-setup-and-agentic-workflow-script.md` and `06-live-ai-coding-playbook.md` with minute-by-minute scripts on what to show and what to say out loud (Amateur Chatter vs Elite Harness Engineer).
+  - Created `08-claude-code-openrouter-project-showcase.md` detailing the OpenRouter token setup, active project, `CLAUDE.md`, and custom commands in VS Code and terminal.
