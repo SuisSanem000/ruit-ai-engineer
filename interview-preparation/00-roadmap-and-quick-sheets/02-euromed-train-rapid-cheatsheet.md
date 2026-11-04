@@ -76,8 +76,10 @@
 
 ---
 
-## 3. Working with AI (How You Work Daily)
+## 3. Working with AI (How You Work Daily — Deep Dive in `ai-workflow/`)
 
-- **Context & State Files:** Keep an `ai-state.md` file in the repo so AI agents always know the project rules, folder structure, and current task status.
-- **Skills, Rules & Plugins:** Use rules for code style/tests and reusable skills (`SKILL.md`) for common workflows like turning sample API JSON into validated models and tests.
-- **Parallel Sessions:** Run separate agent sessions in parallel—for example, Session 1 inspects raw API traffic, Session 2 writes the connector code, and Session 3 writes edge-case tests—then verify everything with `pytest` and `ruff` before committing to Git.
+- **Harness Engineering Philosophy:** AI is a fast engine, but you wrap it in a strict harness (context files, schemas, automated tests, linters, and review loops) so its output is always safe and reliable.
+- **Real Resume Experience (No RAG/Fine-Tuning/Deploy Claims):** At QueryLaw, you built a strict validation pipeline using prompt engineering, JSON Schema / AJV checks, and automated retry loops (95%+ accuracy). At Parsaiane, you crawled 150+ news sites and used OpenAI to summarize.
+- **My Tool Stack:** Antigravity IDE (agent, inline `Cmd+I`, skills, subagents), Claude Code in VS Code & CLI connected via OpenRouter API token (`CLAUDE.md`, Plan Mode, `/compact`, custom commands), and GitHub Copilot Code Review on Git diffs and PRs.
+- **Skills vs Rules vs Plugins:** Rules are always on; Skills (`SKILL.md`) load on demand for specific playbooks; Plugins package skills, rules, and MCP tools together.
+- **Parallel Sessions:** Run Session 1 on code and Session 2 on tests/fixtures, or use read-only research subagents for large payloads, and `git worktree` for separate features. Never let two agents edit the same file.

@@ -1,6 +1,7 @@
 # Laptop Setup & How You Work with AI
 
-> **From Luis's Email:** *"We will ask you to fire up your laptop, show us your setup and complete a brief task with AI ... how do you use agents, skills, plugins... How do you use sessions in parallel, and so on."*
+> **From Luis's Email:** *"We will ask you to fire up your laptop, show us your setup and complete a brief task with AI ... how do you use agents, skills, plugins... How do you use sessions in parallel, and so on."*  
+> **Full AI Workflow Deep Dive:** See the dedicated [`../ai-workflow/`](../ai-workflow/) folder for Harness Engineering, Claude Code (OpenRouter), Copilot Code Review, and interview Q&As.
 
 ---
 

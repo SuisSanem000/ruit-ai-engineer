@@ -11,10 +11,11 @@
 
 ## Step-by-Step 10-Hour Study Schedule
 
-### Hours 1–2: AI Setup & Live Task Practice
-- Read [01-laptop-setup-and-agentic-workflow-script.md](../01-ai-workflow-and-live-task/01-laptop-setup-and-agentic-workflow-script.md) (20 mins).
-- Read [02-live-ai-coding-playbook.md](../01-ai-workflow-and-live-task/02-live-ai-coding-playbook.md) (15 mins).
-- Open [marketplace_connector.py](../01-ai-workflow-and-live-task/live-task-sandbox/marketplace_connector.py) and [test_marketplace_connector.py](../01-ai-workflow-and-live-task/live-task-sandbox/test_marketplace_connector.py), read the code comments, and practice running a short task with your AI assistant (85 mins).
+### Hours 1–2: AI Setup, Daily Workflow & Live Task Practice
+- Deep dive into your daily AI workflow: Read [ai-workflow/README.md](../ai-workflow/README.md) and its 5 guides (`01` through `05`) covering **Harness Engineering**, your real QueryLaw schema check story, Antigravity IDE, Claude Code (OpenRouter), Copilot Code Review, and parallel sessions (60 mins).
+- Read [01-laptop-setup-and-agentic-workflow-script.md](../01-ai-workflow-and-live-task/01-laptop-setup-and-agentic-workflow-script.md) (10 mins).
+- Read [02-live-ai-coding-playbook.md](../01-ai-workflow-and-live-task/02-live-ai-coding-playbook.md) (10 mins).
+- Open [marketplace_connector.py](../01-ai-workflow-and-live-task/live-task-sandbox/marketplace_connector.py) and [test_marketplace_connector.py](../01-ai-workflow-and-live-task/live-task-sandbox/test_marketplace_connector.py), read the code comments, and practice running a short task with your AI assistant (40 mins).
 
 ### Hours 2–4: Python & Django Concepts
 - Read [01-ts-node-to-python-django-bridge.md](./01-ts-node-to-python-django-bridge.md) to connect your Node.js/TypeScript knowledge to Python (20 mins).
