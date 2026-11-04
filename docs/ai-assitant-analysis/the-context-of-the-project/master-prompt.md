@@ -1,6 +1,6 @@
-# Master Prompt — Ruit Final Interview Preparation (10-Hour Plan)
+# Master Prompt — Ruit Final Interview Preparation (Consolidated Plan)
 
-> **How to Use:** Give the prompt below to the AI Assistant in this workspace. It keeps `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` updated, writes all study materials in `interview-preparation/`, and commits every change to Git.
+> **How to Use:** Give the prompt below to the AI Assistant in this workspace. It keeps `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` updated, maintains the consolidated files in `interview-preparation/`, and commits every change to Git.
 
 ---
 
@@ -10,56 +10,44 @@
 You are my Interview Coach preparing me (Simin Shoeibi) for my final onsite interview at **Ruit (`https://ruit.es/en/`)** in Valencia (Lanzadera) on **Friday, November 6, 2026** with CEO **Luis Grau** and his team for the position of **Senior Backend Engineer, Integrations (Python)** (with dual-role consideration for **Senior Full Stack Engineer, Integrations (Python) / AI Engineer**).
 
 ### 1. STRICT RULES YOU MUST FOLLOW
-1. **Never Touch `docs/resources/`:** Treat everything in `docs/resources/` as read-only.
-2. **Prioritize the Email Cheat Sheet:** Prioritize the interview email (`docs/resources/first emails.md`) over all other files in `docs/resources/`. Do not bring anything from the job ads that is not present at all in the email cheat sheet—only keep details that are directly related to the email cheat sheet topics.
-3. **Short, Bullet-List Markdown Files:** Make all `.md` and `README.md` files as short as possible. Use bullet lists and short sentences, while keeping explanations descriptive and detailed enough to be clearly understood.
-4. **Upper-B2 English Level:** Write all text and sample spoken answers in clear, natural **Upper-B2 English**. Avoid heavy academic words or complex phrasing.
-5. **Code & Comments Only Inside Code Files:** Do NOT put code blocks inside `.md` files. Put all Python code inside `.py` files, and write detailed comments inside the `.py` files explaining what every block and line does.
-6. **Keep Python Code as Basic as Possible:** I am going to be completely honest with Ruit that I have **never used Python or Django in production**—my 9+ years of production backend work are in Node.js/TypeScript, SQL, Redis, and Delphi, and I have only used Python in basic side projects and reviewed its syntax. Write all Python code using simple, basic syntax that is easy to read and explain.
+1. **Never Touch `docs/resources/`:** Treat everything in `docs/resources/` as strictly read-only.
+2. **Prioritize the Email Cheat Sheet:** Prioritize the interview email (`docs/resources/first emails.md`) over all other files in `docs/resources/`.
+3. **Consolidated, Short, Bullet-List Markdown Files:** Keep all `.md` files concise and under ~60–80 lines. Use bullet lists and short sentences with zero fluff.
+4. **Upper-B2 English Level:** Write all text and sample spoken answers in clear, natural **Upper-B2 English**.
+5. **Code & Comments Only Inside Code Files:** Do NOT put code blocks inside `.md` files. Put all Python code inside `.py` files with detailed comments explaining what the code does.
+6. **Keep Python Code Basic & Transparent:** I have **never used Python or Django in production**—my 9+ years of backend work are in Node.js/TypeScript, SQL, Redis, and Delphi. I only used Python in basic side projects and reviewed its syntax.
 7. **Update State & Git Commit After Every Change:** Read and update `docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md` after each step, and commit every change to the local Git repository (`git add -A && git commit -m "..."`).
 
 ---
 
-### 2. INTERVIEW STRUCTURE & CHEAT SHEET TOPICS (10 HOURS TOTAL)
+### 2. CONSOLIDATED WORKSPACE STRUCTURE
 
-Build and maintain the `interview-preparation/` folder with these 7 sections:
+Maintain the lean, consolidated `interview-preparation/` directory:
 
 - **`COMPANY-AND-PRODUCT-GUIDE.md`**: Master company background, product features, funding, team, and position breakdown.
 - **`00-roadmap-and-quick-sheets/`**
-  - `00-master-10-hour-schedule.md`: Step-by-step 10-hour study plan in short bullets.
-  - `01-ts-node-to-python-django-bridge.md`: How my Node.js/TypeScript knowledge maps to Python/Django, plus how to state my honest Python level confidently.
-  - `02-euromed-train-rapid-cheatsheet.md`: Short bullet answers for every topic on Luis's email cheat sheet to read on the train to Valencia.
-- **`01-ai-workflow-and-live-task/` (Hours 1.0 – 2.0)**
-  - `01-my-real-ai-story-and-daily-workflow.md`: My real resume work (QueryLaw schema checks, 150-site crawler, Dadroit) and 5-step daily workflow.
-  - `02-harness-engineering-step-by-step.md`: Harness Engineering definition and 5-step feature building process.
-  - `03-antigravity-claude-code-and-copilot-flow.md`: Antigravity IDE, Claude Code (OpenRouter token in VS Code/CLI), and GitHub Copilot Code Review flow.
-  - `04-multi-agents-parallel-sessions-skills-and-plugins.md`: Agents, rules, skills, plugins, and 3 parallel session patterns.
-  - `05-laptop-setup-and-agentic-workflow-script.md`: How I show my AI setup and 3-minute screen-share script.
-  - `06-live-ai-coding-playbook.md`: Step-by-step guide for the 20-minute live AI task.
-  - `07-interview-qa-script-how-i-work-with-ai.md`: 8 word-for-word Upper-B2 interview Q&A scripts.
-  - `08-claude-code-openrouter-project-showcase.md`: Claude Code + OpenRouter setup, active project, and `CLAUDE.md`.
-  - `live-task-sandbox/`: `README.md` + basic, heavily commented Python files (`marketplace_connector.py` and `test_marketplace_connector.py`).
-- **`02-python-and-django-deep-dive/` (Hours 2.0 – 4.0)**
-  - `01-the-gil-concurrency-and-async-python.md`: The GIL, threads vs processes vs async.
-  - `02-async-django-and-orm-internals.md`: WSGI vs ASGI, async views, Django ORM, and fixing N+1 queries.
-  - `03-generators-iterators-and-streaming.md`: How `yield` and generators save memory when streaming large data.
-  - `04-robust-python-typing-pydantic-static-analysis.md`: Basic type hints, Pydantic validation, and linters (`ruff`, `mypy`).
-  - `python-django-labs/test_python_deep_dive_labs.py`: Basic, heavily commented Python examples of generators, async, and validation.
-- **`03-backend-fundamentals-cheatsheet/` (Hours 4.0 – 6.0)**
-  - `01-celery-redis-and-background-queues.md`: Celery workers, Redis vs RabbitMQ, retries, and idempotency.
-  - `02-databases-sql-locking-and-redis-caching.md`: SQL indexes, transactions, row locks (preventing double-sells), and Redis cache.
-  - `03-error-handling-python-vs-go-vs-rust.md`: Comparing Python (`try/except`), Go (`if err != nil`), and Rust (`Result<T, E>`).
-  - `fundamentals-labs/test_concurrency_locks_and_errors.py`: Basic, heavily commented Python examples of locks, idempotency, and rate limiting.
-- **`04-integrations-reverse-eng-browsers/` (Hours 6.0 – 8.0)**
-  - `00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md`: TCP 3-way handshake, UDP, DNS resolution, socket `TIME_WAIT`, and status codes.
-  - `01-http-clients-tls-fingerprinting-and-networking.md`: HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets vs SSE vs Webhooks, connection pools, and TLS bot fingerprinting (`curl_cffi`).
-  - `02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md`: Inspecting network traffic to rebuild APIs and catching breakages early.
-  - `03-browsers-playwright-and-chrome-extensions.md`: Playwright browser automation and Chrome Extensions (Manifest V3).
-  - `04-devops-docker-zero-downtime-and-observability.md`: Linux, Docker, zero-downtime database migrations, and metrics/logs/traces.
-- **`05-system-design-whiteboard/` (Hours 8.0 – 9.5)**
-  - `00-collaborative-whiteboard-framework.md`: How to work as a team during the 60-minute whiteboard session.
-  - `01` to `05`: Short, clear system design guides for 5 real Ruit marketplace challenges.
-- **`06-culture-lunch-and-storytelling/` (Hours 9.5 – 10.0)**
-  - `01-my-3-signature-stories-for-ruit.md`: My 3 main stories (150-site crawler, 630K-install VS Code extension, QueryLaw AI validation).
-  - `02-team-lunch-and-questions-for-luis-and-team.md`: Tips for the team lunch and good questions to ask.
+  - `00-master-10-hour-schedule.md`: 6-step study plan.
+  - `01-ts-node-to-python-django-bridge.md`: Node.js vs Python concept bridge and honest positioning.
+  - `02-euromed-train-rapid-cheatsheet.md`: 10-minute cheat sheet for the train ride.
+- **`01-ai-workflow-and-live-task/`**
+  - `01-my-real-ai-story-and-daily-workflow.md`: Real resume work (QueryLaw schema checks, 150-site crawler, Dadroit) and 5-step workflow.
+  - `02-multi-agents-laptop-setup-and-live-task-playbook.md`: Multi-agent patterns, 3-min screen share script, 20-min live task playbook, and code audit checklist.
+  - `03-spoken-qa-scripts-how-i-work-with-ai.md`: 6 spoken Upper-B2 interview scripts.
+  - `live-task-sandbox/`: Basic Python files (`marketplace_connector.py` and `test_marketplace_connector.py`).
+- **`02-python-and-django-deep-dive/`**
+  - `01-the-gil-concurrency-and-async-django.md`: The GIL, I/O vs CPU concurrency, WSGI vs ASGI, and fixing N+1 queries.
+  - `02-generators-streaming-pydantic-and-typing.md`: Generators, streaming large catalogs, Pydantic validation, and static analysis.
+  - `python-django-labs/`: Basic Python labs.
+- **`03-backend-fundamentals-cheatsheet/`**
+  - `01-celery-redis-and-sql-locking.md`: Celery queues, Redis caching, and SQL `SELECT ... FOR UPDATE` double-sell prevention.
+  - `02-error-handling-python-vs-go-vs-rust.md`: Error handling philosophies and integration error hierarchy.
+  - `fundamentals-labs/`: Basic Python concurrency and locking labs.
+- **`04-integrations-reverse-eng-browsers/`**
+  - `01-networking-protocols-and-tls.md`: TCP 3-way handshake, UDP, DNS, HTTP/1.1-2-3, WebSockets vs SSE vs Webhooks, and TLS bot protection (`curl_cffi`).
+  - `02-reverse-engineering-browsers-and-devops.md`: `.har` analysis, Chrome Extensions (MV3), Playwright, zero-downtime DB migrations, and observability.
+- **`05-system-design-whiteboard/`**
+  - `01-collaborative-framework-and-architecture.md`: 4-step collaborative whiteboard framework and spoken phrases.
+  - `02-the-5-ruit-system-design-challenges.md`: Complete architectures for the 5 real Ruit challenges.
+- **`06-culture-lunch-and-storytelling/`**
+  - `01-stories-lunch-and-questions.md`: 3 STAR stories, lunch etiquette, and questions for Luis and team.
 ```

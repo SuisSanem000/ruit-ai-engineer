@@ -1,39 +1,33 @@
-# Node.js / TypeScript to Python / Django Bridge
+# 01 — TS/Node to Python/Django Bridge & Honest Story
 
-## 1. How to Be Open & Confident About Your Python Level
-
-- **What to say honestly to Luis and the team:**
-  - *"I want to be completely open with you: I have never used Python or Django in production. My 9+ years of production backend work are in Node.js, TypeScript, SQL, Redis, and Delphi. I have only used Python in basic side projects and reviewed the syntax and Django concepts for this interview."*
-  - *"However, the hardest problems in marketplace integrations—like database locks, background queues, retries, rate limits, web scraping, JSON validation, and system design—are the exact same problems I have solved for years. With AI agents and automated tests, writing the Python syntax is the easiest part."*
+> **Your Honest Positioning:** You have 9+ years in Node.js/TypeScript, SQL, Redis, and Delphi. You have **never used Python or Django in production**, only in basic side projects and syntax review. Core backend principles are identical.
 
 ---
 
-## 2. Tool & Concept Comparison (Your Stack vs Ruit's Stack)
+## 1. Quick Concept Bridge: TypeScript/Node.js vs. Python/Django
 
-- **Runtime & Async:**
-  - **Node.js:** Single-threaded Event Loop (`async/await` by default).
-  - **Python:** Synchronous by default, uses the **GIL** (one thread runs Python code at a time), and uses **`asyncio`** for async network calls or **multiple processes** for heavy CPU work.
-- **Web Framework:**
-  - **NestJS / Express:** Handles HTTP routes, middleware, and controllers.
-  - **Django:** Full web framework with built-in database models (ORM), migrations, auth, and an admin panel.
-- **Server Mode:**
-  - **Node HTTP Server:** Handles async requests and WebSockets natively.
-  - **WSGI vs ASGI in Django:** **WSGI** (`Gunicorn`) is for normal synchronous requests; **ASGI** (`Uvicorn`) is for `async` requests and WebSockets.
-- **JSON Validation:**
-  - **AJV / Zod (what you used at QueryLaw):** Checks that JSON matches a strict schema.
-  - **Pydantic:** The standard Python library that checks and cleans JSON data using Python type hints.
-- **Type Checking & Linting:**
-  - **TypeScript (`tsc`) + ESLint/Prettier:** Checks types and code style.
-  - **Python Type Hints + `mypy` / `pyright` + `ruff`:** Checks types and formats Python code fast.
-- **Database ORM:**
-  - **Prisma / TypeORM:** Explicit `await` on every query.
-  - **Django ORM:** Builds SQL queries lazily. Needs `select_related` (SQL JOIN) and `prefetch_related` (second query) to avoid the N+1 query problem.
-- **Background Queues:**
-  - **BullMQ / RabbitMQ in Node:** Runs background jobs outside the HTTP request.
-  - **Celery + Redis / RabbitMQ:** Python worker processes that pick up background tasks (like publishing or deleting a listing) from Redis or RabbitMQ.
-- **HTTP Client:**
-  - **`axios` / `fetch`:** Makes HTTP requests.
-  - **`requests` (sync) / `httpx` (sync & async) / `curl_cffi`:** Python HTTP libraries. Always reuse a client session so it reuses TCP connections.
-- **WebSockets:**
-  - **Socket.IO + Redis (your 60K+ user setup):** Real-time updates across servers.
-  - **Django Channels + Redis Pub/Sub:** The exact same architecture in Django.
+| Concept | Node.js / TypeScript | Python / Django | What to Keep in Mind |
+| :--- | :--- | :--- | :--- |
+| **Runtime & Event Loop** | Single-threaded V8 event loop (libuv). Non-blocking I/O. | CPython has **GIL** (Global Interpreter Lock). `asyncio` runs single-threaded event loop. | For CPU work: Node uses worker threads/clusters; Python uses `multiprocessing` or Celery. |
+| **Async Syntax** | `async function` / `await Promise` | `async def` / `await coroutine` | In Python, calling a coroutine without `await` does not run it; it just returns a coroutine object. |
+| **Package Management** | `npm` / `pnpm`, `package.json`, `node_modules` | `pip` / `uv` / `poetry`, `pyproject.toml`, `.venv` | Python uses virtual environments (`.venv`) to isolate dependencies per project. |
+| **Data Validation** | `Zod` / `AJV` (JSON Schema) | `Pydantic` (`BaseModel`) | Both validate at runtime, parse strings to types, and strip extra fields. |
+| **Web Framework** | Express / Fastify / NestJS | Django (monolith) / FastAPI (microservices) | Django has built-in ORM, admin, auth, and migrations. |
+| **Web Server Interface** | Native Node HTTP server | **WSGI** (sync, e.g. Gunicorn) vs **ASGI** (async, e.g. Uvicorn) | Django async views require ASGI server. |
+| **ORM & Relations** | Prisma / TypeORM / Sequelize | Django ORM | `select_related` = SQL `JOIN` (1-to-1/FK). `prefetch_related` = 2 queries in Python memory (M2M). |
+| **Row Locking** | `SELECT ... FOR UPDATE` via raw SQL or query builder | `Item.objects.select_for_update()` inside `transaction.atomic()` | Locks row until transaction commits to prevent double-selling. |
+| **Background Queues** | BullMQ / Bee-Queue (Redis-backed) | Celery (Redis / RabbitMQ broker) | Celery workers run separate processes. Tasks need `acks_late=True` and idempotency keys. |
+
+---
+
+## 2. Classic Python Gotchas for Node.js Engineers
+
+- **Mutable Default Arguments:** Never write `def add(item, items=[])`. The `[]` is created once at load time and shared across all calls. Use `items=None` and create `items = []` inside.
+- **Synchronous Blocking in Async:** Never run blocking code (e.g., `requests.get()` or normal Django ORM queries) inside `async def` views. It freezes the entire event loop. Use `httpx.AsyncClient` or wrap with `sync_to_async`.
+- **Indentation is Syntax:** Blocks are defined by whitespace, not `{}` braces.
+
+---
+
+## 3. How to Answer "What is your Python experience?" (Upper-B2)
+
+> *"I want to be completely upfront: my 9+ years of production experience are in Node.js, TypeScript, SQL, and Redis. I have not used Python or Django in production—only in personal side projects and syntax review. However, the core backend challenges at Ruit—database locking, async job queues, race conditions, and API integrations—are problems I have solved at scale for years. With my strict testing habits and AI tools, I can write clean, safe Python immediately."*
