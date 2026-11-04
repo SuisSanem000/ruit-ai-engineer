@@ -59,3 +59,4 @@ If Luis asks about your Claude Code setup, switch to VS Code and show these **3 
 > *And third, **Custom Slash Commands** in `.claude/commands/`. I created reusable prompt templates—like `/check-schema` and `/run-lint-test`—so complex multi-step validations run with a single command.*
 >
 > *Combined with Antigravity and Copilot Code Review, this gives me a complete agentic workflow that is fast, safe, and disciplined."*
+

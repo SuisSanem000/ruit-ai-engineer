@@ -31,10 +31,11 @@
 - Read [03-error-handling-python-vs-go-vs-rust.md](../03-backend-fundamentals-cheatsheet/03-error-handling-python-vs-go-vs-rust.md) and review [test_concurrency_locks_and_errors.py](../03-backend-fundamentals-cheatsheet/fundamentals-labs/test_concurrency_locks_and_errors.py) (40 mins).
 
 ### Hours 6–8: Networking, API Reverse Engineering, Browsers & DevOps
-- Read [01-http-clients-tls-fingerprinting-and-networking.md](../04-integrations-reverse-eng-browsers/01-http-clients-tls-fingerprinting-and-networking.md) (30 mins).
-- Read [02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md](../04-integrations-reverse-eng-browsers/02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md) (30 mins).
-- Read [03-browsers-playwright-and-chrome-extensions.md](../04-integrations-reverse-eng-browsers/03-browsers-playwright-and-chrome-extensions.md) (30 mins).
-- Read [04-devops-docker-zero-downtime-and-observability.md](../04-integrations-reverse-eng-browsers/04-devops-docker-zero-downtime-and-observability.md) (30 mins).
+- Read [00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md](../04-integrations-reverse-eng-browsers/00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md) for TCP 3-way handshake, UDP, DNS resolution, socket `TIME_WAIT`, and status codes (25 mins).
+- Read [01-http-clients-tls-fingerprinting-and-networking.md](../04-integrations-reverse-eng-browsers/01-http-clients-tls-fingerprinting-and-networking.md) for HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets vs SSE vs Webhooks, connection pools, and TLS bot protection (25 mins).
+- Read [02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md](../04-integrations-reverse-eng-browsers/02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md) (25 mins).
+- Read [03-browsers-playwright-and-chrome-extensions.md](../04-integrations-reverse-eng-browsers/03-browsers-playwright-and-chrome-extensions.md) (25 mins).
+- Read [04-devops-docker-zero-downtime-and-observability.md](../04-integrations-reverse-eng-browsers/04-devops-docker-zero-downtime-and-observability.md) (20 mins).
 
 ### Hours 8–9.5: System Design Whiteboard Practice
 - Read [00-collaborative-whiteboard-framework.md](../05-system-design-whiteboard/00-collaborative-whiteboard-framework.md) (15 mins).

@@ -72,7 +72,8 @@
   - **Basic Python Code:** [test_concurrency_locks_and_errors.py](./03-backend-fundamentals-cheatsheet/fundamentals-labs/test_concurrency_locks_and_errors.py).
 
 - **4. Hours 6–8: Backend Fundamentals Part 2 (`04-integrations-reverse-eng-browsers/`)**
-  - [ ] [01-http-clients-tls-fingerprinting-and-networking.md](./04-integrations-reverse-eng-browsers/01-http-clients-tls-fingerprinting-and-networking.md) — HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets, and TLS anti-bot checks.
+  - [ ] [00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md](./04-integrations-reverse-eng-browsers/00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md) — TCP 3-way handshake, UDP, DNS resolution, socket `TIME_WAIT`, HTTP methods & status codes cheat sheet.
+  - [ ] [01-http-clients-tls-fingerprinting-and-networking.md](./04-integrations-reverse-eng-browsers/01-http-clients-tls-fingerprinting-and-networking.md) — HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets vs SSE vs Webhooks, connection pools, and TLS bot fingerprinting (`curl_cffi`).
   - [ ] [02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md](./04-integrations-reverse-eng-browsers/02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md) — Rebuilding APIs from network traffic and catching broken integrations early.
   - [ ] [03-browsers-playwright-and-chrome-extensions.md](./04-integrations-reverse-eng-browsers/03-browsers-playwright-and-chrome-extensions.md) — Playwright browser automation and Chrome Extensions.
   - [ ] [04-devops-docker-zero-downtime-and-observability.md](./04-integrations-reverse-eng-browsers/04-devops-docker-zero-downtime-and-observability.md) — Linux, Docker, zero-downtime deployments, and monitoring (metrics, logs, traces).

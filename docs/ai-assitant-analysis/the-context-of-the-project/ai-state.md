@@ -107,3 +107,7 @@ ruit-ai-engineer/
 - **2026-11-04 (Session 16 — Elite Live AI Task Execution & Claude Code OpenRouter Showcase):**
   - Upgraded `05-laptop-setup-and-agentic-workflow-script.md` and `06-live-ai-coding-playbook.md` with minute-by-minute scripts on what to show and what to say out loud (Amateur Chatter vs Elite Harness Engineer).
   - Created `08-claude-code-openrouter-project-showcase.md` detailing the OpenRouter token setup, active project, `CLAUDE.md`, and custom commands in VS Code and terminal.
+- **2026-11-04 (Session 17 — Low-Level Networking & HTTP Protocols Knowledge Base):**
+  - Created `00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md` in Module 4 covering OSI layers, TCP 3-way handshake, UDP, socket `TIME_WAIT` exhaustion, DNS resolution path, HTTP method semantics/idempotency, and the full status codes cheat sheet.
+  - Enhanced `01-http-clients-tls-fingerprinting-and-networking.md` with a direct comparison of WebSockets vs SSE vs Long Polling vs Webhooks and their integration quirks.
+  - Updated `02-euromed-train-rapid-cheatsheet.md`, `00-master-10-hour-schedule.md`, and `README.md`.

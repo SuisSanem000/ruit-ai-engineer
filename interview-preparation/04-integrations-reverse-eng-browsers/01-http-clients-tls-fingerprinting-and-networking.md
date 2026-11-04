@@ -18,15 +18,23 @@
 
 ---
 
-## 2. WebSockets (`ws://` / `wss://`) & Scaling Real-Time Connections
+## 2. Real-Time Protocols & Their Peculiarities (WebSockets vs SSE vs Long Polling vs Webhooks)
 
-- **How WebSockets Work:**
-  - Starts as a normal HTTP `GET` request with an `Upgrade: websocket` header.
-  - The server replies `101 Switching Protocols`, and the TCP connection stays open so both client and server can push messages at any time with almost zero header overhead.
-- **3 Important WebSocket Quirks (From Your 60K+ User Socket.IO Experience):**
-  - **1. Dead / Half-Open Connections:** If a user loses Wi-Fi, the server might not know the socket died. Always send **Ping / Pong heartbeats** every 25 seconds to close dead sockets.
-  - **2. Scaling Across Multiple Servers:** Because WebSockets stay connected to one specific server, if a Celery worker wants to send a message to Seller A, it publishes the message to **Redis Pub/Sub**, and whichever web server holds Seller A's socket forwards it to their browser.
-  - **3. Memory Backpressure:** If the server pushes messages faster than a slow phone can read them, the server's memory buffer fills up. Drop or combine old updates if the buffer grows too large.
+- **HTTP Long Polling:**
+  - Client makes an HTTP request; server holds it open until new data arrives, responds, closes the socket, and client immediately reconnects.
+  - *Peculiarity:* High header and connection overhead, but works through strict corporate proxies that block WebSockets.
+- **Server-Sent Events (SSE / `text/event-stream`):**
+  - A single long-lived standard HTTP connection where the server pushes text events one-way to the client.
+  - *Peculiarities:* Runs over normal HTTP/1.1 or HTTP/2, gets automatic reconnection in browsers for free, and is ideal for one-way streaming (like LLM token streaming or live inventory sync updates). It cannot push from client to server on the same stream.
+- **WebSockets (`ws://` / `wss://`):**
+  - Upgrades an HTTP connection (`101 Switching Protocols`) into a persistent, bidirectional, full-duplex TCP socket.
+  - *3 Important WebSocket Quirks (From Your 60K+ Socket.IO Experience):*
+    - **1. Half-Open Sockets:** Always send **Ping / Pong heartbeats** every 25 seconds to drop dead Wi-Fi connections.
+    - **2. Multi-Server Scaling:** WebSockets are stateful; scale across Django nodes using **Redis Pub/Sub** to route messages to the node holding the user's socket.
+    - **3. Memory Buffers:** If a slow client cannot consume messages as fast as they arrive, the server must drop old updates or apply backpressure.
+- **Webhooks (Server-to-Server Push):**
+  - The marketplace server calls Ruit's API via `POST` when an event occurs (e.g. item sold).
+  - *Peculiarities:* Must verify HMAC signatures (`X-Hub-Signature`) to prevent attackers from sending fake sales, and return `200 OK` within 2 seconds while offloading processing to Celery.
 
 ---
 

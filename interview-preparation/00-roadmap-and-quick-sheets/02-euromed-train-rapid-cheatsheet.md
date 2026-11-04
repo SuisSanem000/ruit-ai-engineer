@@ -54,11 +54,14 @@
 - **Databases & Cache:**
   - **Postgres:** Use indexes on columns used in `WHERE`, `JOIN`, and `ORDER BY` (and `GIN` indexes for `JSONB`). Use **PgBouncer** to pool database connections across many Celery workers.
   - **Redis:** Use for caching, distributed locks, and rate limiting. Add random **jitter** to cache expiration times (TTL) so thousands of cached keys do not expire at the exact same second (cache stampede).
-- **Networking & Protocols (HTTP/1.1, HTTP/2, HTTP/3, WebSockets):**
-  - **HTTP/1.1:** One request at a time per TCP connection.
-  - **HTTP/2:** Sends many streams at once over a single TCP connection, but if 1 TCP packet drops, all streams wait (TCP head-of-line blocking).
-  - **HTTP/3 (QUIC):** Runs over **UDP** instead of TCP, so a dropped packet only affects one single stream.
-  - **WebSockets:** Upgrades an HTTP request into a two-way live connection. Scale across multiple servers using **Redis Pub/Sub** and use ping/pong heartbeats to close dead connections.
+- **Networking & Low-Level Protocols (TCP, UDP, DNS, HTTP, WebSockets):**
+  - **TCP 3-Way Handshake:** `SYN` $\rightarrow$ `SYN-ACK` $\rightarrow$ `ACK`. Reliable, ordered, but adds 1 RTT before sending data.
+  - **`TIME_WAIT` Sockets:** OS keeps closed sockets in `TIME_WAIT` for 60s; opening 500 connections/sec without connection pooling exhausts local ports.
+  - **UDP vs TCP:** UDP is connectionless and fire-and-forget (used by DNS and HTTP/3 QUIC to prevent TCP head-of-line blocking).
+  - **DNS Resolution:** App $\rightarrow$ OS cache $\rightarrow$ Recursive resolver $\rightarrow$ Authoritative nameserver. Always reuse HTTP connection pools to avoid adding 20–100ms DNS lookups to every API call.
+  - **HTTP Evolution:** HTTP/1.1 (1 request at a time), HTTP/2 (multiplexing streams over 1 TCP connection, HPACK), HTTP/3 (QUIC over UDP).
+  - **Real-Time Protocols:** WebSockets (full-duplex bidirectional TCP, scaled via Redis Pub/Sub) vs SSE (one-way server-to-client stream over standard HTTP) vs Webhooks (server-to-server HTTP POST with HMAC validation).
+  - **Status Codes:** `401` = expired token (never retry), `403` = bot detected / forbidden, `404` = treat as already delisted, `429` = rate limit (check `Retry-After`), `502` = upstream reverse proxy failure, `504` = upstream timeout.
 - **API Integrations & Reverse Engineering:**
   - Capture web traffic with **Chrome DevTools (`.har` files)** and mobile app traffic with **`mitmproxy`** (mobile APIs break less often because old app versions must keep working).
   - Lock token refreshes in **Redis** so 5 workers do not refresh the same token at the same time and invalidate the seller's login.
