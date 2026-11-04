@@ -16,10 +16,10 @@
 | Section | Target File | Status |
 | :--- | :--- | :--- |
 | **Company & Role** | [COMPANY-AND-PRODUCT-GUIDE.md](./COMPANY-AND-PRODUCT-GUIDE.md) | `[ ] Pending` |
-| **0. Roadmap & Cheat Sheets** | [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) | `[⏳ READING NOW]` |
-| | [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) | `[ ] Pending` |
-| | [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) | `[ ] Pending` |
-| **1. AI Workflow & Live Task** | Files `01` through `08` & `live-task-sandbox/` | `[ ] Pending` |
+| **0. Roadmap & Cheat Sheets** | [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) | `[x] COMPLETED` |
+| | [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) | `[x] COMPLETED` |
+| | [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) | `[x] COMPLETED` |
+| **1. AI Workflow & Live Task** | Files `01` through `08` & `live-task-sandbox/` | `[⏳ READING NOW]` |
 | **2. Python & Django Deep Dive** | Files `01` through `04` & `python-django-labs/` | `[ ] Pending` |
 | **3. Backend Fundamentals (Queues, DB, Cache)** | Files `01` through `03` & `fundamentals-labs/` | `[ ] Pending` |
 | **4. Integrations, Reverse Eng, Browsers, DevOps** | Files `00` through `04` | `[ ] Pending` |
@@ -42,12 +42,12 @@
 ## 7 Study Modules (10 Hours Total)
 
 - **0. Schedule & Quick Cheat Sheets (`00-roadmap-and-quick-sheets/`)**
-  - [⏳] **[00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md)** — Step-by-step 10-hour study plan *(Currently Reading)*.
-  - [ ] [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) — How your Node.js/TypeScript knowledge maps to Python & Django, plus how to explain your honest Python level.
-  - [ ] [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) — Quick summary of every topic on Luis's email cheat sheet for the train ride.
+  - [x] **[00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md)** — Step-by-step 10-hour study plan.
+  - [x] [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) — How your Node.js/TypeScript knowledge maps to Python & Django, plus how to explain your honest Python level.
+  - [x] [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) — Quick summary of every topic on Luis's email cheat sheet for the train ride.
 
-- **1. Hours 1–2: AI Workflow, Laptop Setup & Live Task (`01-ai-workflow-and-live-task/`)**
-  - [ ] [01-my-real-ai-story-and-daily-workflow.md](./01-ai-workflow-and-live-task/01-my-real-ai-story-and-daily-workflow.md) — Your real resume work (QueryLaw schema checks, 150-site crawler, Dadroit VS Code extension) and daily 5-step workflow. (Zero claims of RAG, fine-tuning, ML deployment, or production Python/Django).
+- **1. Hours 1–2: AI Workflow, Laptop Setup & Live Task (`01-ai-workflow-and-live-task/`)** *(Currently Reading)*
+  - [⏳] [01-my-real-ai-story-and-daily-workflow.md](./01-ai-workflow-and-live-task/01-my-real-ai-story-and-daily-workflow.md) — Your real resume work (QueryLaw schema checks, 150-site crawler, Dadroit VS Code extension) and daily 5-step workflow. (Zero claims of RAG, fine-tuning, ML deployment, or production Python/Django).
   - [ ] [02-harness-engineering-step-by-step.md](./01-ai-workflow-and-live-task/02-harness-engineering-step-by-step.md) — How to use **Harness Engineering** to implement an idea, feature, or project safely.
   - [ ] [03-antigravity-claude-code-and-copilot-flow.md](./01-ai-workflow-and-live-task/03-antigravity-claude-code-and-copilot-flow.md) — How you use **Antigravity IDE**, **Claude Code** (OpenRouter token in VS Code & CLI), and **GitHub Copilot Code Review**.
   - [ ] [04-multi-agents-parallel-sessions-skills-and-plugins.md](./01-ai-workflow-and-live-task/04-multi-agents-parallel-sessions-skills-and-plugins.md) — Agents, rules, skills, plugins, and 3 parallel session patterns without race conditions.
