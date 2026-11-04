@@ -37,6 +37,7 @@ Build and maintain the `interview-preparation/` folder with these 7 sections:
   - `05-laptop-setup-and-agentic-workflow-script.md`: How I show my AI setup and 3-minute screen-share script.
   - `06-live-ai-coding-playbook.md`: Step-by-step guide for the 20-minute live AI task.
   - `07-interview-qa-script-how-i-work-with-ai.md`: 8 word-for-word Upper-B2 interview Q&A scripts.
+  - `08-claude-code-openrouter-project-showcase.md`: Claude Code + OpenRouter setup, active project, and `CLAUDE.md`.
   - `live-task-sandbox/`: `README.md` + basic, heavily commented Python files (`marketplace_connector.py` and `test_marketplace_connector.py`).
 - **`02-python-and-django-deep-dive/` (Hours 2.0 – 4.0)**
   - `01-the-gil-concurrency-and-async-python.md`: The GIL, threads vs processes vs async.
@@ -50,7 +51,8 @@ Build and maintain the `interview-preparation/` folder with these 7 sections:
   - `03-error-handling-python-vs-go-vs-rust.md`: Comparing Python (`try/except`), Go (`if err != nil`), and Rust (`Result<T, E>`).
   - `fundamentals-labs/test_concurrency_locks_and_errors.py`: Basic, heavily commented Python examples of locks, idempotency, and rate limiting.
 - **`04-integrations-reverse-eng-browsers/` (Hours 6.0 – 8.0)**
-  - `01-http-clients-tls-fingerprinting-and-networking.md`: HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets, connection pools, and TLS fingerprinting.
+  - `00-low-level-networking-tcp-udp-dns-and-http-fundamentals.md`: TCP 3-way handshake, UDP, DNS resolution, socket `TIME_WAIT`, and status codes.
+  - `01-http-clients-tls-fingerprinting-and-networking.md`: HTTP/1.1 vs HTTP/2 vs HTTP/3, WebSockets vs SSE vs Webhooks, connection pools, and TLS bot fingerprinting (`curl_cffi`).
   - `02-rebuilding-apis-from-network-traffic-and-keeping-integrations-alive.md`: Inspecting network traffic to rebuild APIs and catching breakages early.
   - `03-browsers-playwright-and-chrome-extensions.md`: Playwright browser automation and Chrome Extensions (Manifest V3).
   - `04-devops-docker-zero-downtime-and-observability.md`: Linux, Docker, zero-downtime database migrations, and metrics/logs/traces.
