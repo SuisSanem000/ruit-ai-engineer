@@ -7,7 +7,15 @@
 
 ---
 
-## Study Folders (10 Hours Total)
+## Study Folders (10 Hours Total + Dedicated 2–4 Hour AI Workflow Deep Dive)
+
+- **★ Dedicated AI Workflow Deep Dive (`ai-workflow/` — 2 to 4 Hours):**
+  - [ai-workflow/README.md](./ai-workflow/README.md) — 2-to-4-hour study plan for your daily AI workflow.
+  - [01-my-real-ai-story-and-daily-workflow.md](./ai-workflow/01-my-real-ai-story-and-daily-workflow.md) — Your real resume story (QueryLaw AJV schema checks, 150-site crawler, no RAG/fine-tuning/Python claims) and daily 5-step AI workflow.
+  - [02-harness-engineering-step-by-step.md](./ai-workflow/02-harness-engineering-step-by-step.md) — How to use **Harness Engineering** to implement an idea, feature, or project safely.
+  - [03-antigravity-claude-code-and-copilot-flow.md](./ai-workflow/03-antigravity-claude-code-and-copilot-flow.md) — How you use **Antigravity IDE**, **Claude Code** (OpenRouter token + VS Code), and **GitHub Copilot Code Review**.
+  - [04-multi-agents-parallel-sessions-skills-and-plugins.md](./ai-workflow/04-multi-agents-parallel-sessions-skills-and-plugins.md) — Agents, subagents, skills (`SKILL.md`), plugins, custom commands, and parallel sessions.
+  - [05-interview-qa-script-how-i-work-with-ai.md](./ai-workflow/05-interview-qa-script-how-i-work-with-ai.md) — Word-for-word Upper-B2 Q&A script for Luis's AI workflow questions.
 
 - **0. Schedule & Quick Cheat Sheets (`00-roadmap-and-quick-sheets/`)**
   - [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) — Step-by-step 10-hour study plan.

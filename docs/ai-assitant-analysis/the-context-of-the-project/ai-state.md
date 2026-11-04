@@ -1,8 +1,8 @@
 # Ruit Final Interview — Project Context & AI State
 
-> **Last Updated:** 2026-11-02  
+> **Last Updated:** 2026-11-04  
 > **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival $\rightarrow$ `13:00h–16:00h` @ Lanzadera, Valencia)  
-> **Status:** All Modules (0–6) Updated to Short Bullet Lists, Upper-B2 English, and Basic Python Code
+> **Status:** All Modules (0–6) + Dedicated `interview-preparation/ai-workflow/` (2–4h Deep Dive) Completed in Upper-B2 English
 
 ---
 
@@ -20,12 +20,13 @@
 - **Main Strengths (9+ Years Experience):**
   - Built **Dadroit JSON Generator** VS Code extension in 3 days (630K+ installs) and worked on a desktop JSON Viewer (60K+ users).
   - Built a **news crawler for 150+ websites** (60K+ daily users) at Parsaiane with OpenAI summarization.
-  - Built **QueryLaw's AI legal platform** (95%+ accuracy using prompt engineering, JSON Schema/AJV validation, and error monitoring).
+  - Built **QueryLaw's AI legal platform** (95%+ accuracy using prompt engineering, strict **JSON Schema/AJV validation checks**, retry/repair loops, and error monitoring — **no** RAG, fine-tuning, or ML model deployment).
   - Strong backend architecture experience in **Node.js/TypeScript**, PostgreSQL, Redis, RabbitMQ, Socket.IO (60K+ concurrent users), and Docker.
+  - **Daily AI Coding Setup:** Uses **Harness Engineering**, **Antigravity IDE** (agents, skills, rules, subagents), **Claude Code** in VS Code & terminal via **OpenRouter token** (`CLAUDE.md`, Plan Mode, `/compact`, custom commands, skills), and **GitHub Copilot Code Review** on diffs and PRs.
 - **Honest Python & Django Positioning:**
-  - Simin has **never used Python or Django in production**.
-  - She has used Python in **basic side projects** and **reviewed Python syntax and Django concepts** for this interview.
-  - She is 100% open about this. She answers architecture questions using her 9+ years of backend experience and writes **simple, basic Python** with the help of AI agents and tests.
+  - Simin has **no production experience with Python or Django**.
+  - She has only used Python in **basic side projects** and **reviewed basic Python syntax** for this interview.
+  - She is 100% open about this. She answers architecture questions using her 9+ years of backend experience and uses her AI Harness Engineering workflow to write and verify **simple, basic Python**.
 
 ---
 
@@ -67,6 +68,7 @@ ruit-ai-engineer/
 │           └── master-prompt.md                # Master prompt
 └── interview-preparation/
     ├── README.md                               # Short index of all folders
+    ├── ai-workflow/                            # Dedicated 2–4h AI Workflow & Harness Engineering deep dive
     ├── 00-roadmap-and-quick-sheets/            # 10-hour plan, TS->Python bridge, train cheat sheet
     ├── 01-ai-workflow-and-live-task/           # Laptop demo guide, live task steps, basic Python sandbox
     ├── 02-python-and-django-deep-dive/         # GIL, Async Django, Generators, Typing + basic Python lab
@@ -96,3 +98,5 @@ ruit-ai-engineer/
 - **2026-11-02 (Sessions 1–12):** Initialized context, git repo, and all `interview-preparation/` folders; synced paths after moving `resources/` and `ai-assitant-analysis/` into `docs/`.
 - **2026-11-02 (Session 13 — B2 English, Short Bullet Lists & Basic Python Update):**
   - Updated all AI rules, `.md` guides, and `.py` files to use short bullet lists, Upper-B2 English, no code in `.md` files, and simple, well-commented basic Python code.
+- **2026-11-04 (Session 14 — Dedicated `ai-workflow/` Study Folder):**
+  - Created `interview-preparation/ai-workflow/` (`README.md` + `01` through `05`) covering Simin's real QueryLaw schema-check story (no RAG/fine-tuning), Harness Engineering, Antigravity IDE, Claude Code via OpenRouter in VS Code/CLI, GitHub Copilot Code Review flow, multi-agent parallel sessions, and word-for-word Upper-B2 Q&A scripts.
