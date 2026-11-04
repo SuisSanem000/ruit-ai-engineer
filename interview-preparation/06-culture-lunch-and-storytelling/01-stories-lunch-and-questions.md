@@ -49,3 +49,4 @@
   - *"How has your journey inside Lanzadera been so far, and what is Ruit's biggest milestone over the next 6 months?"*
   - *"Beyond Vinted, Wallapop, and eBay, which new marketplaces or European countries are most requested by your sellers?"*
   - *"What does a great first 30 days look like for someone joining as Senior Integrations Engineer?"*
+

@@ -35,3 +35,4 @@
 - **Static Analysis Tooling:**
   - **`ruff`:** Extremely fast linter and formatter that replaces Flake8, Black, and isort.
   - **`mypy`:** Static type checker enforcing type safety across the codebase.
+

@@ -56,3 +56,4 @@
     - *Low urgency + high bot risk (bulk listing imports):* Route to **Chrome Extension** (uses real residential home IP and genuine browser session for free).
     - *High urgency (immediate delist of sold item at 3:00 AM):* If the extension is offline for >15s, fall back to **Celery Cloud Worker + Residential Proxy**.
   - **Redis Lease Lock:** Before either the extension or cloud worker executes a delist job, it claims a 60-second Redis lock (`job_lock:{job_id}`) so both never execute the same action concurrently.
+

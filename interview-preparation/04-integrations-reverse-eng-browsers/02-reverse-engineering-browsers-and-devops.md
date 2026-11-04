@@ -42,3 +42,4 @@
   - **Metrics (Prometheus / Grafana):** Request count, error rates (`401`, `429`, `5xx`), latency p95/p99, and Celery queue length per marketplace.
   - **Structured Logs (`structlog`):** JSON logs with `seller_id`, `item_id`, and `marketplace`.
   - **Traces (OpenTelemetry / Sentry):** Follow an event from the webhook entry point down to the Celery worker and external marketplace HTTP call.
+

@@ -45,3 +45,4 @@
   - Alternative without database locks: Each row has an integer `version`.
   - Execute `UPDATE items SET status = 'sold', version = version + 1 WHERE id = item_id AND version = current_version;`.
   - If 0 rows are updated, another worker won the race—abort and notify the user.
+

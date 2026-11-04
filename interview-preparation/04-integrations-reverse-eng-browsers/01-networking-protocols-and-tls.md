@@ -48,3 +48,4 @@
   - `404 Not Found`: In delist workers, treat as already delisted (success).
   - `429 Too Many Requests`: Rate limit hit $\rightarrow$ Parse `Retry-After` header and back off with jitter.
   - `502 Bad Gateway` vs. `504 Gateway Timeout`: `502` means reverse proxy got bad response; `504` means upstream timed out.
+

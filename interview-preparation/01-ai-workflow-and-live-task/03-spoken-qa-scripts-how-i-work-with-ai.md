@@ -31,3 +31,4 @@
 
 ### Q6: "Since you haven't used Python or Django in production, how do you ensure the code is production-ready?"
 > *"My 9+ years of backend production experience are in Node.js, TypeScript, SQL, and Redis. The core backend challenges—database locks, async job queues, rate limiting, and schema validation—are language-agnostic principles I've solved for years. When writing Python, I instruct the AI to write **simple, basic Python** with explanatory comments, and I enforce a strict harness with **Pydantic validation, `pytest`, `ruff`, and `mypy`**. I never ship code I cannot explain and verify."*
+

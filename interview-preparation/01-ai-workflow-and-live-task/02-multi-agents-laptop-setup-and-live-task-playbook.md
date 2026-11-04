@@ -49,3 +49,4 @@
 3. **No Silent Exceptions:** Catch specific custom exceptions (`RetryableError`, `AuthExpiredError`), never bare `except Exception: pass`.
 4. **Non-Blocking Sleep:** Use `await asyncio.sleep()`, never blocking `time.sleep()`.
 5. **Idempotency on Retries:** Send unique idempotency keys on non-idempotent calls (`POST`).
+

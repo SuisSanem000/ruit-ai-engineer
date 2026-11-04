@@ -33,3 +33,4 @@
 - **Background Orchestration:** Celery worker processes job asynchronously from Redis queue (`delist_urgent` vs `bulk_sync`).
 - **External Integration:** Python connector uses `httpx.AsyncClient` or `curl_cffi` with connection pooling, explicit timeouts, and exponential backoff retries.
 - **Data Validation:** Strict Pydantic models validate raw JSON and trigger alerts if schema drift occurs.
+

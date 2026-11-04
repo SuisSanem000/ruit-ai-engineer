@@ -27,3 +27,4 @@ Because Python exceptions can be implicit, structure integration errors explicit
 2. **Explicit Result Pattern (Rust/Go-Style in Python):**
    - For batch synchronization across 5 marketplaces, returning an explicit `Result(success=True/False, error_code=...)` avoids crashing the entire batch when one marketplace is down.
 3. **No Bare Exceptions:** Never write `except Exception: pass`. Catch specific errors, log context (item ID, marketplace), and handle or re-raise.
+
