@@ -1,31 +1,43 @@
-# Ruit Final Interview Preparation (10-Hour Guide)
+# Ruit Final Interview Preparation (10-Hour Master Guide)
 
-- **Candidate:** Simin Shoeibi
-- **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival, `13:00h–16:00h` interviews @ Lanzadera, Valencia)
-- **Main Source:** Luis Grau's email cheat sheet ([`docs/resources/first emails.md`](../docs/resources/first%20emails.md))
-- **AI Project Files:** [`ai-state.md`](../docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) | [`master-prompt.md`](../docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md)
+> **Position Applying For:** **Senior Backend Engineer, Integrations (Python)**  
+> *(Note: Luis confirmed in writing that you applied for multiple roles and are being considered for both **Senior Backend Engineer** and **Senior Full Stack Engineer, Integrations (Python) / AI Engineer** with this single process).*
+>
+> - **Candidate:** Simin Shoeibi
+> - **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival, `13:00h–16:00h` interviews @ Lanzadera, Valencia)
+> - **Company & Product Guide:** Read [COMPANY-AND-PRODUCT-GUIDE.md](./COMPANY-AND-PRODUCT-GUIDE.md) for full company background, product features, founding team, and funding.
+> - **Main Source:** Luis Grau's email cheat sheet ([`docs/resources/first emails.md`](../docs/resources/first%20emails.md))
+> - **AI Project Files:** [`ai-state.md`](../docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) | [`master-prompt.md`](../docs/ai-assitant-analysis/the-context-of-the-project/master-prompt.md)
 
 ---
 
-## Study Folders (10 Hours Total + Dedicated 2–4 Hour AI Workflow Deep Dive)
+## Master Company & Role Guide
 
-- **★ Dedicated AI Workflow Deep Dive (`ai-workflow/` — 2 to 4 Hours):**
-  - [ai-workflow/README.md](./ai-workflow/README.md) — 2-to-4-hour study plan for your daily AI workflow.
-  - [01-my-real-ai-story-and-daily-workflow.md](./ai-workflow/01-my-real-ai-story-and-daily-workflow.md) — Your real resume story (QueryLaw AJV schema checks, 150-site crawler, no RAG/fine-tuning/Python claims) and daily 5-step AI workflow.
-  - [02-harness-engineering-step-by-step.md](./ai-workflow/02-harness-engineering-step-by-step.md) — How to use **Harness Engineering** to implement an idea, feature, or project safely.
-  - [03-antigravity-claude-code-and-copilot-flow.md](./ai-workflow/03-antigravity-claude-code-and-copilot-flow.md) — How you use **Antigravity IDE**, **Claude Code** (OpenRouter token + VS Code), and **GitHub Copilot Code Review**.
-  - [04-multi-agents-parallel-sessions-skills-and-plugins.md](./ai-workflow/04-multi-agents-parallel-sessions-skills-and-plugins.md) — Agents, subagents, skills (`SKILL.md`), plugins, custom commands, and parallel sessions.
-  - [05-interview-qa-script-how-i-work-with-ai.md](./ai-workflow/05-interview-qa-script-how-i-work-with-ai.md) — Word-for-word Upper-B2 Q&A script for Luis's AI workflow questions.
+- **[COMPANY-AND-PRODUCT-GUIDE.md](./COMPANY-AND-PRODUCT-GUIDE.md)**
+  - Exact role breakdown (**Senior Backend Engineer, Integrations**).
+  - Ruit's mission: *"We want second-hand to become the first way everyone in Europe shops."*
+  - Key investors: **Angels Capital** (Mercadona / Juan Roig), **Decelera**, **Abac**, **Successful Fund** (~€1M raised, target €1M ARR by 2027).
+  - Product deep dive: 1-photo AI catalog listing, instant cross-listing, inventory anti-double-sell sync, Chrome Extension + Celery cloud workers.
+  - Team: CEO **Luis Grau** and Founding Engineer **Alonso Veliz Garcia** (Python, Django, Rust).
+
+---
+
+## 7 Study Modules (10 Hours Total)
 
 - **0. Schedule & Quick Cheat Sheets (`00-roadmap-and-quick-sheets/`)**
   - [00-master-10-hour-schedule.md](./00-roadmap-and-quick-sheets/00-master-10-hour-schedule.md) — Step-by-step 10-hour study plan.
   - [01-ts-node-to-python-django-bridge.md](./00-roadmap-and-quick-sheets/01-ts-node-to-python-django-bridge.md) — How your Node.js/TypeScript knowledge maps to Python & Django, plus how to explain your honest Python level.
   - [02-euromed-train-rapid-cheatsheet.md](./00-roadmap-and-quick-sheets/02-euromed-train-rapid-cheatsheet.md) — Quick summary of every topic on Luis's email cheat sheet for the train ride.
 
-- **1. Hours 1–2: AI Setup & Live Task (`01-ai-workflow-and-live-task/`)**
-  - [01-laptop-setup-and-agentic-workflow-script.md](./01-ai-workflow-and-live-task/01-laptop-setup-and-agentic-workflow-script.md) — How to show your laptop, AI agents, skills, plugins, and parallel sessions.
-  - [02-live-ai-coding-playbook.md](./01-ai-workflow-and-live-task/02-live-ai-coding-playbook.md) — Simple 5-step plan for the 20-minute live AI task.
-  - [live-task-sandbox/README.md](./01-ai-workflow-and-live-task/live-task-sandbox/README.md) — 3 practice tasks.
+- **1. Hours 1–2: AI Workflow, Laptop Setup & Live Task (`01-ai-workflow-and-live-task/`)**
+  - [01-my-real-ai-story-and-daily-workflow.md](./01-ai-workflow-and-live-task/01-my-real-ai-story-and-daily-workflow.md) — Your real resume work (QueryLaw schema checks, 150-site crawler, Dadroit VS Code extension) and daily 5-step workflow. (Zero claims of RAG, fine-tuning, ML deployment, or production Python/Django).
+  - [02-harness-engineering-step-by-step.md](./01-ai-workflow-and-live-task/02-harness-engineering-step-by-step.md) — How to use **Harness Engineering** to implement an idea, feature, or project safely.
+  - [03-antigravity-claude-code-and-copilot-flow.md](./01-ai-workflow-and-live-task/03-antigravity-claude-code-and-copilot-flow.md) — How you use **Antigravity IDE**, **Claude Code** (OpenRouter token in VS Code & CLI), and **GitHub Copilot Code Review**.
+  - [04-multi-agents-parallel-sessions-skills-and-plugins.md](./01-ai-workflow-and-live-task/04-multi-agents-parallel-sessions-skills-and-plugins.md) — Agents, rules, skills, plugins, and 3 parallel session patterns without race conditions.
+  - [05-laptop-setup-and-agentic-workflow-script.md](./01-ai-workflow-and-live-task/05-laptop-setup-and-agentic-workflow-script.md) — 5-minute pre-interview checklist and 3-minute screen-share presentation script for Luis.
+  - [06-live-ai-coding-playbook.md](./01-ai-workflow-and-live-task/06-live-ai-coding-playbook.md) — 5-step calm strategy for the 20-minute live AI coding task.
+  - [07-interview-qa-script-how-i-work-with-ai.md](./01-ai-workflow-and-live-task/07-interview-qa-script-how-i-work-with-ai.md) — 8 word-for-word Upper-B2 spoken interview answers.
+  - [live-task-sandbox/README.md](./01-ai-workflow-and-live-task/live-task-sandbox/README.md) — Hands-on basic Python integration sandbox (`pytest` passing).
   - **Basic Python Code:** [marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/marketplace_connector.py) & [test_marketplace_connector.py](./01-ai-workflow-and-live-task/live-task-sandbox/test_marketplace_connector.py).
 
 - **2. Hours 2–4: Python & Django Basics (`02-python-and-django-deep-dive/`)**

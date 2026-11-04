@@ -76,7 +76,7 @@
 
 ---
 
-## 3. Working with AI (How You Work Daily — Deep Dive in `ai-workflow/`)
+## 3. Working with AI (How You Work Daily — Deep Dive in `01-ai-workflow-and-live-task/`)
 
 - **Harness Engineering Philosophy:** AI is a fast engine, but you wrap it in a strict harness (context files, schemas, automated tests, linters, and review loops) so its output is always safe and reliable.
 - **Real Resume Experience (No RAG/Fine-Tuning/Deploy Claims):** At QueryLaw, you built a strict validation pipeline using prompt engineering, JSON Schema / AJV checks, and automated retry loops (95%+ accuracy). At Parsaiane, you crawled 150+ news sites and used OpenAI to summarize.
