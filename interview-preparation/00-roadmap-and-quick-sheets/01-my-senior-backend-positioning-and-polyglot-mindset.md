@@ -24,3 +24,4 @@
 > My foundation is 9+ years of backend systems engineering in Node.js, TypeScript, SQL, and Redis. The core challenges at Ruit—preventing double-selling across marketplaces with database locking, decoupling slow external APIs with background queues, handling rate limits, and catching schema breakages—are backend systems problems that I have designed and solved at scale.
 >
 > When it comes to writing code in a new stack like Python, I don't guess syntax. I practice **Harness Engineering**: I define the data schemas, error hierarchies, and test contracts, and I use my AI agentic workflow (Antigravity IDE and Claude Code via OpenRouter) to generate the implementation, run automated tests in the terminal, and verify the diff. My value to Ruit is senior system architecture, operational resilience, and elite AI orchestration."*
+
