@@ -1,6 +1,6 @@
 # 02 — Multi-Agents, Laptop Setup & Elite Live Task Playbook
 
-> **Interview 1 Goals (45–60 mins):** Screen share your AI setup (3 mins), complete a live task with AI (20 mins), and answer technical fundamentals.
+> **Interview 1 Goals (45–60 mins):** Screen share your AI setup (3 mins), complete a live task with AI (20 mins), and articulate your architectural invariants.
 
 ---
 
@@ -11,7 +11,7 @@
   - **Skills (`SKILL.md`):** On-demand playbooks. Only name and description load initially; full instructions load only when needed (saves 90% of tokens).
   - **Plugins / MCPs:** Bundle skills, rules, and external tool servers (database inspector, browser tool).
 - **3 Parallel Session Patterns (Without Conflicts):**
-  - **Pattern 1 (Builder + Tester):** Session A writes the connector implementation while Session B writes `pytest` unit tests with offline mock fixtures.
+  - **Pattern 1 (Builder + Tester):** Session A writes the connector implementation while Session B writes automated unit tests with offline mock fixtures.
   - **Pattern 2 (Coder + Research Subagent):** Main agent codes the feature while a read-only research subagent parses a giant `.har` file and returns a 10-line schema summary.
   - **Pattern 3 (Separate Features / Hotfixes):** Use separate workspace folders or `git worktree` so parallel agents run tests independently without Git collisions.
 - **The Golden Rule:** Never let two agents edit the same file simultaneously.
@@ -37,16 +37,15 @@
 | What the Amateur Chatter Does (Avoid) | What You Do as an Elite AI Engineer (Your Playbook) |
 | :--- | :--- |
 | Types a prompt immediately into chat. | Asks 2 clarifying questions first about failure modes (`401`, `429`) and concurrency. |
-| Writes logic before knowing the data shape. | Defines strict **Pydantic models and custom error classes** first. |
+| Writes logic before knowing the data shape. | Defines strict **data schemas and custom error classes** first. |
 | Manually copies and pastes terminal errors back and forth. | Lets the agent run tests and linters in the terminal and **self-correct autonomously**. |
-| Tests manually by making live web requests. | Tests completely offline using **`httpx.MockTransport`** fixtures. |
+| Tests manually by making live web requests. | Tests completely offline using **mock network transport** fixtures. |
 | Blindly accepts AI code without checking. | Audits the code out loud for **timeouts, connection pools, and blocking calls**. |
 | Leaves messy, untested files. | Runs **Copilot Code Review** on the Git diff and makes a clean, atomic Git commit. |
 
-### The 5 Senior Code Audit Checks to Mention Out Loud:
-1. **Connection Pooling:** Reuse a single `httpx.AsyncClient` session (avoid creating clients inside loops).
-2. **Explicit Timeouts:** Set connection and read timeouts on every HTTP call.
-3. **No Silent Exceptions:** Catch specific custom exceptions (`RetryableError`, `AuthExpiredError`), never bare `except Exception: pass`.
-4. **Non-Blocking Sleep:** Use `await asyncio.sleep()`, never blocking `time.sleep()`.
+### The 5 Senior Architectural Checks to Mention Out Loud:
+1. **Connection Pooling:** Reuse a single HTTP client session (avoid creating new clients inside loops).
+2. **Explicit Timeouts:** Set connection and read timeouts on every external call.
+3. **No Silent Exceptions:** Catch specific custom exceptions (`RetryableError`, `AuthExpiredError`), never swallow errors silently.
+4. **Non-Blocking Execution:** Ensure asynchronous sleeps and non-blocking I/O so the event thread is never frozen.
 5. **Idempotency on Retries:** Send unique idempotency keys on non-idempotent calls (`POST`).
-

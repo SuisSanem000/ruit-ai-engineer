@@ -1,11 +1,11 @@
 # 03 — Spoken Q&A Scripts: How I Work with AI & Claude Code
 
-> **Practice Out Loud (Upper-B2):** 6 ready-to-speak answers covering Luis's exact email cheat sheet questions.
+> **Practice Out Loud (Upper-B2):** 6 ready-to-speak answers covering Luis's exact email cheat sheet questions, reflecting your honest background.
 
 ---
 
 ### Q1: "Walk us through how you work with AI on a daily basis when coding."
-> *"I work with AI using a structured workflow I call **Harness Engineering**. I don't just type a prompt and copy code. I use **Antigravity IDE** and **Claude Code in VS Code** (connected via an **OpenRouter token**) as my primary builders. I maintain a living state file (`ai-state.md` or `CLAUDE.md`) so the agent knows the project rules. For every feature, I start in **Plan Mode**, define data schemas and error types first, let the agent write code and iterate on terminal tests (`pytest`, `ruff`) until they pass, and review the Git diff with **GitHub Copilot Code Review** before committing."*
+> *"I work with AI using a structured workflow I call **Harness Engineering**. I don't just type a prompt and copy code. I use **Antigravity IDE** and **Claude Code in VS Code** (connected via an **OpenRouter token**) as my primary builders. I maintain a living state file (`ai-state.md` or `CLAUDE.md`) so the agent knows the project rules. For every feature, I start in **Plan Mode**, define data schemas and error types first, let the agent write code and iterate on terminal test suites until they pass, and review the Git diff with **GitHub Copilot Code Review** before committing."*
 
 ---
 
@@ -20,15 +20,16 @@
 ---
 
 ### Q4: "How do you use Skills, Plugins, and parallel sessions?"
-> *"I keep context windows small and focused. **Rules** are always on for style and test commands. **Skills (`SKILL.md`)** are on-demand playbooks that load only when needed, like a checklist for scaffolding a new marketplace adapter. When running in parallel, I follow one strict rule: **two agents never edit the same file**. I run a Builder agent on code while a Test agent creates `pytest` fixtures, or I use a read-only research subagent for large payloads."*
+> *"I keep context windows small and focused. **Rules** are always on for style and test commands. **Skills (`SKILL.md`)** are on-demand playbooks that load only when needed, like a checklist for scaffolding a new marketplace adapter. When running in parallel, I follow one strict rule: **two agents never edit the same file**. I run a Builder agent on code while a Test agent creates mock fixtures, or I use a read-only research subagent for large payloads."*
 
 ---
 
 ### Q5: "Why use GitHub Copilot Code Review if you already have Claude Code or Antigravity?"
-> *"Because the agent that writes the code shares the same blind spots as the prompt I gave it. Before I commit or open a PR, I open the VS Code Git diff and click **GitHub Copilot Code Review**. Having an independent second model audit the diff is great at catching edge cases—like an unhandled `None` value, missing timeout, or security risk—before my teammates see the code."*
+> *"Because the agent that writes the code shares the same blind spots as the prompt I gave it. Before I commit or open a PR, I open the VS Code Git diff and click **GitHub Copilot Code Review**. Having an independent second model audit the diff is great at catching edge cases—like an unhandled null value, missing timeout, or security risk—before my teammates see the code."*
 
 ---
 
-### Q6: "Since you haven't used Python or Django in production, how do you ensure the code is production-ready?"
-> *"My 9+ years of backend production experience are in Node.js, TypeScript, SQL, and Redis. The core backend challenges—database locks, async job queues, rate limiting, and schema validation—are language-agnostic principles I've solved for years. When writing Python, I instruct the AI to write **simple, basic Python** with explanatory comments, and I enforce a strict harness with **Pydantic validation, `pytest`, `ruff`, and `mypy`**. I never ship code I cannot explain and verify."*
-
+### Q6: "You applied for a Python backend role, but your background is Node.js and you don't know Python. How will you work here?"
+> *"I want to be 100% transparent: **I do not know Python, and I have never used it in production.** My expertise is 9+ years of backend systems in Node.js, TypeScript, SQL, and distributed architectures.
+>
+> In today's software engineering, an elite engineer doesn't need to manually type syntax for every language. When working in Python, I direct my AI agents using **Harness Engineering**. I define the architectural boundaries, API schemas, concurrency model, and automated test requirements. The AI generates the implementation, runs the test suite in the terminal, and self-repairs until green. I audit the system invariants—like row locking, idempotency, and timeouts—and verify the diff with Copilot. My core value is senior systems thinking, not language memorization."*

@@ -97,11 +97,11 @@
   - *At Ruit:* You will do this exact same work with marketplace endpoints.
 - **2. Strict Schema Validation & Self-Healing AI (QueryLaw):**
   - At QueryLaw, you built strict **JSON Schema / AJV validation** around LLMs to achieve 95%+ reliability without hallucination.
-  - *At Ruit:* You use **Pydantic** models to validate marketplace responses and AI-generated listings, immediately catching when a marketplace changes its JSON fields.
+  - *At Ruit:* You use strict data contracts and validation schemas to validate marketplace responses and AI-generated listings, immediately catching when a marketplace changes its JSON fields.
 - **3. Real-World Developer Tools (Dadroit VS Code Extension):**
   - Built in 3 days, reached 630K+ installs and 60K+ active users. Shows you ship fast and know how browser/editor extensions work.
   - *At Ruit:* You understand how their Chrome Extension and developer tools work together.
 - **4. High-Concurrency Backend Systems (9+ Years Experience):**
   - You know how to stop double-sells using database transactions (`SELECT ... FOR UPDATE`), idempotency keys, and Redis locks.
-  - While you are honest that your production experience is in Node.js/TypeScript, SQL, and Redis (not Python/Django), your backend architecture instincts are exactly what Ruit needs.
+  - While you are 100% honest that you do not know Python and have never worked with it, your 9+ years of senior backend architecture and elite AI orchestration are exactly what Ruit needs.
 

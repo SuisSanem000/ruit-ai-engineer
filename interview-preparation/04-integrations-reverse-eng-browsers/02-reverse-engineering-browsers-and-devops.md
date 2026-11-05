@@ -12,7 +12,7 @@
 - **Session Tokens & Centralized Refresh:**
   - Token refresh endpoints must be locked in **Redis** with a distributed lock so multiple workers don't refresh the same token simultaneously and invalidate each other.
 - **Catching Breakages Before Sellers Notice:**
-  - Validate every response against strict **Pydantic** models.
+  - Validate every response against strict **data schemas and contract models**.
   - Track validation failure rates in Redis. If errors spike, open a circuit breaker and alert engineers with a scrubbed diff showing the exact missing or renamed JSON field.
   - Run **synthetic canaries** (test account checks) every 15 minutes during low-traffic periods.
 
@@ -33,13 +33,12 @@
 ## 3. DevOps: Docker, Zero-Downtime Deployments & Observability
 
 - **Linux & Container Signals:**
-  - During deployments, Docker sends **`SIGTERM`**. Celery workers must catch `SIGTERM` and finish active tasks before shutting down (graceful shutdown).
+  - During deployments, Docker sends **`SIGTERM`**. Background workers must catch `SIGTERM` and finish active tasks before shutting down (graceful shutdown).
 - **Zero-Downtime Database Migrations (Expand and Contract):**
   - **Step 1 (Expand):** Add the new column as nullable in Postgres. Deploy new code that writes to both old and new columns.
   - **Step 2 (Backfill):** Run a background script to populate the new column for historical rows in batches.
   - **Step 3 (Contract):** Deploy code that reads only from the new column, then safely drop the old column in a later migration.
 - **The Three Pillars of Observability:**
-  - **Metrics (Prometheus / Grafana):** Request count, error rates (`401`, `429`, `5xx`), latency p95/p99, and Celery queue length per marketplace.
-  - **Structured Logs (`structlog`):** JSON logs with `seller_id`, `item_id`, and `marketplace`.
-  - **Traces (OpenTelemetry / Sentry):** Follow an event from the webhook entry point down to the Celery worker and external marketplace HTTP call.
-
+  - **Metrics (Prometheus / Grafana):** Request count, error rates (`401`, `429`, `5xx`), latency p95/p99, and queue length per marketplace.
+  - **Structured JSON Logs:** Contextual logs containing `seller_id`, `item_id`, and `marketplace`.
+  - **Traces (OpenTelemetry / Sentry):** Follow an event from the webhook entry point down to the background worker and external marketplace HTTP call.

@@ -1,43 +1,41 @@
 # 02 — Train Ride Rapid Cheat Sheet (Barcelona to Valencia)
 
-> **Quick 10-Minute Read:** Key definitions and answers matching Luis's email cheat sheet for Friday morning on the Euromed.
+> **Quick 10-Minute Read:** Key backend systems definitions and AI harness principles matching Luis's interview scope for Friday morning on the Euromed.
 
 ---
 
-## 1. Python, Django & Concurrency
+## 1. Positioning & AI Harness Engineering
 
-- **The GIL (Global Interpreter Lock):** A mutex in CPython that lets only one thread execute Python bytecode at a time. Network/IO calls release the GIL (so `asyncio` handles thousands of connections), but heavy CPU tasks require multiple processes (`multiprocessing` / Celery).
-- **Async Django (WSGI vs ASGI):** WSGI is synchronous (1 request per thread). ASGI runs an async event loop supporting `async def` views and WebSockets. Never run blocking sync queries in async views (raises `SynchronousOnlyOperation`); use `sync_to_async` or async ORM (`aget`, `acount`).
-- **ORM N+1 Queries:** Use `select_related` (SQL `JOIN` for 1-to-1 and ForeignKey) and `prefetch_related` (separate query with `IN (...)` for M2M and reverse relationships).
-- **Generators (`yield`):** Produces values lazily one at a time. Keeps RAM flat when streaming millions of rows or large files. Django's `.iterator(chunk_size=2000)` streams rows in chunks.
-- **Pydantic & Types:** Enforces runtime schema validation on untrusted marketplace JSON, strips whitespace, converts string prices (`"19,50 €"` $\rightarrow$ `19.50`), and detects unexpected fields.
+- **Honest Positioning:** 9+ years backend engineering (Node.js/TypeScript, SQL, Redis). 100% upfront that you **do not know Python**; you orchestrate AI agents (Antigravity IDE, Claude Code via OpenRouter) with strict architectural boundaries, data contracts, and test fixtures.
+- **Harness Engineering (5 Steps):** Context/Rules (`ai-state.md`, `CLAUDE.md`) $\rightarrow$ Plan Mode (`Shift + Tab`) $\rightarrow$ Data Contracts First (Schemas & Error classes) $\rightarrow$ Terminal Verification Loop (autonomous tests/linters) $\rightarrow$ GitHub Copilot Code Review on Git diff.
+- **Multi-Agent Rules:** On-demand Skills (`SKILL.md`) save 90% context. Use read-only subagents for heavy logs/traffic analysis. Golden Rule: Two agents never write to the same file concurrently.
 
 ---
 
-## 2. Backend, Queues, Databases & Error Handling
+## 2. Backend, Queues, Databases & Concurrency
 
-- **Double-Sell Prevention:** Lock the row in PostgreSQL using `SELECT ... FOR UPDATE` inside `transaction.atomic()`. A concurrent sale event waits on the lock, sees `quantity = 0`, and rejects the duplicate order.
-- **Background Queues (Celery + Redis):** Offload slow marketplace calls. Use separate queues by priority (`delist_urgent` vs `bulk_catalog`), `acks_late=True` so failed workers do not lose jobs, and exponential backoff with jitter on retries.
-- **Idempotency Keys:** Unique UUID per task/request. If a network call times out and retries, the server/marketplace recognizes the key and does not perform the action twice.
+- **Double-Sell Prevention:** Lock the inventory row in PostgreSQL using `SELECT ... FOR UPDATE` inside a database transaction (`BEGIN ... COMMIT`). Concurrent sales wait on the lock, see `quantity = 0`, and abort. Alternative: Optimistic locking with a `version` column.
+- **Background Queues (Celery + Redis / RabbitMQ):** Offload slow marketplace HTTP calls. Separate queues by priority (`delist_urgent` vs `bulk_catalog`). Worker safety: `acks_late=True`, unique idempotency keys per task, and exponential backoff with jitter on retries.
+- **Redis Caching:** Cache-aside pattern, random TTL jitter (e.g. 15 mins $\pm$ 60s) to prevent cache stampedes, and cache invalidation on inventory updates.
 - **Error Handling Philosophy:**
-  - **Python:** `try/except` (easy to write, but exceptions can be implicit).
-  - **Go:** Explicit return values `val, err := fn()` (clear, lots of boilerplate).
-  - **Rust:** `Result<T, E>` and `Option<T>` (compiler forces explicit handling of all cases).
-  - *In Ruit Integrations:* Classify errors into **Retryable** (`429`, `503`, timeout), **Auth Expired** (`401` — notify seller to re-login), and **Schema Drift** (log diff, alert engineers).
+  - **Exceptions (Python/JS):** Dynamic, unwinds stack, can be implicit.
+  - **Explicit Errors (Go):** Explicit `val, err := fn()`.
+  - **Algebraic Types (Rust):** Compiler-enforced `Result<T, E>`.
+  - *Ruit Integration Rule:* Categorize errors into Retryable (`429`, `503`, timeouts), Auth Expired (`401` $\rightarrow$ trigger seller re-login), and Schema Drift (alert engineers).
 
 ---
 
 ## 3. Networking, Reverse Engineering, Browsers & DevOps
 
-- **TCP 3-Way Handshake:** `SYN` $\rightarrow$ `SYN-ACK` $\rightarrow$ `ACK`. Reliable, ordered, adds 1 RTT. Closed sockets stay in `TIME_WAIT` for 60s; always use connection pooling (`httpx.AsyncClient`) to avoid port exhaustion and repeated DNS lookups.
+- **TCP 3-Way Handshake:** `SYN` $\rightarrow$ `SYN-ACK` $\rightarrow$ `ACK`. Connection pooling prevents socket exhaustion in `TIME_WAIT` (60s) and avoids repeated DNS lookups.
 - **Protocols Comparison:**
-  - **HTTP/1.1:** 1 request at a time per TCP connection.
-  - **HTTP/2:** Multiplexes many streams over 1 TCP connection, binary framing, `HPACK`. (TCP head-of-line blocking if packet drops).
-  - **HTTP/3 (QUIC):** Over UDP. Independent streams, no TCP head-of-line blocking.
-  - **WebSockets:** Full-duplex bidirectional TCP stream after `101 Switching Protocols` handshake. Scaled across Django servers using **Redis Pub/Sub**; needs ping/pong heartbeats.
+  - **HTTP/1.1:** 1 request per TCP connection; head-of-line blocking.
+  - **HTTP/2:** Multiplexes multiple requests over 1 TCP connection, binary framing.
+  - **HTTP/3 (QUIC):** Runs over UDP; independent streams eliminate TCP head-of-line blocking.
+  - **WebSockets:** Full-duplex bidirectional TCP stream after `101 Switching Protocols` handshake. Scaled horizontally via Redis Pub/Sub.
   - **Server-Sent Events (SSE):** Lightweight 1-way text stream (`text/event-stream`) over HTTP, auto-reconnects.
-  - **Webhooks:** Server-to-server HTTP POST; requires HMAC signature check and immediate 200 response.
-- **TLS Fingerprinting (JA3 / JA4):** Anti-bot systems (Cloudflare, DataDome) inspect the cipher suites in `TLS ClientHello`. Python's `OpenSSL` signature gets blocked; use **`curl_cffi`** to impersonate real Chrome BoringSSL.
-- **Reverse Engineering:** Capture browser traffic via Chrome DevTools (`.har`) or mobile traffic via `mitmproxy`. (Mobile APIs break less frequently).
-- **Chrome Extension (MV3):** Runs in seller's browser using residential IP, cookies, and fingerprint—bypasses bot blocks for free.
-- **DevOps & Observability:** Graceful shutdown with `SIGTERM` in Docker, expand-and-contract zero-downtime DB migrations, and metrics (Prometheus/Grafana), logs (`structlog`), and traces (OpenTelemetry/Sentry).
+  - **Webhooks:** Server-to-server HTTP POST with HMAC signature verification.
+- **TLS Fingerprinting (JA3 / JA4):** Anti-bot protection (Cloudflare, DataDome) inspects cipher suites in `TLS ClientHello`. Python/OpenSSL gets blocked; tools like `curl_cffi` mimic real browser TLS fingerprints.
+- **Reverse Engineering:** Extract undocumented endpoints via `.har` network traffic or mobile APIs (via `mitmproxy`), which are cleaner and break less often.
+- **Chrome Extension (MV3):** Operates directly inside the user's browser, using their residential IP, cookies, and fingerprint to bypass bot detection effortlessly.
+- **DevOps & Observability:** Expand-contract zero-downtime DB migrations, graceful `SIGTERM` shutdown in Docker containers, and full observability (Prometheus metrics, structured logging, distributed tracing with Sentry).
