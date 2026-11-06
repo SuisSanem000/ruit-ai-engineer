@@ -236,3 +236,4 @@ export class TerminalDashboard {
     console.log('═'.repeat(98) + '\n');
   }
 }
+

@@ -70,3 +70,4 @@ echo "   • Run 16-agent orchestrator (instant mock mode):  bun run dev -- --mo
 echo "   • Run 16-agent orchestrator (live OpenRouter):    OPENROUTER_API_KEY=... bun run dev"
 echo "   • Inspect active worktrees:                       git worktree list"
 echo "   • Clean worktrees & feature branches:             bun run clean           (or npm run clean)"
+

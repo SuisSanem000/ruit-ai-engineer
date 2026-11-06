@@ -170,3 +170,4 @@ OPENROUTER_API_KEY="sk-or-v1-..." OPENROUTER_MODEL="google/gemini-2.5-flash" npm
 # 5. Clean teardown (removes all 16 .worktrees/agent-* folders, prunes metadata, deletes feature/agent-* branches)
 npm run clean
 ```
+
