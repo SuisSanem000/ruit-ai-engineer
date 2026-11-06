@@ -83,6 +83,12 @@ ruit-ai-engineer/
 
 ## 5. Change Log
 
+- **2026-11-06 (Session 21 — No-Code Step-by-Step AI Workflow Folder for Today's Interview):**
+  - Created `ai-workflow-step-by-step/` beside `interview-preparation/` and `multi-agent-worktree-orchestrator/` with zero code blocks:
+    - `README.md`: Overview of the 3 parts of the 13:00h AI session.
+    - `01-part1-show-your-laptop-setup.md`: 4 exact steps to show on screen and say in the first 5 minutes.
+    - `02-part2-execute-the-live-ai-task.md`: 6 exact chronological steps to execute the 20-minute live AI task as a Senior Harness Engineer.
+    - `03-part3-agents-skills-plugins-and-parallel-sessions.md`: Step-by-step non-code explanation of Rules vs. Skills vs. Plugins, Subagents, and the 16-Agent Git Worktree parallel architecture.
 - **2026-11-06 (Session 20 — 16-Agent Git Worktree & OpenRouter Concurrency Orchestrator Prototype):**
   - Built `multi-agent-worktree-orchestrator/` beside `interview-preparation/` in TypeScript:
     - `setup.sh`: Automates Git verification on `main`, `.gitignore`, dependency setup (`tsx`, `typescript`), and build verification.
