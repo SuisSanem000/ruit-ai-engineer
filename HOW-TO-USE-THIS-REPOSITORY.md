@@ -95,5 +95,5 @@ When Luis says: *"Show us your setup and how you work with AI"*, follow this seq
 | **[`multi-agent-worktree-orchestrator/`](./multi-agent-worktree-orchestrator/)** | Production 16-agent Git worktree prototype | Run `bun run dev:mock` for a live 3-second terminal demo. |
 | **[`interview-preparation/`](./interview-preparation/)** | 5 consecutive systems design modules (`00` to `04`) | Your technical foundation for the 15:00h whiteboard & lunch. |
 | **[`docs/ai-assitant-analysis/`](./docs/ai-assitant-analysis/)** | Living project state across all sessions (`ai-state.md`) | Demonstrates living memory maintained across 23 sessions. |
-| **[`docs/resources/`](./docs/resources/)** | Original job ad, emails, and CV | Read-only reference documents. |
+| **`docs/resources/`** | Local private resources (CV, emails, job ads) | Kept locally on disk; excluded from Git via `.gitignore` for privacy. |
 

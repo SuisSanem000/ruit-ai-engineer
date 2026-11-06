@@ -88,6 +88,9 @@ ruit-ai-engineer/
 
 ## 5. Change Log
 
+- **2026-11-06 (Session 24 — Git Publishing Security & Privacy Guard):**
+  - Added production-grade root `.gitignore` protecting secrets, `.env*`, `.worktrees`, `node_modules`, build artifacts, and OS files (`.DS_Store`).
+  - Untracked `docs/resources/` from Git (`git rm -r --cached`) so private recruiter emails, phone numbers, and CV remain safe locally on machine and are excluded from public GitHub.
 - **2026-11-06 (Session 23 — Complete Architecture Streamlining & Copilot Review Fixes):**
   - Resolved all Copilot review findings: removed duplicate table entries, fixed stale directory links in `master-prompt.md`, and resolved trailing whitespace and EOF newline issues.
   - Reorganized workspace into clean top-level folders: root Harness rules (`CLAUDE.md`, `AGENTS.md`), custom slash commands (`.claude/commands/`), on-demand skills (`skills/`), chronological playbook (`ai-workflow/`), production 16-agent worktree prototype (`multi-agent-worktree-orchestrator/`), and consecutively numbered systems design modules (`interview-preparation/00` to `04`).

@@ -6,7 +6,7 @@
 > - **Candidate:** Simin Shoeibi (9+ Years Senior Backend Engineering)
 > - **Interview Date:** Friday, November 6, 2026 (`12:45h` arrival @ Lanzadera, Valencia)
 > - **Company Guide:** [COMPANY-AND-PRODUCT-GUIDE.md](./COMPANY-AND-PRODUCT-GUIDE.md) (~€1M funding, €1M ARR target, 1-photo AI listing, anti-double-sell sync)
-> - **Primary Foundation:** Luis's email cheat sheet ([`docs/resources/first emails.md`](../docs/resources/first%20emails.md))
+> - **Primary Foundation:** Luis's email briefing notes (stored locally, excluded from public Git for privacy)
 > - **Honest Positioning:** You do **not** know Python and have never worked with Python in production. You orchestrate AI agents (Antigravity IDE, Claude Code via OpenRouter, GitHub Copilot) with senior architectural rigor, strict data schemas, and automated testing harnesses.
 
 ---
