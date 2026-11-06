@@ -13,17 +13,17 @@
 
 When you open this laptop in front of Luis and Alonso, this entire repository is live proof of your engineering discipline. Instead of casually chatting with AI, every file, prototype, and architectural document in this workspace was generated and verified using **Harness Engineering**:
 
-- **Step 1 — Living State & Memory Engine:**  
+- **Step 1 — Living State & Memory Engine:**
   Maintained strict project context and constraints in [`CLAUDE.md`](./CLAUDE.md), [`AGENTS.md`](./AGENTS.md), and [`docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`](./docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) across **22+ atomic Git commits**. Every agent session starts with full memory of Ruit's stack, Luis's cheat sheet, and strict constraints.
-- **Step 2 — Dual-Agent Tool Stack with OpenRouter Routing:**  
+- **Step 2 — Dual-Agent Tool Stack with OpenRouter Routing:**
   Used **Antigravity IDE** for multi-file architecture and research subagent delegation, paired with **Claude Code CLI** in the terminal and VS Code routed through an **OpenRouter API token** (`google/gemini-2.5-flash`, `deepseek/deepseek-chat`, and Claude 3.7 Sonnet) with unified billing and rate-limit control.
-- **Step 3 — Custom Slash Commands & On-Demand Skills:**  
+- **Step 3 — Custom Slash Commands & On-Demand Skills:**
   Configured [`.claude/commands/`](./.claude/commands/) (`/review`, `/validate`, `/plan`) and [`skills/`](./skills/) (`marketplace-connector`, `traffic-reverse-engineering`) to load domain playbooks progressively without polluting the model's active context window.
-- **Step 4 — Production-Grade Multi-Agent Prototype (`multi-agent-worktree-orchestrator/`):**  
+- **Step 4 — Production-Grade Multi-Agent Prototype (`multi-agent-worktree-orchestrator/`):**
   Built a complete, runnable TypeScript system provisioning **16 isolated Git worktrees** (`.worktrees/agent-01..16`), throttling LLM calls through a **4-slot Token-Bucket Rate Limiter**, validating each worktree in parallel with `tsc --noEmit`, and merging sequentially onto `main` via an async FIFO mutex queue without `.git/index.lock` collisions.
-- **Step 5 — High-Signal Systems Architecture Knowledge Base (`interview-preparation/`):**  
+- **Step 5 — High-Signal Systems Architecture Knowledge Base (`interview-preparation/`):**
   Consolidated core backend principles into 5 consecutive, code-free modules covering PostgreSQL row locking (`SELECT ... FOR UPDATE`), Celery background queues, TLS fingerprint bypass (`curl_cffi`), Chrome Manifest V3 extensions, and the 5 real Ruit whiteboard challenges.
-- **Step 6 — Chronological Interview Execution Playbook (`ai-workflow/`):**  
+- **Step 6 — Chronological Interview Execution Playbook (`ai-workflow/`):**
   Designed a 4-part step-by-step guide for today's 13:00h session: 5 minutes to show this setup, 20 minutes to execute any live coding challenge, and word-for-word scripts explaining agents, skills, and parallel sessions.
 
 ---

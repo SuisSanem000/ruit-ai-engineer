@@ -20,28 +20,25 @@ You are my Interview Coach preparing me (Simin Shoeibi) for my final onsite inte
 
 ---
 
-### 2. CONSOLIDATED WORKSPACE STRUCTURE (14 Markdown Files Total)
+### 2. CONSOLIDATED WORKSPACE STRUCTURE
 
-Maintain the lean, consolidated `interview-preparation/` directory:
+Maintain the lean, consolidated directory layout:
 
-- **`COMPANY-AND-PRODUCT-GUIDE.md`**: Master company background, product features, funding, team, and position breakdown.
-- **`00-roadmap-and-quick-sheets/`**
-  - `00-master-10-hour-schedule.md`: 5-step study plan.
-  - `01-my-senior-backend-positioning-and-polyglot-mindset.md`: Senior backend positioning and honest spoken script.
-  - `02-euromed-train-rapid-cheatsheet.md`: 10-minute cheat sheet for the train ride.
-- **`01-ai-workflow-and-live-task/`**
-  - `01-my-real-ai-story-and-daily-workflow.md`: Real resume work (QueryLaw schema checks, 150-site crawler, Dadroit) and 5-step workflow.
-  - `02-multi-agents-laptop-setup-and-live-task-playbook.md`: Multi-agent patterns, 3-min screen share script, 20-min live task playbook, and senior architectural checklist.
-  - `03-spoken-qa-scripts-how-i-work-with-ai.md`: 6 spoken Upper-B2 interview scripts.
-- **`03-backend-fundamentals-cheatsheet/`**
-  - `01-celery-redis-and-sql-locking.md`: Queues, Redis caching, and SQL `SELECT ... FOR UPDATE` double-sell prevention.
-  - `02-error-handling-python-vs-go-vs-rust.md`: Error handling philosophies and integration error classification.
-- **`04-integrations-reverse-eng-browsers/`**
-  - `01-networking-protocols-and-tls.md`: TCP 3-way handshake, UDP, DNS, HTTP/1.1-2-3, WebSockets vs SSE vs Webhooks, and TLS bot protection (`curl-impersonate`).
-  - `02-reverse-engineering-browsers-and-devops.md`: `.har` analysis, Chrome Extensions (MV3), Playwright, zero-downtime DB migrations, and observability.
-- **`05-system-design-whiteboard/`**
-  - `01-collaborative-framework-and-architecture.md`: 4-step collaborative whiteboard framework and spoken phrases.
-  - `02-the-5-ruit-system-design-challenges.md`: Complete architectures for the 5 real Ruit challenges.
-- **`06-culture-lunch-and-storytelling/`**
-  - `01-stories-lunch-and-questions.md`: 3 STAR stories, lunch etiquette, and questions for Luis and team.
+- **Root Infrastructure:**
+  - `README.md`: Master interview showcase ("Look how I used Harness Engineering to prepare").
+  - `CLAUDE.md`: Global harness rules, architectural constraints & memory.
+  - `AGENTS.md`: Multi-agent roles, subagent hierarchy & write-lock rules.
+  - `.claude/commands/`: Custom Claude Code slash commands (`/review`, `/validate`, `/plan`).
+  - `skills/`: On-demand specialized playbooks (`marketplace-connector`, `traffic-reverse-engineering`).
+- **Live Demonstrations & Playbooks:**
+  - `ai-workflow/`: Chronological step-by-step interview execution playbook (Files 01..04).
+  - `multi-agent-worktree-orchestrator/`: Production 16-agent Git worktree prototype in TypeScript.
+- **Systems Architecture Knowledge Base (`interview-preparation/`):**
+  - `COMPANY-AND-PRODUCT-GUIDE.md`: Master company background, product features, funding, team, and position breakdown.
+  - `00-roadmap-and-quick-sheets/`: 5-step master study schedule, positioning script, and train cheat sheet.
+  - `01-backend-fundamentals/`: Queues, Redis caching, and SQL `SELECT ... FOR UPDATE` double-sell prevention.
+  - `02-networking-and-reverse-eng/`: TCP 3-way handshake, HTTP/1-2-3, WebSockets, TLS JA3/JA4, Chrome Extensions, and DevOps.
+  - `03-system-design-whiteboard/`: 4-step collaborative whiteboard framework and 5 real Ruit challenges.
+  - `04-culture-lunch-and-storytelling/`: 3 STAR stories, lunch etiquette, and strategic questions for Luis.
+  - `README.md`: Consolidated index and study progress tracker.
 ```
