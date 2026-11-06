@@ -17,17 +17,17 @@
   - Read [01-my-senior-backend-positioning-and-polyglot-mindset.md](./01-my-senior-backend-positioning-and-polyglot-mindset.md) (15 mins).
   - Review [02-euromed-train-rapid-cheatsheet.md](./02-euromed-train-rapid-cheatsheet.md) (15 mins).
 - **Step 1 — Step-by-Step AI Workflow & 16-Agent Worktree Demo (2 Hours):**
-  - Read [01-part1-show-your-laptop-setup.md](../ai-workflow-step-by-step/01-part1-show-your-laptop-setup.md) (30 mins).
-  - Read [02-part2-execute-the-live-ai-task.md](../ai-workflow-step-by-step/02-part2-execute-the-live-ai-task.md) (30 mins).
-  - Read [03-part3-agents-skills-plugins-and-parallel-sessions.md](../ai-workflow-step-by-step/03-part3-agents-skills-plugins-and-parallel-sessions.md) (30 mins).
-  - Run demo in [multi-agent-worktree-orchestrator/](../multi-agent-worktree-orchestrator/README.md) (`bun run dev:mock`) (30 mins).
+  - Read [01-show-laptop-setup.md](../../ai-workflow/01-show-laptop-setup.md) (30 mins).
+  - Read [02-live-task-playbook.md](../../ai-workflow/02-live-task-playbook.md) (30 mins).
+  - Read [03-agents-skills-parallel-sessions.md](../../ai-workflow/03-agents-skills-parallel-sessions.md) (30 mins).
+  - Run demo in [multi-agent-worktree-orchestrator/](../../multi-agent-worktree-orchestrator/README.md) (`bun run dev:mock`) (30 mins).
 - **Step 2 — Backend Fundamentals, Queues & SQL Locking (2 Hours):**
-  - Read [01-celery-redis-and-sql-locking.md](../03-backend-fundamentals-cheatsheet/01-celery-redis-and-sql-locking.md) (60 mins).
-  - Read [02-error-handling-python-vs-go-vs-rust.md](../03-backend-fundamentals-cheatsheet/02-error-handling-python-vs-go-vs-rust.md) (60 mins).
+  - Read [01-celery-redis-and-sql-locking.md](../01-backend-fundamentals/01-celery-redis-and-sql-locking.md) (60 mins).
+  - Read [02-error-handling-python-vs-go-vs-rust.md](../01-backend-fundamentals/02-error-handling-python-vs-go-vs-rust.md) (60 mins).
 - **Step 3 — Networking, Reverse Engineering, Browsers & DevOps (2 Hours):**
-  - Read [01-networking-protocols-and-tls.md](../04-integrations-reverse-eng-browsers/01-networking-protocols-and-tls.md) (60 mins).
-  - Read [02-reverse-engineering-browsers-and-devops.md](../04-integrations-reverse-eng-browsers/02-reverse-engineering-browsers-and-devops.md) (60 mins).
+  - Read [01-networking-protocols-and-tls.md](../02-networking-and-reverse-eng/01-networking-protocols-and-tls.md) (60 mins).
+  - Read [02-reverse-engineering-browsers-and-devops.md](../02-networking-and-reverse-eng/02-reverse-engineering-browsers-and-devops.md) (60 mins).
 - **Step 4 — Whiteboard Challenges, Stories & Lunch Prep (2 Hours):**
-  - Read [01-collaborative-framework-and-architecture.md](../05-system-design-whiteboard/01-collaborative-framework-and-architecture.md) (30 mins).
-  - Read [02-the-5-ruit-system-design-challenges.md](../05-system-design-whiteboard/02-the-5-ruit-system-design-challenges.md) (50 mins).
-  - Read [01-stories-lunch-and-questions.md](../06-culture-lunch-and-storytelling/01-stories-lunch-and-questions.md) (40 mins).
+  - Read [01-collaborative-framework-and-architecture.md](../03-system-design-whiteboard/01-collaborative-framework-and-architecture.md) (30 mins).
+  - Read [02-the-5-ruit-system-design-challenges.md](../03-system-design-whiteboard/02-the-5-ruit-system-design-challenges.md) (50 mins).
+  - Read [01-stories-lunch-and-questions.md](../04-culture-lunch-and-storytelling/01-stories-lunch-and-questions.md) (40 mins).

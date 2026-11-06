@@ -36,44 +36,36 @@
 ruit-ai-engineer/
 ├── README.md                                   # Master interview showcase ("Look how I used Harness Engineering")
 ├── CLAUDE.md                                   # Root rules, architectural constraints & memory
-├── docs/
-│   ├── resources/                              # [READ-ONLY — NEVER TOUCH]
-│   └── ai-assitant-analysis/
-│       └── the-context-of-the-project/
-│           ├── ai-state.md                     # Project state & rules
-│           └── master-prompt.md                # Master prompt
-└── interview-preparation/
-    ├── README.md                               # Consolidated index & study progress tracker
-    ├── COMPANY-AND-PRODUCT-GUIDE.md            # Master company, product, funding & team guide
-    ├── ai-workflow-step-by-step/               # Step-by-step live interview playbook (no code)
-    │   ├── README.md                           # 3-part interview guide
-    │   ├── 01-part1-show-your-laptop-setup.md  # 4 things to show on screen in first 5 mins
-    │   ├── 02-part2-execute-the-live-ai-task.md # 6 chronological steps for 20-min task
-    │   └── 03-part3-agents-skills-plugins-and-parallel-sessions.md # Spoken explanations
-    ├── multi-agent-worktree-orchestrator/      # Production 16-agent Git worktree prototype
-    │   ├── README.md                           # Architecture diagram, 5 technical Q&As, cheatsheet
-    │   ├── setup.sh                            # Automation script
-    │   └── src/ (worktree, orchestrator, merge, logger)
-    ├── 00-roadmap-and-quick-sheets/
-    │   ├── 00-master-10-hour-schedule.md       # 5-step master study schedule
-    │   ├── 01-my-senior-backend-positioning-and-polyglot-mindset.md # Honest positioning script
-    │   └── 02-euromed-train-rapid-cheatsheet.md # 10-minute cheat sheet for train ride
-    ├── 01-ai-workflow-and-live-task/
-    │   ├── README.md                           # Module overview
-    │   ├── 01-my-real-ai-story-and-daily-workflow.md # Real resume story & 5-step workflow
-    │   ├── 02-multi-agents-laptop-setup-and-live-task-playbook.md # Agents, laptop demo, live task
-    │   └── 03-spoken-qa-scripts-how-i-work-with-ai.md # 6 spoken Upper-B2 interview scripts
-    ├── 03-backend-fundamentals-cheatsheet/
-    │   ├── 01-celery-redis-and-sql-locking.md  # Queues, Redis caching, SELECT FOR UPDATE
-    │   └── 02-error-handling-python-vs-go-vs-rust.md # Error handling philosophies
-    ├── 04-integrations-reverse-eng-browsers/
-    │   ├── 01-networking-protocols-and-tls.md  # TCP, UDP, DNS, HTTP/1-2-3, WS, TLS (curl-impersonate)
-    │   └── 02-reverse-engineering-browsers-and-devops.md # .har traffic, Chrome Ext, DevOps
-    ├── 05-system-design-whiteboard/
-    │   ├── 01-collaborative-framework-and-architecture.md # Whiteboard framework & spoken phrases
-    │   └── 02-the-5-ruit-system-design-challenges.md # 5 complete Ruit challenge designs
-    └── 06-culture-lunch-and-storytelling/
-        └── 01-stories-lunch-and-questions.md   # 3 STAR stories, lunch prep, questions for Luis
+├── AGENTS.md                                   # Multi-agent roles, subagent hierarchy & write-lock rules
+├── .claude/
+│   └── commands/                               # Custom Claude Code slash commands (/review, /validate, /plan)
+├── skills/                                     # On-demand specialized playbooks (loaded progressively)
+│   ├── marketplace-connector/SKILL.md          # Scaffolding connector with schemas & connection pooling
+│   └── traffic-reverse-engineering/SKILL.md    # Parsing .har captures & detecting schema drift
+├── ai-workflow/                                # Step-by-step live interview playbook (zero code)
+│   ├── README.md                               # 4-part interview guide
+│   ├── 01-show-laptop-setup.md                 # 4 things to show on screen in first 5 mins
+│   ├── 02-live-task-playbook.md                # 6 chronological steps for 20-min task
+│   ├── 03-agents-skills-parallel-sessions.md   # Spoken explanations (agents, skills, worktrees)
+│   └── 04-my-real-ai-resume-story.md           # QueryLaw schema gates, Dadroit, Parsaiane
+├── multi-agent-worktree-orchestrator/          # Production 16-agent Git worktree prototype
+│   ├── README.md                               # Architecture diagram, 5 technical Q&As, cheatsheet
+│   ├── setup.sh                                # Automation script
+│   └── src/ (worktree, orchestrator, merge, logger)
+├── interview-preparation/                      # Consecutive systems design & 5 Ruit whiteboard challenges
+│   ├── README.md                               # Consolidated index & study progress tracker
+│   ├── COMPANY-AND-PRODUCT-GUIDE.md            # Master company, product, funding & team guide
+│   ├── 00-roadmap-and-quick-sheets/            # Positioning, 10-hour schedule, train cheat sheet
+│   ├── 01-backend-fundamentals/                # Celery, Redis caching, SELECT FOR UPDATE locking
+│   ├── 02-networking-and-reverse-eng/          # TCP, HTTP/1-2-3, WebSockets, TLS JA3/JA4, Chrome MV3
+│   ├── 03-system-design-whiteboard/            # 4-step framework + the 5 real Ruit challenges
+│   └── 04-culture-lunch-and-storytelling/      # 3 STAR stories, lunch prep, questions for Luis
+└── docs/
+    ├── ai-assitant-analysis/
+    │   └── the-context-of-the-project/
+    │       ├── ai-state.md                     # Living project state across all sessions
+    │       └── master-prompt.md                # Master context prompt
+    └── resources/                              # [READ-ONLY — NEVER TOUCH]
 ```
 
 ---
@@ -83,14 +75,14 @@ ruit-ai-engineer/
 | Section | Core Files | Status |
 | :--- | :--- | :--- |
 | **Root Interview Showcase** | `README.md` & `CLAUDE.md` | `[x] READY TO SHOW` |
-| **AI Workflow Step-by-Step** | `ai-workflow-step-by-step/` (Files 01, 02, 03) | `[x] PRIMARY FOR TODAY` |
+| **AI Workflow Playbook** | `ai-workflow/` (Files 01, 02, 03, 04) | `[x] PRIMARY FOR TODAY` |
 | **16-Agent Worktree Prototype** | `multi-agent-worktree-orchestrator/` | `[x] RUNNABLE DEMO` |
-| **Company & Role** | `COMPANY-AND-PRODUCT-GUIDE.md` | `[x] COMPLETED` |
+| **Company & Role Guide** | `COMPANY-AND-PRODUCT-GUIDE.md` | `[x] COMPLETED` |
 | **0. Roadmap & Quick Sheets** | `00-roadmap-and-quick-sheets/` (Files 00, 01, 02) | `[x] COMPLETED` |
-| **1. AI Workflow & Resume** | `01-ai-workflow-and-live-task/` (Files 01, 02, 03) | `[x] COMPLETED` |
-| **2. Backend Fundamentals** | `03-backend-fundamentals-cheatsheet/` (Files 01, 02) | `[x] COMPLETED` |
-| **3. Networking & DevOps** | `04-integrations-reverse-eng-browsers/` (Files 01, 02) | `[x] COMPLETED` |
-| **4. System Design Whiteboard** | `05-system-design-whiteboard/` (Files 01, 02) | `[x] COMPLETED` |
+| **1. Backend Fundamentals** | `01-backend-fundamentals/` (Files 01, 02) | `[x] COMPLETED` |
+| **2. Networking & Reverse Eng** | `02-networking-and-reverse-eng/` (Files 01, 02) | `[x] COMPLETED` |
+| **3. System Design Whiteboard** | `03-system-design-whiteboard/` (Files 01, 02) | `[x] COMPLETED` |
+| **4. Stories & Team Lunch** | `04-culture-lunch-and-storytelling/` (File 01) | `[x] COMPLETED` |
 | **5. Stories & Team Lunch** | `06-culture-lunch-and-storytelling/` (File 01) | `[x] COMPLETED` |
 
 ---

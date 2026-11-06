@@ -14,15 +14,17 @@
 When you open this laptop in front of Luis and Alonso, this entire repository is live proof of your engineering discipline. Instead of casually chatting with AI, every file, prototype, and architectural document in this workspace was generated and verified using **Harness Engineering**:
 
 - **Step 1 — Living State & Memory Engine:**  
-  Maintained strict project context and constraints in [`CLAUDE.md`](./CLAUDE.md) and [`docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`](./docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) across **22+ atomic Git commits**. Every agent session starts with full memory of Ruit's stack, Luis's cheat sheet, and strict constraints.
+  Maintained strict project context and constraints in [`CLAUDE.md`](./CLAUDE.md), [`AGENTS.md`](./AGENTS.md), and [`docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md`](./docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) across **22+ atomic Git commits**. Every agent session starts with full memory of Ruit's stack, Luis's cheat sheet, and strict constraints.
 - **Step 2 — Dual-Agent Tool Stack with OpenRouter Routing:**  
   Used **Antigravity IDE** for multi-file architecture and research subagent delegation, paired with **Claude Code CLI** in the terminal and VS Code routed through an **OpenRouter API token** (`google/gemini-2.5-flash`, `deepseek/deepseek-chat`, and Claude 3.7 Sonnet) with unified billing and rate-limit control.
-- **Step 3 — Production-Grade Multi-Agent Prototype (`multi-agent-worktree-orchestrator/`):**  
+- **Step 3 — Custom Slash Commands & On-Demand Skills:**  
+  Configured [`.claude/commands/`](./.claude/commands/) (`/review`, `/validate`, `/plan`) and [`skills/`](./skills/) (`marketplace-connector`, `traffic-reverse-engineering`) to load domain playbooks progressively without polluting the model's active context window.
+- **Step 4 — Production-Grade Multi-Agent Prototype (`multi-agent-worktree-orchestrator/`):**  
   Built a complete, runnable TypeScript system provisioning **16 isolated Git worktrees** (`.worktrees/agent-01..16`), throttling LLM calls through a **4-slot Token-Bucket Rate Limiter**, validating each worktree in parallel with `tsc --noEmit`, and merging sequentially onto `main` via an async FIFO mutex queue without `.git/index.lock` collisions.
-- **Step 4 — High-Signal Systems Architecture Knowledge Base (`interview-preparation/`):**  
-  Consolidated core backend principles into 14 high-impact, code-free guides covering PostgreSQL row locking (`SELECT ... FOR UPDATE`), Celery background queues, TLS fingerprint bypass (`curl_cffi`), Chrome Manifest V3 extensions, and the 5 real Ruit whiteboard challenges.
-- **Step 5 — Chronological Interview Execution Playbook (`ai-workflow-step-by-step/`):**  
-  Designed a step-by-step guide for today's 13:00h session: 5 minutes to show this setup, 20 minutes to execute any live coding challenge, and word-for-word scripts explaining agents, skills, and parallel sessions.
+- **Step 5 — High-Signal Systems Architecture Knowledge Base (`interview-preparation/`):**  
+  Consolidated core backend principles into 5 consecutive, code-free modules covering PostgreSQL row locking (`SELECT ... FOR UPDATE`), Celery background queues, TLS fingerprint bypass (`curl_cffi`), Chrome Manifest V3 extensions, and the 5 real Ruit whiteboard challenges.
+- **Step 6 — Chronological Interview Execution Playbook (`ai-workflow/`):**  
+  Designed a 4-part step-by-step guide for today's 13:00h session: 5 minutes to show this setup, 20 minutes to execute any live coding challenge, and word-for-word scripts explaining agents, skills, and parallel sessions.
 
 ---
 
@@ -30,10 +32,12 @@ When you open this laptop in front of Luis and Alonso, this entire repository is
 
 | Workspace Directory | Purpose & Contents | High-Impact Links |
 | :--- | :--- | :--- |
-| **Root Memory & Rules** | Living state, constraints, and project rules | [`CLAUDE.md`](./CLAUDE.md) <br> [`ai-state.md`](./docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) |
-| **`ai-workflow-step-by-step/`** | Step-by-step playbook for today's 13:00h interview (zero code) | [01. Show Laptop Setup](./ai-workflow-step-by-step/01-part1-show-your-laptop-setup.md) <br> [02. Live Task Playbook](./ai-workflow-step-by-step/02-part2-execute-the-live-ai-task.md) <br> [03. Agents, Skills & Parallelism](./ai-workflow-step-by-step/03-part3-agents-skills-plugins-and-parallel-sessions.md) |
+| **Root Rules & Constraints** | Living state, subagent hierarchy, and custom slash commands | [`CLAUDE.md`](./CLAUDE.md) <br> [`AGENTS.md`](./AGENTS.md) <br> [`.claude/commands/`](./.claude/commands/) |
+| **On-Demand Skills** | Progressive playbooks for reverse-engineering & connectors | [`skills/`](./skills/) |
+| **`ai-workflow/`** | Step-by-step playbook for today's 13:00h interview (zero code) | [01. Show Laptop Setup](./ai-workflow/01-show-laptop-setup.md) <br> [02. Live Task Playbook](./ai-workflow/02-live-task-playbook.md) <br> [03. Agents & Parallelism](./ai-workflow/03-agents-skills-parallel-sessions.md) <br> [04. Resume Story](./ai-workflow/04-my-real-ai-resume-story.md) |
 | **`multi-agent-worktree-orchestrator/`** | Production prototype: 16 concurrent agents using Git worktrees & OpenRouter | [`README.md` (Architecture & 5 Q&As)](./multi-agent-worktree-orchestrator/README.md) <br> [`src/worktree.ts`](./multi-agent-worktree-orchestrator/src/worktree.ts) <br> [`src/orchestrator.ts`](./multi-agent-worktree-orchestrator/src/orchestrator.ts) <br> [`src/merge.ts`](./multi-agent-worktree-orchestrator/src/merge.ts) |
-| **`interview-preparation/`** | Systems design, networking, and Ruit challenge blueprints | [Company & Product Guide](./interview-preparation/COMPANY-AND-PRODUCT-GUIDE.md) <br> [Senior Positioning Script](./interview-preparation/00-roadmap-and-quick-sheets/01-my-senior-backend-positioning-and-polyglot-mindset.md) <br> [The 5 Ruit Challenges](./interview-preparation/05-system-design-whiteboard/02-the-5-ruit-system-design-challenges.md) |
+| **`interview-preparation/`** | Consecutive systems design, networking, and Ruit challenge blueprints | [Company Guide](./interview-preparation/COMPANY-AND-PRODUCT-GUIDE.md) <br> [Positioning Script](./interview-preparation/00-roadmap-and-quick-sheets/01-my-senior-backend-positioning-and-polyglot-mindset.md) <br> [The 5 Challenges](./interview-preparation/03-system-design-whiteboard/02-the-5-ruit-system-design-challenges.md) |
+| **`docs/`** | Living project state across all sessions & raw resources | [`ai-state.md`](./docs/ai-assitant-analysis/the-context-of-the-project/ai-state.md) |
 
 ---
 

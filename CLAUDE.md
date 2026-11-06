@@ -21,3 +21,4 @@
 - **Multi-Agent Isolation:** Never allow two agents to write to the same file. Use isolated Git worktrees (`.worktrees/agent-XX`) and sequential merge queues for parallel workers.
 - **Verification Gate:** Run automated test suites and static type checks in the terminal autonomously before staging any commit.
 - **Independent Audit:** Run GitHub Copilot Code Review on the Git diff as a second model check before merging.
+
