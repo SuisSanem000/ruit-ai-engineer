@@ -67,3 +67,4 @@ If you need to update or scaffold 16 marketplace modules at once, running 16 age
 > *"I am 100% upfront that my 9+ years of backend production experience are in Node.js, TypeScript, SQL, and Redis, and I do not write Python manually.
 >
 > What I bring to Ruit is **Senior Systems Architecture combined with disciplined Harness Engineering**. Whether we are preventing double-sells with `SELECT ... FOR UPDATE`, designing idempotent Celery retry queues, or reverse-engineering marketplace APIs, I define the exact architectural boundaries, data schemas, and failure modes first. Then I use my multi-agent workflow—with isolated Git worktrees, automated terminal test gates, and independent diff reviews—to generate and verify production-ready code rapidly."*
+

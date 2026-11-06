@@ -21,3 +21,4 @@
 3. **[03-part3-agents-skills-plugins-and-parallel-sessions.md](./03-part3-agents-skills-plugins-and-parallel-sessions.md)**
    - **When:** The discussion right after the task when Luis asks *"How do you use agents, skills, plugins, and parallel sessions?"*
    - **Covers:** Clear, non-code step-by-step explanations of Rules vs. Skills vs. Plugins, Subagents, and your 16-Agent Git Worktree parallel architecture.
+

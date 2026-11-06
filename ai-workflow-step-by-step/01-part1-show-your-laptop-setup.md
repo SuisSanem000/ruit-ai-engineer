@@ -45,3 +45,4 @@
   - It answers the #1 fear founders have about AI coding: *"How do you know the AI didn't write broken or insecure logic?"*
 - **What to Say:**
   - *"I never trust an LLM's first output blindly. My setup forces the agent to run the test suite and static type checker in the terminal and fix its own errors before reporting back. Finally, before I commit, I open the Git diff and run GitHub Copilot Code Review as a second, independent model to catch blind spots like missing timeouts, race conditions, or unhandled nulls."*
+

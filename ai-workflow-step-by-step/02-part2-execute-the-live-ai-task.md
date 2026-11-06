@@ -67,3 +67,4 @@
   - Open the Git diff view, run **GitHub Copilot Code Review** (or inspect the diff line-by-line), verify no temporary files or secrets are staged, and make a clean atomic commit.
 - **What You Say to Wrap Up:**
   - *"The terminal test suite and type checks are all passing, I audited the timeouts and error boundaries, and I ran a second-opinion diff check. This is now ready for a clean commit."*
+
