@@ -30,10 +30,12 @@
 
 ---
 
-## 3. Consolidated Workspace Structure (14 Markdown Files Total — Zero Code Files)
+## 3. Consolidated Workspace Structure
 
 ```text
 ruit-ai-engineer/
+├── README.md                                   # Master interview showcase ("Look how I used Harness Engineering")
+├── CLAUDE.md                                   # Root rules, architectural constraints & memory
 ├── docs/
 │   ├── resources/                              # [READ-ONLY — NEVER TOUCH]
 │   └── ai-assitant-analysis/
@@ -41,8 +43,17 @@ ruit-ai-engineer/
 │           ├── ai-state.md                     # Project state & rules
 │           └── master-prompt.md                # Master prompt
 └── interview-preparation/
-    ├── README.md                               # Master index & study progress tracker
+    ├── README.md                               # Consolidated index & study progress tracker
     ├── COMPANY-AND-PRODUCT-GUIDE.md            # Master company, product, funding & team guide
+    ├── ai-workflow-step-by-step/               # Step-by-step live interview playbook (no code)
+    │   ├── README.md                           # 3-part interview guide
+    │   ├── 01-part1-show-your-laptop-setup.md  # 4 things to show on screen in first 5 mins
+    │   ├── 02-part2-execute-the-live-ai-task.md # 6 chronological steps for 20-min task
+    │   └── 03-part3-agents-skills-plugins-and-parallel-sessions.md # Spoken explanations
+    ├── multi-agent-worktree-orchestrator/      # Production 16-agent Git worktree prototype
+    │   ├── README.md                           # Architecture diagram, 5 technical Q&As, cheatsheet
+    │   ├── setup.sh                            # Automation script
+    │   └── src/ (worktree, orchestrator, merge, logger)
     ├── 00-roadmap-and-quick-sheets/
     │   ├── 00-master-10-hour-schedule.md       # 5-step master study schedule
     │   ├── 01-my-senior-backend-positioning-and-polyglot-mindset.md # Honest positioning script
@@ -71,18 +82,24 @@ ruit-ai-engineer/
 
 | Section | Core Files | Status |
 | :--- | :--- | :--- |
-| **Company & Role** | `COMPANY-AND-PRODUCT-GUIDE.md` | `[ ] Pending` |
+| **Root Interview Showcase** | `README.md` & `CLAUDE.md` | `[x] READY TO SHOW` |
+| **AI Workflow Step-by-Step** | `ai-workflow-step-by-step/` (Files 01, 02, 03) | `[x] PRIMARY FOR TODAY` |
+| **16-Agent Worktree Prototype** | `multi-agent-worktree-orchestrator/` | `[x] RUNNABLE DEMO` |
+| **Company & Role** | `COMPANY-AND-PRODUCT-GUIDE.md` | `[x] COMPLETED` |
 | **0. Roadmap & Quick Sheets** | `00-roadmap-and-quick-sheets/` (Files 00, 01, 02) | `[x] COMPLETED` |
-| **1. AI Workflow & Live Task** | `01-ai-workflow-and-live-task/` (Files 01, 02, 03) | `[ ] Up Next / Revisit` |
-| **2. Backend Fundamentals** | `03-backend-fundamentals-cheatsheet/` (Files 01, 02) | `[ ] Pending` |
-| **3. Networking & DevOps** | `04-integrations-reverse-eng-browsers/` (Files 01, 02) | `[⏳ READING NOW]` |
-| **4. System Design Whiteboard** | `05-system-design-whiteboard/` (Files 01, 02) | `[ ] Pending` |
-| **5. Stories & Team Lunch** | `06-culture-lunch-and-storytelling/` (File 01) | `[ ] Pending` |
+| **1. AI Workflow & Resume** | `01-ai-workflow-and-live-task/` (Files 01, 02, 03) | `[x] COMPLETED` |
+| **2. Backend Fundamentals** | `03-backend-fundamentals-cheatsheet/` (Files 01, 02) | `[x] COMPLETED` |
+| **3. Networking & DevOps** | `04-integrations-reverse-eng-browsers/` (Files 01, 02) | `[x] COMPLETED` |
+| **4. System Design Whiteboard** | `05-system-design-whiteboard/` (Files 01, 02) | `[x] COMPLETED` |
+| **5. Stories & Team Lunch** | `06-culture-lunch-and-storytelling/` (File 01) | `[x] COMPLETED` |
 
 ---
 
 ## 5. Change Log
 
+- **2026-11-06 (Session 22 — Root Showcase README & Unified Harness Engineering Alignment):**
+  - Created root `README.md` and `CLAUDE.md` showcasing how Simin used Harness Engineering to prepare for this exact interview.
+  - Aligned `interview-preparation/README.md` and roadmap schedules with `ai-workflow-step-by-step/` (left 100% untouched as requested) and `multi-agent-worktree-orchestrator/`.
 - **2026-11-06 (Session 21 — No-Code Step-by-Step AI Workflow Folder for Today's Interview):**
   - Created `ai-workflow-step-by-step/` beside `interview-preparation/` and `multi-agent-worktree-orchestrator/` with zero code blocks:
     - `README.md`: Overview of the 3 parts of the 13:00h AI session.

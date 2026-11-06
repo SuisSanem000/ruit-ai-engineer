@@ -1,6 +1,7 @@
 # Module 1 — AI Workflow, Laptop Setup & Live Task
 
-> **Interview 1 Focus (45–60 mins):** Screen share your AI setup (3 mins), complete a live task with AI (20 mins), and articulate your Harness Engineering principles and senior systems background.
+> **Interview 1 Focus (45–60 mins):** Screen share your AI setup (3 mins), complete a live task with AI (20 mins), and articulate your Harness Engineering principles and senior systems background.  
+> **For today's live interview flow, use the dedicated step-by-step walkthrough in [../ai-workflow-step-by-step/README.md](../ai-workflow-step-by-step/README.md).**
 
 ---
 

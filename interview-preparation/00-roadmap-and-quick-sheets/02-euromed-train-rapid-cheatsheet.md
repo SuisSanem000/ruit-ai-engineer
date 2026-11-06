@@ -8,6 +8,7 @@
 
 - **Honest Positioning:** 9+ years backend engineering (Node.js/TypeScript, SQL, Redis). 100% upfront that you **do not know Python**; you orchestrate AI agents (Antigravity IDE, Claude Code via OpenRouter) with strict architectural boundaries, data contracts, and test fixtures.
 - **Harness Engineering (5 Steps):** Context/Rules (`ai-state.md`, `CLAUDE.md`) $\rightarrow$ Plan Mode (`Shift + Tab`) $\rightarrow$ Data Contracts First (Schemas & Error classes) $\rightarrow$ Terminal Verification Loop (autonomous tests/linters) $\rightarrow$ GitHub Copilot Code Review on Git diff.
+- **Multi-Agent Architecture (16 Worktrees):** Programmatically provision 16 isolated Git worktrees (`.worktrees/agent-01..16`) sharing the `.git` store. Throttle with 4-slot Token Bucket limiter. Validate via `tsc --noEmit` in parallel, then funnel through FIFO async mutex queue for serialized rebase and merge onto `main`.
 - **Multi-Agent Rules:** On-demand Skills (`SKILL.md`) save 90% context. Use read-only subagents for heavy logs/traffic analysis. Golden Rule: Two agents never write to the same file concurrently.
 
 ---
