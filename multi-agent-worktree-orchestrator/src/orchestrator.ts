@@ -791,6 +791,15 @@ export async function runOrchestrator(): Promise<void> {
   if (successfulTasks.length > 0) {
     successfulTasks.sort((a, b) => a.id.localeCompare(b.id));
     await createBarrelIndexFile(worktreeManager.projectRoot, successfulTasks);
+    worktreeManager.git(['add', 'src/utils/index.ts'], worktreeManager.projectRoot);
+    try {
+      worktreeManager.git(
+        ['commit', '-m', 'chore(orchestrator): generate barrel export src/utils/index.ts'],
+        worktreeManager.projectRoot
+      );
+    } catch {
+      // Ignore if unchanged
+    }
   }
 
   dashboard.printFinalTable();

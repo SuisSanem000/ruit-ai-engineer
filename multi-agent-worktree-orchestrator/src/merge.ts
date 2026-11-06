@@ -138,7 +138,7 @@ export class GatedMergePipeline {
 
     this.worktreeManager.git(['add', fileToStage], desc.worktreeRoot);
     this.worktreeManager.git(
-      ['commit', '-m', `feat(${desc.id}): implement ${taskTitle}`],
+      ['commit', '--allow-empty', '-m', `feat(${desc.id}): implement ${taskTitle}`],
       desc.worktreeRoot
     );
     return this.worktreeManager.git(['rev-parse', '--short', 'HEAD'], desc.worktreeRoot);

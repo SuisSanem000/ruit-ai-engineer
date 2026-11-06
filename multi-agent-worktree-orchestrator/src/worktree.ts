@@ -182,8 +182,8 @@ export class WorktreeManager {
    * Provisions all 16 isolated Git worktrees branched off `main`.
    */
   public provisionAll(): WorktreeDescriptor[] {
-    // 1. Clean any leftover worktrees or stale branches from earlier interrupted runs
-    this.teardownAll({ quiet: true });
+    // 1. Clean any leftover worktrees, stale branches, or previous src/utils artifacts
+    this.teardownAll({ quiet: true, cleanUtils: true });
     this.ensureBaselineSyncedOnMain();
 
     fs.mkdirSync(this.worktreesBaseDir, { recursive: true });
@@ -246,6 +246,18 @@ export class WorktreeManager {
       const utilsDir = path.join(this.projectRoot, 'src', 'utils');
       if (fs.existsSync(utilsDir)) {
         fs.rmSync(utilsDir, { recursive: true, force: true });
+      }
+      const status = this.git(['status', '--porcelain', '--', '.'], this.projectRoot);
+      if (status.length > 0) {
+        this.git(['add', '-A', '.'], this.projectRoot);
+        try {
+          this.git(
+            ['commit', '-m', 'chore(orchestrator): clean generated agent artifacts'],
+            this.projectRoot
+          );
+        } catch {
+          // Ignore if nothing to commit
+        }
       }
     }
 
