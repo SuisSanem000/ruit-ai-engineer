@@ -83,6 +83,14 @@ ruit-ai-engineer/
 
 ## 5. Change Log
 
+- **2026-11-06 (Session 20 — 16-Agent Git Worktree & OpenRouter Concurrency Orchestrator Prototype):**
+  - Built `multi-agent-worktree-orchestrator/` beside `interview-preparation/` in TypeScript:
+    - `setup.sh`: Automates Git verification on `main`, `.gitignore`, dependency setup (`tsx`, `typescript`), and build verification.
+    - `src/worktree.ts`: Programmatically provisions and tears down 16 isolated Git worktrees (`.worktrees/agent-01` .. `.worktrees/agent-16` on `feature/agent-01` .. `feature/agent-16`) with stale lock cleanup and `git worktree prune`.
+    - `src/orchestrator.ts`: 16 disjoint micro-tasks with a 4-slot Semaphore + Token-Bucket rate limiter supporting direct OpenRouter API (`fetch`), Headless Claude Code CLI (`claude -p`), and zero-token `--mock` mode.
+    - `src/merge.ts`: Gated sequential integration pipeline running `npx tsc --noEmit` inside each worktree before FIFO mutex-serialized rebasing and merging onto `main`.
+    - `src/logger.ts`: Live terminal dashboard showing all 16 workers, worktree paths, statuses, and rate-limiter telemetry.
+    - `README.md`: Comprehensive interview study guide with ASCII architecture diagram, 5 deep technical Q&As, and 2-minute execution cheatsheet.
 - **2026-11-05 (Session 19 — Total Removal of Python Teaching & Code Files):**
   - Removed all Python teaching modules (`02-python-and-django-deep-dive/`) and all code sandbox directories (`live-task-sandbox/`, `python-django-labs/`, `fundamentals-labs/`).
   - Total workspace streamlined to **14 high-signal markdown files** with **zero code files** and **zero markdown code blocks**.
